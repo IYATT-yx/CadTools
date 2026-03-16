@@ -13,10 +13,15 @@ void Interface::init()
 {
     acedRegCmds->addCommand(L"IYATTyxCadTools", L"yxHelp", L"yxHelp", ACRX_CMD_MODAL, Interface::cmdHelp);
     acedRegCmds->addCommand(L"IYATTyxCadTools", L"yxSetByLayer", L"yxSetByLayer", ACRX_CMD_MODAL | ACRX_CMD_USEPICKSET, Interface::cmdSetByLayer);
+    acedRegCmds->addCommand(L"IYATTyxCadTools", L"yxSBL", L"yxSBL", ACRX_CMD_MODAL | ACRX_CMD_USEPICKSET, Interface::cmdSetByLayer);
     acedRegCmds->addCommand(L"IYATTyxCadTools", L"yxDimensionFix", L"yxDimensionFix", ACRX_CMD_MODAL | ACRX_CMD_USEPICKSET, Interface::cmdDimensionFix);
+    acedRegCmds->addCommand(L"IYATTyxCadTools", L"yxDF", L"yxDF", ACRX_CMD_MODAL | ACRX_CMD_USEPICKSET, Interface::cmdDimensionFix);
     acedRegCmds->addCommand(L"IYATTyxCadTools", L"yxDimensionResume", L"yxDimensionResume", ACRX_CMD_MODAL | ACRX_CMD_USEPICKSET, Interface::cmdDimensionResume);
-    acedRegCmds->addCommand(L"IYATTyxCadTools", L"yxiAddSurroundingCharsForDimension", L"yxiAddSurroundingCharsForDimension", ACRX_CMD_MODAL, Interface::cmdiAddSurroundingCharsForDimension);
-    acedRegCmds->addCommand(L"IYATTyxCadTools", L"yxiRemoveSurroundingCharsForDimension", L"yxiRemoveSurroundingCharsForDimension", ACRX_CMD_MODAL, Interface::cmdiRemoveSurroundingCharsForDimension);
+    acedRegCmds->addCommand(L"IYATTyxCadTools", L"yxDR", L"yxDR", ACRX_CMD_MODAL | ACRX_CMD_USEPICKSET, Interface::cmdDimensionResume);
+    acedRegCmds->addCommand(L"IYATTyxCadTools", L"yxAddSurroundingCharsForDimension", L"yxAddSurroundingCharsForDimension", ACRX_CMD_MODAL | ACRX_CMD_USEPICKSET, Interface::cmdiAddSurroundingCharsForDimension);
+    acedRegCmds->addCommand(L"IYATTyxCadTools", L"yxASCFD", L"yxASCFD", ACRX_CMD_MODAL | ACRX_CMD_USEPICKSET, Interface::cmdiAddSurroundingCharsForDimension);
+    acedRegCmds->addCommand(L"IYATTyxCadTools", L"yxRemoveSurroundingCharsForDimension", L"yxRemoveSurroundingCharsForDimension", ACRX_CMD_MODAL | ACRX_CMD_USEPICKSET, Interface::cmdiRemoveSurroundingCharsForDimension);
+    acedRegCmds->addCommand(L"IYATTyxCadTools", L"yxRSCFD", L"yxRSCFD", ACRX_CMD_MODAL | ACRX_CMD_USEPICKSET, Interface::cmdiRemoveSurroundingCharsForDimension);
 }
 
 void Interface::unload()
@@ -33,11 +38,9 @@ void Interface::cmdHelp()
 
 void Interface::cmdSetByLayer()
 {
-    UniversalPicker::Options options
-    {
-        .prompt = L"\n功能：设置选中实体的图层属性为ByLayer。\n"
-    };
-    UniversalPicker::run(options, EntityStyle::setByLayer);
+    UniversalPicker::Options options;
+    const ACHAR* prompt = L"\n功能：设置选中实体的图层属性为ByLayer。\n";
+    UniversalPicker::run(options, EntityStyle::setByLayer, prompt);
 }
 
 void Interface::cmdDimensionFix()
@@ -47,10 +50,10 @@ void Interface::cmdDimensionFix()
 
     UniversalPicker::Options options
     {
-        .filter = filterAcString.kACharPtr(),
-        .prompt = L"\n功能：固定选中标注的文本\n"
+        .filter = filterAcString.kACharPtr()
     };
-    UniversalPicker::run(options, Dimension::dimensionFix);
+    const ACHAR* prompt = L"\n功能：固定选中标注的文本\n";
+    UniversalPicker::run(options, Dimension::dimensionFix, prompt);
 }
 
 void Interface::cmdDimensionResume()
@@ -61,10 +64,9 @@ void Interface::cmdDimensionResume()
     UniversalPicker::Options options
     {
         .filter = filter.kACharPtr(),
-        .prompt = L"\n功能：清空选中标注的文本，恢复关联标注。注意可能造成手动编辑的符号、公差等丢失。\n",
-        .mode = UniversalPicker::SelectMode::Immediate
     };
-    UniversalPicker::run(options, Dimension::dimensionResume);
+    const ACHAR* prompt = L"\n功能：清空选中标注的文本，恢复关联标注。注意可能造成手动编辑的符号、公差等丢失。\n";
+    UniversalPicker::run(options, Dimension::dimensionResume, prompt);
 }
 
 void Interface::cmdiAddSurroundingCharsForDimension()
@@ -88,11 +90,10 @@ void Interface::cmdiAddSurroundingCharsForDimension()
     filter.format(L"%s", AcDbDimension::desc()->dxfName());
     UniversalPicker::Options options
     {
-        .filter = filter.kACharPtr(),
-        .prompt = L"\n功能：在标注首末位置添加符号\n",
-        .mode = UniversalPicker::SelectMode::Immediate
+        .filter = filter.kACharPtr()
     };
 
+    const ACHAR* prompt = L"\n功能：在标注首末位置添加符号\n";
     const ACHAR* left = edit1Result.GetString();
     const ACHAR* right = edit2Result.GetString();
     UniversalPicker::run(
@@ -100,7 +101,9 @@ void Interface::cmdiAddSurroundingCharsForDimension()
         [left, right](AcDbObjectId objId)
         {
             Dimension::addSurroundingCharsForDimension(objId, left, right);
-        }
+        },
+        prompt,
+        UniversalPicker::SelectMode::Immediate
     );
 }
 
@@ -126,10 +129,9 @@ void Interface::cmdiRemoveSurroundingCharsForDimension()
     UniversalPicker::Options options
     {
         .filter = filter.kACharPtr(),
-        .prompt = L"\n功能：在标注首末位置移除符号\n",
-        .mode = UniversalPicker::SelectMode::Immediate
     };
 
+    const ACHAR* prompt = L"\n功能：在标注首末位置移除符号\n";
     const ACHAR* left = edit1Result.GetString();
     const ACHAR* right = edit2Result.GetString();
     UniversalPicker::run(
@@ -137,6 +139,8 @@ void Interface::cmdiRemoveSurroundingCharsForDimension()
         [left, right](AcDbObjectId objId)
         {
             Dimension::removeSurroundingCharsForDimension(objId, left, right);
-        }
+        },
+        prompt,
+        UniversalPicker::SelectMode::Immediate
     );
 }

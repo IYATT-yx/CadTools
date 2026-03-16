@@ -145,17 +145,56 @@ void UniversalPicker::immediateSelect(const Options& options, EntityProcessor pr
 }
 
 
-void UniversalPicker::run(const Options& options, EntityProcessor processor)
+void UniversalPicker::run(const Options& options, EntityProcessor processor, const ACHAR* prompt, UniversalPicker::SelectMode defaultSelectMode)
 {
-    acutPrintf(L"\n%s", options.prompt);
+    acutPrintf(L"\n%s", prompt);
 
-    if (options.mode == SelectMode::Batch)
+    // 模式选择提示
+    const ACHAR* modePrompt = (defaultSelectMode == UniversalPicker::SelectMode::Batch) ?
+        L"\n选择模式 [批量(B)/立即(I)]<B>：" :
+        L"\n选择模式 [批量(B)/立即(I)]<I>：";
+
+    UniversalPicker::SelectMode inputMode = defaultSelectMode;
+    ACHAR keyword[2] = { 0 };
+    bool validInput = false;
+
+    do
     {
-        batchSelect(options, processor);
+        acedInitGet(0, L"B I"); // 关键词输入规则，允许空回车和输入 B 或 I
+        int stat = acedGetKword(modePrompt, keyword);
+        if (stat == RTNORM)
+        {
+            if (_wcsicmp(keyword, L"B") == 0)
+            {
+                inputMode = UniversalPicker::SelectMode::Batch;
+                validInput = true;
+            }
+            else if (_wcsicmp(keyword, L"I") == 0)
+            {
+                inputMode = UniversalPicker::SelectMode::Immediate;
+                validInput = true;
+            }
+        }
+        else if (stat == RTNONE)
+        {
+            inputMode = defaultSelectMode;
+            validInput = true;
+        }
+        else if (stat == RTCAN)
+        {
+            return;
+        }
+        // 其它情况不处理，继续循环
+    }
+    while (!validInput);
+
+    if (inputMode == UniversalPicker::SelectMode::Batch)
+    {
+        UniversalPicker::batchSelect(options, processor);
     }
     else
     {
-        immediateSelect(options, processor);
+        UniversalPicker::immediateSelect(options, processor);
     }
 }
 
