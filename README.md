@@ -8,15 +8,12 @@
   
 ## 使用命令
 
-命令名规则：yx 开头，对于实际功能的命令，如果是点选一个实体就立即执行的再加一个 i，后面跟功能名。  
-
-命令：  
-* yxHelp 查看基本信息
-* yxSetByLayer 设置选中实体的颜色、线型、线宽为 ByLayer
-* yxDimensionFix 固定标注
-* yxDimensionResume 恢复关联标注
-* yxiAddSurroundingCharsForDimension 在标注前后添加指定符号（各自指定），这个以 yxi 开头就是点选一个实体就执行一个。
-* yxiRemoveSurroundingCharsForDimension 在标注前后移除指定符号（各自指定），可以只移除前或后，不移除的不填。  
+* yxHelp：查看基本信息
+* yxSetByLayer 或 yxSBL：设置选中实体的颜色、线型、线宽为 ByLayer
+* yxDimensionFix 或 yxDF：固定标注
+* yxDimensionResume 或 yxDR：恢复关联标注
+* yxAddSurroundingCharsForDimension 或 yxASCFD：在标注前后添加指定符号（各自指定）
+* yxRemoveSurroundingCharsForDimension 或 yxRSCFD：在标注前后移除指定符号（各自指定），可以只移除前或后，不移除的不填。  
 ![alt text](doc/image.png)
 
 ## 测试环境
