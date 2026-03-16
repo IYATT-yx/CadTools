@@ -7,4 +7,8 @@
   <PropertyGroup>
     <RESOURCE_FILE>CadTools.rc</RESOURCE_FILE>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LocalDebuggerCommandArguments>/nologo /b $(ProjectDir)release.scr $(ProjectDir)test.dwg</LocalDebuggerCommandArguments>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+  </PropertyGroup>
 </Project>

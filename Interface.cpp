@@ -15,8 +15,8 @@ void Interface::init()
     acedRegCmds->addCommand(L"IYATTyxCadTools", L"yxSetByLayer", L"yxSetByLayer", ACRX_CMD_MODAL | ACRX_CMD_USEPICKSET, Interface::cmdSetByLayer);
     acedRegCmds->addCommand(L"IYATTyxCadTools", L"yxDimensionFix", L"yxDimensionFix", ACRX_CMD_MODAL | ACRX_CMD_USEPICKSET, Interface::cmdDimensionFix);
     acedRegCmds->addCommand(L"IYATTyxCadTools", L"yxDimensionResume", L"yxDimensionResume", ACRX_CMD_MODAL | ACRX_CMD_USEPICKSET, Interface::cmdDimensionResume);
-    acedRegCmds->addCommand(L"IYATTyxCadTools", L"yxAddSurroundingCharsForDimension", L"yxAddSurroundingCharsForDimension", ACRX_CMD_MODAL, Interface::cmdAddSurroundingCharsForDimension);
-    acedRegCmds->addCommand(L"IYATTyxCadTools", L"yxRemoveSurroundingCharsForDimension", L"yxRemoveSurroundingCharsForDimension", ACRX_CMD_MODAL, Interface::cmdRemoveSurroundingCharsForDimension);
+    acedRegCmds->addCommand(L"IYATTyxCadTools", L"yxiAddSurroundingCharsForDimension", L"yxiAddSurroundingCharsForDimension", ACRX_CMD_MODAL, Interface::cmdiAddSurroundingCharsForDimension);
+    acedRegCmds->addCommand(L"IYATTyxCadTools", L"yxiRemoveSurroundingCharsForDimension", L"yxiRemoveSurroundingCharsForDimension", ACRX_CMD_MODAL, Interface::cmdiRemoveSurroundingCharsForDimension);
 }
 
 void Interface::unload()
@@ -67,7 +67,7 @@ void Interface::cmdDimensionResume()
     UniversalPicker::run(options, Dimension::dimensionResume);
 }
 
-void Interface::cmdAddSurroundingCharsForDimension()
+void Interface::cmdiAddSurroundingCharsForDimension()
 {
     CAcModuleResourceOverride resOverride;
     GenericPairEditDlg dlg(L"在标注首末位置添加符号", L"首位符号：", L"末位符号：");
@@ -104,7 +104,7 @@ void Interface::cmdAddSurroundingCharsForDimension()
     );
 }
 
-void Interface::cmdRemoveSurroundingCharsForDimension()
+void Interface::cmdiRemoveSurroundingCharsForDimension()
 {
     CAcModuleResourceOverride resOverride;
     GenericPairEditDlg dlg(L"在标注首末位置移除符号", L"首位符号：", L"末位符号：");
