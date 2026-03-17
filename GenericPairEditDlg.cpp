@@ -24,6 +24,7 @@
 //-----------------------------------------------------------------------------
 #include "StdAfx.h"
 #include "GenericPairEditDlg.hpp"
+#include "Common.hpp"
 
 //-----------------------------------------------------------------------------
 IMPLEMENT_DYNAMIC (GenericPairEditDlg, CAcUiDialog)
@@ -32,6 +33,9 @@ BEGIN_MESSAGE_MAP(GenericPairEditDlg, CAcUiDialog)
 	ON_MESSAGE(WM_ACAD_KEEPFOCUS, OnAcadKeepFocus)
 	ON_BN_CLICKED(IDOK, &GenericPairEditDlg::OnBnClickedOk)
 	ON_BN_CLICKED(IDCANCEL, &GenericPairEditDlg::OnBnClickedCancel)
+	ON_BN_CLICKED(IDC_BUTTON1, &GenericPairEditDlg::OnBnClickedButton1)
+	ON_BN_CLICKED(IDC_CHECK1, &GenericPairEditDlg::OnBnClickedCheck1)
+	ON_BN_CLICKED(IDC_CHECK2, &GenericPairEditDlg::OnBnClickedCheck2)
 END_MESSAGE_MAP()
 
 //-----------------------------------------------------------------------------
@@ -61,6 +65,39 @@ BOOL GenericPairEditDlg::OnInitDialog()
 {
 	CAcUiDialog::OnInitDialog();
 
+	// 获取当前默认字体为常规字体
+	CFont* pDefaultFont = GetFont();
+	LOGFONT lf;
+	if (pDefaultFont != nullptr)
+	{
+		pDefaultFont->GetLogFont(&lf);
+		// 有旧字体则删除
+		if (this->fontNormal.GetSafeHandle() != nullptr)
+		{
+            this->fontNormal.DeleteObject();
+		}
+		this->fontNormal.CreateFontIndirectW(&lf);
+	}
+
+	// 创建 GDT 字体
+	lf.lfCharSet = ANSI_CHARSET;
+	wcscpy(lf.lfFaceName, Common::CharMap::font);
+	lf.lfItalic = false;
+	lf.lfUnderline = false;
+	if (lf.lfHeight < 0)
+	{
+		lf.lfHeight -= 6; // 负值越小，字号越大
+	}
+	else
+	{
+		lf.lfHeight += 6;
+	}
+	if (this->fontGDT.GetSafeHandle() != nullptr)
+	{
+        this->fontGDT.DeleteObject();
+	}
+	this->fontGDT.CreateFontIndirectW(&lf);
+
 	// 初始化对话框
 	this->SetWindowTextW(title);
 	this->staticText1.SetWindowTextW(label1);
@@ -68,15 +105,12 @@ BOOL GenericPairEditDlg::OnInitDialog()
 	this->editControl1.SetWindowTextW(L"");
 	this->editControl2.SetWindowTextW(L"");
 
-	// 修改确定和取消按钮文字
-	SetDlgItemTextW(IDOK, L"确定");
-	SetDlgItemTextW(IDCANCEL, L"取消");
-
 	// 单输入框模式隐藏第 2 组
 	if (this->singleMode)
 	{
 		this->staticText2.ShowWindow(SW_HIDE);
         this->editControl2.ShowWindow(SW_HIDE);
+		GetDlgItem(IDC_CHECK2)->ShowWindow(SW_HIDE);
 	}
 
 	// 第 1 个编辑框获取焦点
@@ -100,6 +134,9 @@ void GenericPairEditDlg::OnBnClickedOk()
         this->editControl2.GetWindowTextW(edit2Result);
 	}
 
+	this->GdtCheckedStatus[0] = IsDlgButtonChecked(IDC_CHECK1);
+    this->GdtCheckedStatus[1] = IsDlgButtonChecked(IDC_CHECK2);
+
 	CAcUiDialog::OnOK();
 }
 
@@ -119,3 +156,49 @@ CString GenericPairEditDlg::getEdit2Result()
 {
 	return this->edit2Result;
 }
+
+void GenericPairEditDlg::OnBnClickedButton1()
+{
+	Common::startCharMapWithGDT();
+}
+
+void GenericPairEditDlg::OnBnClickedCheck1()
+{
+	int state = IsDlgButtonChecked(IDC_CHECK1);
+
+	if (state == BST_CHECKED)
+	{
+		this->editControl1.SetFont(&this->fontGDT);
+	}
+	else
+	{
+		this->editControl1.SetFont(&this->fontNormal);
+	}
+	this->editControl1.Invalidate();
+}
+
+void GenericPairEditDlg::OnBnClickedCheck2()
+{
+	int state = IsDlgButtonChecked(IDC_CHECK2);
+	if (state == BST_CHECKED)
+	{
+		this->editControl2.SetFont(&this->fontGDT);
+	}
+	else
+	{
+		this->editControl2.SetFont(&this->fontNormal);
+	}
+	this->editControl1.Invalidate();
+}
+
+bool GenericPairEditDlg::getGdtCheckStatus(int idx)
+{
+	if (idx < 0 || idx > 1)
+	{
+		AfxMessageBox(L"获取 GDT 复选框状态错误，指定下标的复选框不存在", MB_OK | MB_ICONERROR); // 针对开发者查错
+		return false;
+	}
+
+	return this->GdtCheckedStatus[idx];
+}
+

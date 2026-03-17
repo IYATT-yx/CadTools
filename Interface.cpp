@@ -102,11 +102,14 @@ void Interface::cmdiAddSurroundingCharsForDimension()
     const ACHAR* prompt = L"\n功能：在标注首末位置添加符号\n";
     const ACHAR* left = edit1Result.GetString();
     const ACHAR* right = edit2Result.GetString();
+    bool isLGdt = dlg.getGdtCheckStatus(0);
+    bool isRGdt = dlg.getGdtCheckStatus(1);
+    acutPrintf(L"\n开始 %d %d \n", isLGdt, isRGdt);
     UniversalPicker::run(
         options,
-        [left, right](AcDbObjectId objId)
+        [left, right, isLGdt, isRGdt](AcDbObjectId objId)
         {
-            Dimension::addSurroundingCharsForDimension(objId, left, right);
+            Dimension::addSurroundingCharsForDimension(objId, left, right, isLGdt, isRGdt);
         },
         prompt,
         UniversalPicker::SelectMode::Immediate
@@ -140,11 +143,13 @@ void Interface::cmdiRemoveSurroundingCharsForDimension()
     const ACHAR* prompt = L"\n功能：在标注首末位置移除符号\n";
     const ACHAR* left = edit1Result.GetString();
     const ACHAR* right = edit2Result.GetString();
+    bool isLGdt = dlg.getGdtCheckStatus(0);
+    bool isRGdt = dlg.getGdtCheckStatus(1);
     UniversalPicker::run(
         options,
-        [left, right](AcDbObjectId objId)
+        [left, right, isLGdt, isRGdt](AcDbObjectId objId)
         {
-            Dimension::removeSurroundingCharsForDimension(objId, left, right);
+            Dimension::removeSurroundingCharsForDimension(objId, left, right, isLGdt, isRGdt);
         },
         prompt,
         UniversalPicker::SelectMode::Immediate

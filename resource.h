@@ -8,6 +8,9 @@
 #define IDD_GENERICPAIREDITDLG          103
 #define IDC_LABEL1                      104
 #define IDC_LABEL2                      105
+#define IDC_CHECK1                      106
+#define IDC_CHECK2                      107
+#define IDC_BUTTON1                     108
 
 // Next default values for new objects
 // 
@@ -15,7 +18,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        105
 #define _APS_NEXT_COMMAND_VALUE         32768
-#define _APS_NEXT_CONTROL_VALUE         105
+#define _APS_NEXT_CONTROL_VALUE         109
 #define _APS_NEXT_SYMED_VALUE           104
 #endif
 #endif

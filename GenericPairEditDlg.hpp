@@ -56,9 +56,23 @@ private:
 	CEdit editControl2; // 编辑框2变量
 	CString edit1Result; // 编辑框1传出结果
     CString edit2Result; // 编辑框2传出结果
+
+	CFont fontNormal; // 常规字体
+	CFont fontGDT; // AutoCAD GDT 字体
+	bool GdtCheckedStatus[2] = { false }; // GDT 复选框状态
+
 public:
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedCancel();
 	CString getEdit1Result();
 	CString getEdit2Result();
+	afx_msg void OnBnClickedButton1();
+	afx_msg void OnBnClickedCheck1();
+	afx_msg void OnBnClickedCheck2();
+	/**
+	 * @brief 获取 GDT 复选框状态
+	 * @param idx 0 为第 1 行复选框；1 为第 2 行复选框
+	 * @return true 选中；false 未选中
+	 */
+	bool getGdtCheckStatus(int idx);
 } ;

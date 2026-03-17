@@ -17,16 +17,19 @@ namespace Dimension
 	 * @param objId 标注对象ID
 	 * @param left 左字符
 	 * @param right 右字符
+	 * @param isLGdt 左字符是否为 GDT
+	 * @param isRGdt 右字符是否为 GDT
 	 */
-	void addSurroundingCharsForDimension(AcDbObjectId objId, const ACHAR* left, const ACHAR* right);
+	void addSurroundingCharsForDimension(AcDbObjectId objId, const ACHAR* left, const ACHAR* right, bool isLGdt = false, bool isRGdt = false);
 	/**
 	 * @brief 删除标注前后字符
 	 * @param objId 标注对象ID
 	 * @param left 左字符
 	 * @param right 右字符
+	 * @param isLGdt 左字符是否为 GDT
+	 * @param isRGdt 右字符是否为 GDT
 	 */
-	void removeSurroundingCharsForDimension(AcDbObjectId objId, const ACHAR* left, const ACHAR* right);
-
+	void removeSurroundingCharsForDimension(AcDbObjectId objId, const ACHAR* left, const ACHAR* right, bool isLGdt = false, bool isRGdt = false);
 	/**
 	 * @brief 设置或取消标注的理论尺寸框
 	 * @param objId 标注对象ID

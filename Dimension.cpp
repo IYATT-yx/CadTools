@@ -76,7 +76,7 @@ namespace Dimension
 		pDim->setDimensionText(L"");
 	}
 
-	void addSurroundingCharsForDimension(AcDbObjectId objId, const ACHAR* left, const ACHAR* right)
+	void addSurroundingCharsForDimension(AcDbObjectId objId, const ACHAR* left, const ACHAR* right, bool isLGdt, bool isRGdt)
 	{
         AcDbDimension* pDim = Common::getObject<AcDbDimension>(objId, AcDb::kForWrite);
 		if (pDim == nullptr)
@@ -86,19 +86,25 @@ namespace Dimension
 		AcString dimensionText;
         pDim->dimensionText(dimensionText);
 
+		// 处理 GDT 字体包裹
+		AcString leftWrapedString = isLGdt ? Common::wrapWithGdtFont(left) : AcString(left);
+		const ACHAR* leftNew = leftWrapedString.kACharPtr();
+		AcString rightWrapedString = isRGdt ? Common::wrapWithGdtFont(right) : AcString(right);
+        const ACHAR* rightNew = rightWrapedString.kACharPtr();
+
 		AcString dimensionNewText;
 		if (dimensionText.empty())
 		{
-			dimensionNewText.format(L"%s%s%s", left, Common::ACDB_DIM_TEXT_DEFAULT, right);
+			dimensionNewText.format(L"%s%s%s", leftNew, Common::ACDB_DIM_TEXT_DEFAULT, rightNew);
 		}
 		else
 		{
-			dimensionNewText.format(L"%s%s%s", left, dimensionText.kACharPtr(), right);
+			dimensionNewText.format(L"%s%s%s", leftNew, dimensionText.kACharPtr(), rightNew);
 		}
         pDim->setDimensionText(dimensionNewText.kACharPtr());
 	}
 
-	void removeSurroundingCharsForDimension(AcDbObjectId objId, const ACHAR* left, const ACHAR* right)
+	void removeSurroundingCharsForDimension(AcDbObjectId objId, const ACHAR* left, const ACHAR* right, bool isLGdt, bool isRGdt)
 	{
 		AcDbDimension* pDim = Common::getObject<AcDbDimension>(objId, AcDb::kForWrite);
 		if (pDim == nullptr)
@@ -114,16 +120,22 @@ namespace Dimension
 			return;
 		}
 
+		// 处理 GDT 字体包裹
+		AcString leftWrapedString = isLGdt ? Common::wrapWithGdtFont(left) : AcString(left);
+		const ACHAR* leftNew = leftWrapedString.kACharPtr();
+		AcString rightWrapedString = isRGdt ? Common::wrapWithGdtFont(right) : AcString(right);
+		const ACHAR* rightNew = rightWrapedString.kACharPtr();
+
 		// 使用 static_cast 明确转换类型，消除编译器关于类型缩减的警告
 		int nTextLen = static_cast<int>(text.length());
-		int nLeftLen = (left != nullptr) ? static_cast<int>(wcslen(left)) : 0;
-		int nRightLen = (right != nullptr) ? static_cast<int>(wcslen(right)) : 0;
+		int nLeftLen = (leftNew != nullptr) ? static_cast<int>(wcslen(leftNew)) : 0;
+		int nRightLen = (rightNew != nullptr) ? static_cast<int>(wcslen(rightNew)) : 0;
 
 		// 检查是否匹配左侧
 		bool bLeftMatch = (nLeftLen == 0);
 		if (nLeftLen > 0 && nTextLen >= nLeftLen)
 		{
-			if (text.find(left) == 0)
+			if (text.find(leftNew) == 0)
 			{
 				bLeftMatch = true;
 			}
@@ -134,7 +146,7 @@ namespace Dimension
 		if (nRightLen > 0 && nTextLen >= nRightLen)
 		{
 			// 计算索引时也确保类型一致
-			if (text.findLast(right) == (nTextLen - nRightLen))
+			if (text.findLast(rightNew) == (nTextLen - nRightLen))
 			{
 				bRightMatch = true;
 			}
