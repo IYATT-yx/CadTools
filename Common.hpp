@@ -39,6 +39,24 @@ namespace Common
 	 * @param precision 小数点精度，默认为3位
 	 */
 	void double2AcString(double doubleValue, AcString& AcStringValue, int precision = 3);
+
+	/**
+	 * @brief 设置字符映射表的启动选中字体为 GDT
+	 * @return 设置成功返回true，否则返回false
+	 */
+	bool setCharMapFontToGDT();
+
+	/**
+	 * @brief 启动 charmap 字符映射表并默认选中 GDT 字体
+	 */
+	void startCharMapWithGDT();
+
+	/**
+	 * @brief 将输入字符串用 GDT 字体包裹
+	 * @param input 要包裹的字符串
+	 * @return 包裹后的字符串
+	 */
+	AcString wrapWithGdtFont(const ACHAR* input);
 }
 
 // 常量
@@ -65,4 +83,13 @@ namespace Common
 
 	// 标注的默认尺寸文本占位符
 	constexpr const ACHAR* ACDB_DIM_TEXT_DEFAULT = L"<>";
+
+	// 启动 charmap 字符映射表使用的常量
+	namespace CharMap
+	{
+		constexpr const WCHAR* path = L"Software\\Microsoft\\CharMap";
+		constexpr const WCHAR* key = L"Font";
+		constexpr const WCHAR* font = L"GDT";
+		constexpr const WCHAR* programName = L"charmap.exe";
+	}
 }
