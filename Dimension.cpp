@@ -1,6 +1,9 @@
+module;
 #include "stdafx.h"
-#include "Dimension.hpp"
-#include "Common.hpp"
+
+module Dimension;
+
+import Common;
 
 namespace Dimension
 {

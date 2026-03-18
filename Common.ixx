@@ -1,8 +1,11 @@
-#pragma once
-#include "Common.inl"
+module;
+#include "StdAfx.h"
 
-// 定义在 Common.inl
-namespace Common
+export module Common;
+export import :Inline;
+
+// 定义在 Common-Inline.ixx
+export namespace Common
 {
 	/**
 	 * @brief 通过对象ID获取对象指针
@@ -30,7 +33,7 @@ namespace Common
 }
 
 // 定义在 Common.cpp
-namespace Common
+export namespace Common
 {
 	/**
 	 * @brief 将double值转换为AcString格式的字符串
@@ -60,7 +63,7 @@ namespace Common
 }
 
 // 常量
-namespace Common
+export namespace Common
 {
 	// 标注符号
 	namespace DimSymbol

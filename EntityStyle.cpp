@@ -1,6 +1,9 @@
+module;
 #include "stdafx.h"
-#include "EntityStyle.hpp"
-#include "Common.hpp"
+
+module EntityStyle;
+
+import Common;
 
 namespace EntityStyle
 {

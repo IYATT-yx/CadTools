@@ -36,14 +36,35 @@
     <ClCompile Include="Common.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="EntityStyle.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Dimension.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="GenericPairEditDlg.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityStyle.ixx">
+      <Filter>头文件</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityStyle.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface.ixx">
+      <Filter>头文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Common-Inline.ixx">
+      <Filter>头文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Common.ixx">
+      <Filter>头文件</Filter>
+    </ClCompile>
+    <ClCompile Include="BuildingTime.ixx">
+      <Filter>头文件</Filter>
+    </ClCompile>
+    <ClCompile Include="UniversalPicker.ixx">
+      <Filter>头文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Dimension.ixx">
+      <Filter>头文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -54,24 +75,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="UniversalPicker.hpp">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Interface.hpp">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="BuildingTime.hpp">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Common.hpp">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="EntityStyle.hpp">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Dimension.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="GenericPairEditDlg.hpp">
@@ -88,8 +91,5 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
-    <None Include="Common.inl">
-      <Filter>源文件</Filter>
-    </None>
   </ItemGroup>
 </Project>

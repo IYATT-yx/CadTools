@@ -1,8 +1,8 @@
-#pragma once
+module;
 #include "StdAfx.h"
 
-namespace BuildingTime
-{
+export module BuildingTime;
+
 #define MONTH_TO_NUM(mmm) \
     ((mmm[0] == 'J' && mmm[1] == 'a') ? 1 : \
      (mmm[0] == 'F') ? 2 : \
@@ -18,6 +18,8 @@ namespace BuildingTime
 
 #define TO_DIGIT(c) ((c) - '0')
 
+export namespace BuildingTime
+{
     constexpr wchar_t WDATE[] = {
         __DATE__[7], __DATE__[8], __DATE__[9], __DATE__[10],
         L'/',
@@ -35,5 +37,3 @@ namespace BuildingTime
         __TIME__[8], 0
     };
 }
-
-

@@ -24,7 +24,8 @@
 //-----------------------------------------------------------------------------
 #include "StdAfx.h"
 #include "GenericPairEditDlg.hpp"
-#include "Common.hpp"
+
+import Common;
 
 //-----------------------------------------------------------------------------
 IMPLEMENT_DYNAMIC (GenericPairEditDlg, CAcUiDialog)

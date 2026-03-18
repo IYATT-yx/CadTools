@@ -1,6 +1,9 @@
-#pragma once
+module;
+#include "StdAfx.h"
 
-namespace Dimension
+export module Dimension;
+
+export namespace Dimension
 {
 	/**
 	 * @brief ¹Ì¶¨±ê×¢

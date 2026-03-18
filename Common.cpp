@@ -1,5 +1,7 @@
+module;
 #include "StdAfx.h"
-#include "Common.hpp"
+
+module Common;
 
 namespace Common
 {

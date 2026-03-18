@@ -1,11 +1,13 @@
+module;
 #include "stdafx.h"
-#include "Interface.hpp"
-
-#include "UniversalPicker.hpp"
-#include "BuildingTime.hpp"
-#include "EntityStyle.hpp"
-#include "Dimension.hpp"
 #include "GenericPairEditDlg.hpp"
+
+module Interface;
+
+import EntityStyle;
+import BuildingTime;
+import UniversalPicker;
+import Dimension;
 
 void Interface::init()
 {

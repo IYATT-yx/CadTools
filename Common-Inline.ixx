@@ -1,7 +1,10 @@
-#pragma once
+module;
+#include "StdAfx.h"
 #include <cmath>
 
-namespace Common
+export module Common:Inline;
+
+export namespace Common
 {
 	template <typename T>
 	T* getObject(const AcDbObjectId objId, AcDb::OpenMode mode)

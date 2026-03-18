@@ -12,30 +12,36 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="acrxEntryPoint.cpp" />
+    <ClCompile Include="BuildingTime.ixx" />
     <ClCompile Include="CadTools.cpp" />
+    <ClCompile Include="Common-Inline.ixx" />
     <ClCompile Include="Common.cpp" />
+    <ClCompile Include="Common.ixx" />
     <ClCompile Include="Dimension.cpp" />
+    <ClCompile Include="Dimension.ixx" />
     <ClCompile Include="DocData.cpp" />
-    <ClCompile Include="EntityStyle.cpp" />
+    <ClCompile Include="EntityStyle.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="EntityStyle.ixx">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="GenericPairEditDlg.cpp" />
     <ClCompile Include="Interface.cpp" />
+    <ClCompile Include="Interface.ixx" />
     <ClCompile Include="StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="UniversalPicker.cpp" />
+    <ClCompile Include="UniversalPicker.ixx" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BuildingTime.hpp" />
-    <ClInclude Include="Common.hpp" />
-    <ClInclude Include="Dimension.hpp" />
     <ClInclude Include="DocData.h" />
-    <ClInclude Include="EntityStyle.hpp" />
     <ClInclude Include="GenericPairEditDlg.hpp" />
-    <ClInclude Include="Interface.hpp" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="StdAfx.h" />
-    <ClInclude Include="UniversalPicker.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="CadTools.rc" />
@@ -44,7 +50,6 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Common.inl" />
     <None Include="README.md" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

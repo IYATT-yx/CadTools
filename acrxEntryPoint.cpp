@@ -25,7 +25,7 @@
 #include "StdAfx.h"
 #include "resource.h"
 
-#include "Interface.hpp"
+import Interface;
 
 //-----------------------------------------------------------------------------
 #define szRDS _RXST("IYATTyx")

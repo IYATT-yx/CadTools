@@ -1,19 +1,12 @@
-#pragma once
+module;
+#include "StdAfx.h"
+
+export module UniversalPicker;
 
 // 处理函数原型
-using EntityProcessor = std::function<void(const AcDbObjectId)>;
+export using EntityProcessor = std::function<void(const AcDbObjectId)>;
 
-namespace std {
-	template <>
-	struct hash<AcDbObjectId> {
-		size_t operator()(const AcDbObjectId& id) const {
-			// 使用 asOldId() 将其转换为内部的整数 ID 作为哈希基础
-			return std::hash<INT_PTR>{}((INT_PTR)id.asOldId());
-		}
-	};
-}
-
-class UniversalPicker
+export class UniversalPicker
 {
 public:
 	// 选择模式

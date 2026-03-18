@@ -1,5 +1,9 @@
-#pragma once
-class Interface
+module;
+#include "StdAfx.h"
+
+export module Interface;
+
+export class Interface
 {
 public:
 	static void init();
