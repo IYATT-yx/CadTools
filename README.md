@@ -8,7 +8,7 @@
   
 ## 使用命令
 
-* yxHelp：查看基本信息
+* yx：查看基本信息
 * yxSetByLayer 或 yxSBL：设置选中实体的颜色、线型、线宽为 ByLayer
 * yxDimensionFix 或 yxDF：固定标注
 * yxDimensionResume 或 yxDR：恢复关联标注
@@ -20,10 +20,13 @@
 * yxUnsetBasicBox 或 yxUBB：为标注取消理论尺寸框
 * yxSetRefDim 或 yxSRD：为标注设置参考尺寸括号
 * yxUnsetRefDim 或 yxURD：为标注取消参考尺寸括号
+* yxInsertSerialNumberBlockWithStartNumber 或 yxISNSBN：从指定序号开始插入序号块
+![alt text](doc/image2.png)  
+![alt text](doc/image3.png)  
 
 ## 测试环境
 
-* Visual Studio 2022  
+* Visual Studio 2022（C++20 标准编译）
 * ObjectARX 2026  
 * AutoCAD Mechanical 2026  
   
