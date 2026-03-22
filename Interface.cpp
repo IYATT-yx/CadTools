@@ -26,6 +26,7 @@ void Interface::init()
     Common::registerYxCmd(L"yxSetRefDim", pickFlags, Interface::cmdSetRefDim);
     Common::registerYxCmd(L"yxUnsetRefDim", pickFlags, Interface::cmdUnsetRefDim);
     Common::registerYxCmd(L"yxInsertSerialNumberBlockWithStartNumber", baseFlags, Interface::cmdInsertSerialNumberBlockWithStartNumber);
+    Common::registerYxCmd(L"yxPrintClassHierarchy", baseFlags, Interface::cmdPrintClassHierarchy);
 }
 
 void Interface::unload()
@@ -257,4 +258,10 @@ void Interface::cmdInsertSerialNumberBlockWithStartNumber()
 
     Block::createSerialNumberBlock();
     Block::insertSerialNumberBlockWithStartNumber(startNum, dScale);
+}
+
+void Interface::cmdPrintClassHierarchy()
+{
+    const ACHAR* prompt = L"\n功能：打印类层级关系\n";
+    UniversalPicker::run(nullptr, Common::printClassHierarchy, prompt, UniversalPicker::SelectMode::Immediate);
 }

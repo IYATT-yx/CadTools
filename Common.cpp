@@ -130,4 +130,59 @@ namespace Common
 			acedRegCmds->addCommand(Common::commandGroup, shortCmdName, shortCmdName, flags, proc);
 		}
 	}
+
+	void printClassHierarchy(AcDbObjectId objId)
+	{
+		if (objId.isNull())
+		{
+			acutPrintf(L"\n错误：无效的 ObjectId。");
+			return;
+		}
+
+		AcDbObjectPointer<AcDbObject> pObj(objId, AcDb::kForRead);
+		if (pObj.openStatus() != Acad::eOk)
+		{
+			acutPrintf(L"\n错误：无法打开对象进行读取。");
+			return;
+		}
+
+		// 获取当前对象的类描述
+		AcRxClass* pClass = pObj->isA();
+		if (pClass == nullptr)
+		{
+			return;
+		}
+
+		// 存储继承链中的类名指针
+		AcArray<const wchar_t*> hierarchy;
+		AcRxClass* pTempClass = pClass;
+
+		// 向上迭代获取所有父类名
+		while (pTempClass != nullptr)
+		{
+			// AcRxClass::name() 在 Unicode 版 ARX 中返回 const wchar_t*
+			hierarchy.append(pTempClass->name());
+			pTempClass = pTempClass->myParent();
+		}
+
+		acutPrintf(L"\n--- 继承链 ---");
+
+		// 从最高层级向当前层级打印
+		for (int i = hierarchy.length() - 1; i >= 0; --i)
+		{
+			// 计算缩进量
+			int indent = (hierarchy.length() - 1 - i) * 2;
+
+			// 打印缩进和类名
+			acutPrintf(L"\n%*s%s", indent, L"", hierarchy[i]);
+
+			// 标记对象自身的最终类名
+			if (i == 0)
+			{
+				acutPrintf(L"  <-- [当前类名]");
+			}
+		}
+
+		acutPrintf(L"\n----------------------------\n");
+	}
 }

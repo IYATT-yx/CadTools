@@ -75,6 +75,12 @@ export namespace Common
 	 * @param proc 命令处理函数
 	 */
 	void registerYxCmd(const ACHAR* cmdName, int flags, AcRxFunctionPtr proc);
+
+	/**
+	 * @brief 打印指定对象ID的类层次结构
+	 * @param objId 对象ID
+	 */
+	void printClassHierarchy(AcDbObjectId objId);
 }
 
 // 常量

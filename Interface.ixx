@@ -20,5 +20,6 @@ private:
 	static void cmdSetRefDim();
 	static void cmdUnsetRefDim();
 	static void cmdInsertSerialNumberBlockWithStartNumber();
+	static void cmdPrintClassHierarchy();
 };
 
