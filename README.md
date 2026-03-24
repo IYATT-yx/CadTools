@@ -26,9 +26,20 @@
 
 ## 测试环境
 
-* Visual Studio 2022（C++20 标准编译）
-* ObjectARX 2026  
+软件：  
+* Visual Studio 2022
 * AutoCAD Mechanical 2026  
   
-开发环境配置可以参考我的博客：https://blog.iyatt.com/?p=21187  
+SDK：  
+* ObjectARX SDK 2026  
+* AutoCAD Mechanical SDK 2026  
 
+编译标准：  
+* C++20  
+
+ObjectARX 环境配置参考：https://blog.iyatt.com/?p=21187  
+AutoCAD Mechanical SDK 环境配置参考：https://blog.iyatt.com/?p=23776  
+
+## 许可证
+
+本项目采用 [MIT 许可证](LICENSE) 进行许可。  
