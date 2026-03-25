@@ -23,6 +23,11 @@
 * yxInsertSerialNumberBlockWithStartNumber 或 yxISNSBN：从指定序号开始插入序号块
 ![alt text](doc/image2.png)  
 ![alt text](doc/image3.png)  
+* yxExtractAnnotations 或 yxEA：提取指定标注和形位公差到 csv 文件。
+![alt text](doc/image4.png)  
+![alt text](doc/image5.png)  
+在 Excel 中，切换到`数据`选项卡，打开`从文本/CSV`，在里面导入 csv 文件  
+![alt text](doc/image6.png)  
 
 ## 测试环境
 
