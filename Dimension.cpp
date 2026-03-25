@@ -201,21 +201,13 @@ namespace Dimension
 
 	void readDim(AcDbObjectId id, DimensionData& data)
 	{
-		AcDbObject* pObj = nullptr;
-		if (acdbOpenObject(pObj, id, AcDb::kForRead) != Acad::eOk || !pObj)
+		AcDbDimension* pDim = Common::getObject<AcDbDimension>(id, AcDb::kForRead);
+		if (pDim == nullptr)
 		{
-			data.status = false;
+            data.status = false;
 			return;
 		}
 
-		if (!pObj->isKindOf(AcDbDimension::desc()))
-		{
-			pObj->close();
-			data.status = false;
-			return;
-		}
-
-		AcDbDimension* pDim = AcDbDimension::cast(pObj);
 		pDim->measurement(data.measuredValue);
         pDim->dimensionText(data.dimText);
 		MText::parseDimensionTolerance(data.dimText, data.tolUpper, data.tolLower);
@@ -241,8 +233,5 @@ namespace Dimension
 		}
 		data.tolPrecision = pDim->dimtdec(); // 极限偏差精度
 		data.status = true;
-
-		pDim->close();
-		pObj->close();
 	}
 }
