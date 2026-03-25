@@ -81,6 +81,15 @@ export namespace Common
 	 * @param objId 对象ID
 	 */
 	void printClassHierarchy(AcDbObjectId objId);
+
+	/**
+	 * @brief 弹出保存文件对话框
+	 * @param title 对话框标题，默认 "保存文件"
+	 * @param defExt 默认扩展名，默认 "csv"
+	 * @param filter 文件类型过滤器，格式示例: "CSV Files (*.csv)|*.csv|All Files (*.*)|*.*||"
+	 * @return 用户选择的完整文件路径，如果取消返回空字符串
+	 */
+	CString ShowSaveFileDialog(const CString& title = L"保存文件", const CString& defExt = L"csv", const CString& filter = L"CSV Files (*.csv)|*.csv|All Files (*.*)|*.*||");
 }
 
 // 常量
@@ -98,14 +107,34 @@ export namespace Common
 		constexpr const ACHAR* Radius = L"R";
 	}
 
+	// 符号
+	namespace Symbols
+	{
+		constexpr const ACHAR* Diameter = L"⌀";
+		constexpr const ACHAR* PlusMinus = L"±";
+		constexpr const ACHAR* Degree = L"°";
+		constexpr const ACHAR* Radius = L"R";
+	}
+
 	// 控制代码
-	const std::unordered_map<std::wstring, std::wstring> ControlCodeToSymbol =
+	const std::unordered_map<AcString, AcString> ControlCodeToSymbol =
 	{
 		{ L"%%c", L"⌀" }, { L"%%C", L"⌀" },  // Diameter
 		{ L"%%p", L"±" }, { L"%%P", L"±" },  // PlusMinus
 		{ L"%%d", L"°" }, { L"%%D", L"°" },  // Degree
 		{ L"R",    L"R" },                     // Radius（通常只有一个大小写）
 	};
+	AcString getSymbol(const AcString& code)
+	{
+		auto it = ControlCodeToSymbol.find(code);
+		if (it != ControlCodeToSymbol.end())
+		{
+			return it->second;
+		}
+
+		// 如果找不到（比如前缀是 "M"），则返回原始字符串
+		return code;
+	}
 
 	// 单位模式
 	enum UnitMode
