@@ -2,21 +2,16 @@ module;
 #include "StdAfx.h"
 
 module GeometricTolerance;
+import Common;
 
 namespace GeometricTolerance
 {
 	void readFcf(AcDbObjectId id, GeometricToleranceData& data)
 	{
-		AcDbEntity* pEnt = nullptr;
-		if (acdbOpenObject(pEnt, id, AcDb::kForRead) != Acad::eOk)
+		AcmFCF* pFcf = Common::getObject<AcmFCF>(id, AcDb::kForRead);
+		if (pFcf == nullptr)
 		{
-			AfxMessageBox(L"打开对象失败", MB_OK | MB_ICONERROR);
-			return;
-		}
-
-		AcmFCF* pFcf = AcmFCF::cast(pEnt);
-		if (!pFcf)
-		{
+			data.status = false;
 			return;
 		}
 
@@ -57,5 +52,6 @@ namespace GeometricTolerance
                 data.tertiary[2] = pFcf->value(Acm::FCFDatumTertiary3);
 			}
 		}
+        data.status = true;
 	}
 }

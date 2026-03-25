@@ -9,6 +9,7 @@ export namespace GeometricTolerance
 	// 形位公差数据存储结构
 	struct GeometricToleranceData
 	{
+		bool status = false;
 		Adesk::UInt64 u64handle; // 在文件中的唯一句柄
 		AcString name[3]; // 名称
 		Acm::GdtSymbolType gdtSymbolType[3]; // 符号类型枚举值
@@ -34,9 +35,9 @@ export namespace GeometricTolerance
 		{Acm::kFlatness, L"平面度"},
 		{Acm::kCircularity, L"圆度"},
 		{Acm::kCylindricity, L"圆柱度"},
-		{Acm::kProfileLine, L"线型轮廓"},
-		{Acm::kProfileSurface, L"面型轮廓"},
-		{Acm::kAngularity, L"角度"},
+		{Acm::kProfileLine, L"线轮廓度"},
+		{Acm::kProfileSurface, L"面轮廓度"},
+		{Acm::kAngularity, L"倾斜度"},
 		{Acm::kPerpendicularity, L"垂直度"},
 		{Acm::kParallelism, L"平行度"},
 		{Acm::kPosition, L"位置度"},
