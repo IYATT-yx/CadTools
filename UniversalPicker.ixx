@@ -51,7 +51,8 @@ public:
 	 * @param processor 处理函数，接受一个实体ID参数
 	 * @param prompt 提示信息
 	 * @param defaultSelectMode 默认选择模式，默认为批量模式
+	 * @param lockSelectMode 是否锁定选择模式，默认为不锁定
 	 */
-	static void run(const ACHAR* filter, EntityProcessor processor, const ACHAR* prompt, UniversalPicker::SelectMode defaultSelectMode = UniversalPicker::SelectMode::Batch);
+	static void run(const ACHAR* filter, EntityProcessor processor, const ACHAR* prompt, UniversalPicker::SelectMode defaultSelectMode = UniversalPicker::SelectMode::Batch, bool lockSelectMode = false);
 };
 

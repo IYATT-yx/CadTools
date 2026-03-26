@@ -157,9 +157,12 @@ void UniversalPicker::immediateSelect(const ACHAR* filter, EntityProcessor proce
 }
 
 
-void UniversalPicker::run(const ACHAR* filter, EntityProcessor processor, const ACHAR* prompt, UniversalPicker::SelectMode defaultSelectMode)
+void UniversalPicker::run(const ACHAR* filter, EntityProcessor processor, const ACHAR* prompt, UniversalPicker::SelectMode defaultSelectMode, bool lockSelectMode)
 {
-    acutPrintf(L"\n%s", prompt);
+    if (prompt != nullptr)
+    {
+        acutPrintf(L"\n%s", prompt);
+    }
 
     // 模式选择提示
     const ACHAR* modePrompt = (defaultSelectMode == UniversalPicker::SelectMode::Batch) ?
@@ -170,35 +173,37 @@ void UniversalPicker::run(const ACHAR* filter, EntityProcessor processor, const 
     ACHAR keyword[2] = { 0 };
     bool validInput = false;
 
-    do
+    if (!lockSelectMode)
     {
-        acedInitGet(0, L"B I"); // 关键词输入规则，允许空回车和输入 B 或 I
-        int stat = acedGetKword(modePrompt, keyword);
-        if (stat == RTNORM)
+        do
         {
-            if (_wcsicmp(keyword, L"B") == 0)
+            acedInitGet(0, L"B I"); // 关键词输入规则，允许空回车和输入 B 或 I
+            int stat = acedGetKword(modePrompt, keyword);
+            if (stat == RTNORM)
             {
-                inputMode = UniversalPicker::SelectMode::Batch;
+                if (_wcsicmp(keyword, L"B") == 0)
+                {
+                    inputMode = UniversalPicker::SelectMode::Batch;
+                    validInput = true;
+                }
+                else if (_wcsicmp(keyword, L"I") == 0)
+                {
+                    inputMode = UniversalPicker::SelectMode::Immediate;
+                    validInput = true;
+                }
+            }
+            else if (stat == RTNONE)
+            {
+                inputMode = defaultSelectMode;
                 validInput = true;
             }
-            else if (_wcsicmp(keyword, L"I") == 0)
+            else if (stat == RTCAN)
             {
-                inputMode = UniversalPicker::SelectMode::Immediate;
-                validInput = true;
+                return;
             }
-        }
-        else if (stat == RTNONE)
-        {
-            inputMode = defaultSelectMode;
-            validInput = true;
-        }
-        else if (stat == RTCAN)
-        {
-            return;
-        }
-        // 其它情况不处理，继续循环
+            // 其它情况不处理，继续循环
+        } while (!validInput);
     }
-    while (!validInput);
 
     if (inputMode == UniversalPicker::SelectMode::Batch)
     {
