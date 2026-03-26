@@ -136,15 +136,17 @@ BOOL GenericPairEditDlg::OnInitDialog()
 
 void GenericPairEditDlg::OnBnClickedOk()
 {
-	this->editControl1.GetWindowTextW(edit1Result);
+	this->editControl1.GetWindowTextW(this->edit1Result);
+	this->edit1Result.Trim();
 
 	if (this->singleMode)
 	{
-		edit2Result = L"";
+		this->edit2Result = L"";
 	}
 	else
 	{
-        this->editControl2.GetWindowTextW(edit2Result);
+        this->editControl2.GetWindowTextW(this->edit2Result);
+		this->edit2Result.Trim();
 	}
 
 	this->GdtCheckedStatus[0] = IsDlgButtonChecked(IDC_CHECK1);
