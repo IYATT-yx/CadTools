@@ -19,10 +19,10 @@ private:
 	static void cmdUnsetBasicBox();
 	static void cmdSetRefDim();
 	static void cmdUnsetRefDim();
-	static void cmdInsertSerialNumberBlockWithStartNumber();
+	static void cmdInsertBalloonNumberBlockWithStartNumber();
 	static void cmdPrintClassHierarchy();
 	static void test();
 	static void cmdExtractAnnotations();
-	static void cmdUpdateSerialNumberBlock();
+	static void cmdUpdateBalloonNumberBlock();
 };
 

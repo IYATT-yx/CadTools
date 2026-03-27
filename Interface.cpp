@@ -28,24 +28,15 @@ void Interface::init()
     Common::registerYxCmd(L"yxUnsetBasicBox", pickFlags, Interface::cmdUnsetBasicBox);
     Common::registerYxCmd(L"yxSetRefDim", pickFlags, Interface::cmdSetRefDim);
     Common::registerYxCmd(L"yxUnsetRefDim", pickFlags, Interface::cmdUnsetRefDim);
-    Common::registerYxCmd(L"yxInsertSerialNumberBlockWithStartNumber", baseFlags, Interface::cmdInsertSerialNumberBlockWithStartNumber);
+    Common::registerYxCmd(L"yxInsertBalloonNumberBlockWithStartNumber", baseFlags, Interface::cmdInsertBalloonNumberBlockWithStartNumber);
     Common::registerYxCmd(L"yxPrintClassHierarchy", baseFlags, Interface::cmdPrintClassHierarchy);
     Common::registerYxCmd(L"yxExtractAnnotations", baseFlags, Interface::cmdExtractAnnotations);
-    Common::registerYxCmd(L"yxUpdateSerialNumberBlock", baseFlags, Interface::cmdUpdateSerialNumberBlock);
+    Common::registerYxCmd(L"yxUpdateBalloonNumberBlock", baseFlags, Interface::cmdUpdateBalloonNumberBlock);
 }
 
 // 测试使用
 void Interface::test()
 {
-    UniversalPicker::run(
-        nullptr,
-        [](AcDbObjectId objId)
-        {
-            Block::updateSerialNumberBlock(objId, 2);
-        },
-        L"test",
-        UniversalPicker::SelectMode::Immediate
-    );
 }
 
 void Interface::unload()
@@ -210,15 +201,15 @@ void Interface::cmdUnsetRefDim()
     );
 }
 
-void Interface::cmdInsertSerialNumberBlockWithStartNumber()
+void Interface::cmdInsertBalloonNumberBlockWithStartNumber()
 {
-    acutPrintf(L"\n功能：插入序号块，并自动递增序号\n");
+    acutPrintf(L"\n功能：插入气泡号，自动递增序号\n");
 
     CAcModuleResourceOverride resOverride;
-    GenericPairEditDlg dlg(L"设置序号块起始序号", L"起始序号：", L"序号字高：", false, true, true);
+    GenericPairEditDlg dlg(L"设置气泡号起始序号", L"起始序号：", L"序号字高：", false, true, true);
     // 设置默认字高
     CString csTextHeight;
-    csTextHeight.Format(L"%f", Common::SerialNumberCircleBlock::defaultTextHeight);
+    csTextHeight.Format(L"%f", Common::BalloonNumberBlock::defaultTextHeight);
     dlg.modifyEditControl(L"", csTextHeight);
 
     CString edit1Result, edit2Result;
@@ -265,11 +256,11 @@ void Interface::cmdInsertSerialNumberBlockWithStartNumber()
         return;
     }
 
-    // 序号块比例
-    double dScale = dTextHeight / Common::SerialNumberCircleBlock::defaultTextHeight;
+    // 气泡号块比例
+    double dScale = dTextHeight / Common::BalloonNumberBlock::defaultTextHeight;
 
-    Block::createSerialNumberBlock();
-    Block::insertSerialNumberBlockWithStartNumber(startNum, dScale);
+    Block::createBalloonNumberBlock();
+    Block::insertBalloonNumberBlockWithStartNumber(startNum, dScale);
 }
 
 void Interface::cmdPrintClassHierarchy()
@@ -398,12 +389,12 @@ void Interface::cmdExtractAnnotations()
     );
 }
 
-void Interface::cmdUpdateSerialNumberBlock()
+void Interface::cmdUpdateBalloonNumberBlock()
 {
-    acutPrintf(L"\n功能：更新序号块，并自动递增序号\n");
+    acutPrintf(L"\n功能：更新气泡号块，并自动递增序号\n");
 
     CAcModuleResourceOverride resOverride;
-    GenericPairEditDlg dlg(L"设置序号块起始序号", L"起始序号：", L"序号字高：", true, true, true);
+    GenericPairEditDlg dlg(L"设置气泡号块起始序号", L"起始序号：", L"序号字高：", true, true, true);
 
     CString edit1Result;
     if (dlg.DoModal() == IDOK)
@@ -429,15 +420,15 @@ void Interface::cmdUpdateSerialNumberBlock()
     }
     int startNum = _wtoi(edit1Result);
 
-    acutPrintf(L"\n选中的序号快将被设置为：%d", startNum);
+    acutPrintf(L"\n选中的气泡号块将被设置为：%d", startNum);
     UniversalPicker::run(
         nullptr,
         [&startNum](const AcDbObjectId& id)
         {
-            if (Block::updateSerialNumberBlock(id, startNum))
+            if (Block::updateBalloonNumberBlock(id, startNum))
             {
                 ++startNum;
-                acutPrintf(L"\n选中的序号快将被设置为：%d", startNum);
+                acutPrintf(L"\n选中的气泡号块将被设置为：%d", startNum);
             }
         },
         nullptr,

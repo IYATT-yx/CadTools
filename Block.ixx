@@ -10,7 +10,7 @@ export namespace Block
 	/**
 	 * @brief 用于动态拖拽插入序号块，可以实时预览块
 	 */
-	class SerialNumberJig : public AcEdJig
+	class BalloonNumberJig : public AcEdJig
 	{
 	public:
 		/**
@@ -18,12 +18,12 @@ export namespace Block
 		 * @param num 序号
 		 * @param dScale 比例
 		 */
-		SerialNumberJig(unsigned int num, double dScale = 1.0);
+		BalloonNumberJig(unsigned int num, double dScale = 1.0);
 
 		/**
 		 * @brief 析构函数,释放分配的块参照对象
 		 */
-		~SerialNumberJig();
+		~BalloonNumberJig();
 
 		/**
 		 * @brief 采样函数，用于获取用户拖拽点
@@ -66,7 +66,7 @@ export namespace Block
 	/**
 	 * @brief 创建序列号块
 	 */
-	void createSerialNumberBlock();
+	void createBalloonNumberBlock();
 
 	/**
 	 * @brief 插入序列号块
@@ -74,14 +74,14 @@ export namespace Block
 	 * @param numStr 序列号
 	 * @param dScale 比例
 	 */
-	void insertSerialNumber(AcGePoint3d insPt, unsigned int num, double dScale = 1.0);
+	void insertBalloonNumber(AcGePoint3d insPt, unsigned int num, double dScale = 1.0);
 
 	/**
 	 * @brief 从指定序号开始插入
 	 * @param num 开始序号
 	 * @param dScale 比例
 	 */
-	void insertSerialNumberBlockWithStartNumber(int num, double dScale);
+	void insertBalloonNumberBlockWithStartNumber(int num, double dScale);
 
 	/**
 	 * @brief 更新块参照的序列号
@@ -89,5 +89,5 @@ export namespace Block
 	 * @param newNum 新的序列号
 	 * @return true 表示更新成功; false 表示更新失败
 	 */
-	bool updateSerialNumberBlock(AcDbObjectId blockRefId, unsigned int newNum);
+	bool updateBalloonNumberBlock(AcDbObjectId blockRefId, unsigned int newNum);
 }

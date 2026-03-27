@@ -7,7 +7,7 @@ import Common;
 
 namespace Block
 {
-    SerialNumberJig::SerialNumberJig(unsigned int num, double dScale) : mNum(num), mdScale(dScale)
+    BalloonNumberJig::BalloonNumberJig(unsigned int num, double dScale) : mNum(num), mdScale(dScale)
     {
         this->mCurPt = AcGePoint3d::kOrigin;
 
@@ -18,7 +18,7 @@ namespace Block
             AfxMessageBox(L"获取块表失败！", MB_OK | MB_ICONERROR);
             throw std::runtime_error("获取块表失败！");
         }
-        if (pBlockTable->getAt(Common::SerialNumberCircleBlock::blockName, this->mBlockDefineId) != Acad::eOk)
+        if (pBlockTable->getAt(Common::BalloonNumberBlock::blockName, this->mBlockDefineId) != Acad::eOk)
         {
             pBlockTable->close();
             AfxMessageBox(L"获取块定义失败！", MB_OK | MB_ICONERROR);
@@ -34,7 +34,7 @@ namespace Block
         this->setupAttributes();
     }
 
-    SerialNumberJig::~SerialNumberJig()
+    BalloonNumberJig::~BalloonNumberJig()
     {
         if (this->mpBlockReference)
         {
@@ -43,12 +43,12 @@ namespace Block
         }
     }
 
-    AcEdJig::DragStatus SerialNumberJig::sampler()
+    AcEdJig::DragStatus BalloonNumberJig::sampler()
     {
         return acquirePoint(this->mCurPt);
     }
 
-    Adesk::Boolean SerialNumberJig::update()
+    Adesk::Boolean BalloonNumberJig::update()
     {
         // 更新块参照位置
         this->mpBlockReference->setPosition(this->mCurPt);
@@ -80,17 +80,17 @@ namespace Block
         return Adesk::kTrue;
     }
 
-    AcDbEntity* SerialNumberJig::entity() const
+    AcDbEntity* BalloonNumberJig::entity() const
     {
         return this->mpBlockReference;
     }
 
-    AcGePoint3d SerialNumberJig::getPoint() const
+    AcGePoint3d BalloonNumberJig::getPoint() const
     {
         return this->mCurPt;
     }
 
-    void SerialNumberJig::setupAttributes()
+    void BalloonNumberJig::setupAttributes()
     {
         AcDbBlockTableRecord* pBlockDefinition = nullptr;
         if (acdbOpenObject(pBlockDefinition, this->mBlockDefineId, AcDb::kForRead) == Acad::eOk)
@@ -103,7 +103,7 @@ namespace Block
                 if (pIt->getEntity(pEnt, AcDb::kForRead) == Acad::eOk)
                 {
                     AcDbAttributeDefinition* pAttDef = AcDbAttributeDefinition::cast(pEnt);
-                    if (pAttDef && !pAttDef->isConstant() && AcString(pAttDef->tag()) == Common::SerialNumberCircleBlock::AttTag)
+                    if (pAttDef && !pAttDef->isConstant() && AcString(pAttDef->tag()) == Common::BalloonNumberBlock::AttTag)
                     {
                         AcDbAttribute* pAtt = new AcDbAttribute();
                         pAtt->setPropertiesFrom(pAttDef);
@@ -125,30 +125,30 @@ namespace Block
 
 namespace Block
 {
-	void createSerialNumberBlock()
+	void createBalloonNumberBlock()
 	{
 		AcDbDatabase* pDb = acdbHostApplicationServices()->workingDatabase();
 		AcDbBlockTable* pBlockTable;
 		pDb->getBlockTable(pBlockTable, AcDb::kForWrite);
 
 		// 检查块是否存在
-		if (!pBlockTable->has(Common::SerialNumberCircleBlock::blockName))
+		if (!pBlockTable->has(Common::BalloonNumberBlock::blockName))
 		{
 			AcDbBlockTableRecord* pNewBTR = new AcDbBlockTableRecord();
-			pNewBTR->setName(Common::SerialNumberCircleBlock::blockName);
+			pNewBTR->setName(Common::BalloonNumberBlock::blockName);
 			pNewBTR->setOrigin(AcGePoint3d::kOrigin);
 
 			// 创建圆
-			AcDbCircle* pCircle = new AcDbCircle(AcGePoint3d::kOrigin, AcGeVector3d::kZAxis, Common::SerialNumberCircleBlock::defaultCircleRadius);
+			AcDbCircle* pCircle = new AcDbCircle(AcGePoint3d::kOrigin, AcGeVector3d::kZAxis, Common::BalloonNumberBlock::defaultCircleRadius);
 			pNewBTR->appendAcDbEntity(pCircle);
             pCircle->setColorIndex(3);
 			pCircle->close();
 
 			// 创建属性定义
 			AcDbAttributeDefinition* pAttDef = new AcDbAttributeDefinition();
-			pAttDef->setTag(Common::SerialNumberCircleBlock::AttTag);
-			pAttDef->setPrompt(Common::SerialNumberCircleBlock::AttPrompt);
-			pAttDef->setHeight(Common::SerialNumberCircleBlock::defaultTextHeight);
+			pAttDef->setTag(Common::BalloonNumberBlock::AttTag);
+			pAttDef->setPrompt(Common::BalloonNumberBlock::AttPrompt);
+			pAttDef->setHeight(Common::BalloonNumberBlock::defaultTextHeight);
 			pAttDef->setHorizontalMode(AcDb::kTextCenter);
 			pAttDef->setVerticalMode(AcDb::kTextVertMid);
 			pAttDef->setAlignmentPoint(AcGePoint3d::kOrigin);
@@ -162,7 +162,7 @@ namespace Block
 		pBlockTable->close();
 	}
 
-    void insertSerialNumber(AcGePoint3d insPt, unsigned int num, double dScale)
+    void insertBalloonNumber(AcGePoint3d insPt, unsigned int num, double dScale)
     {
         std::wstring wsNumber = std::to_wstring(num);
         const ACHAR* numStr = wsNumber.c_str();
@@ -178,7 +178,7 @@ namespace Block
             return;
         }
 
-        if (pBlockTable->getAt(Common::SerialNumberCircleBlock::blockName, blockDefineId) != Acad::eOk)
+        if (pBlockTable->getAt(Common::BalloonNumberBlock::blockName, blockDefineId) != Acad::eOk)
         {
             pBlockTable->close();
             AfxMessageBox(L"获取块定义失败！", MB_OK | MB_ICONERROR);
@@ -203,7 +203,7 @@ namespace Block
                 if (pIt->getEntity(pEnt, AcDb::kForRead) == Acad::eOk)
                 {
                     AcDbAttributeDefinition* pAttDef = AcDbAttributeDefinition::cast(pEnt);
-                    if (pAttDef && !pAttDef->isConstant() && AcString(pAttDef->tag()) == Common::SerialNumberCircleBlock::AttTag)
+                    if (pAttDef && !pAttDef->isConstant() && AcString(pAttDef->tag()) == Common::BalloonNumberBlock::AttTag)
                     {
                         AcDbAttribute* pAtt = new AcDbAttribute();
                         pAtt->setPropertiesFrom(pAttDef);
@@ -234,7 +234,7 @@ namespace Block
         pBlkRef->close();
     }
 
-    void insertSerialNumberBlockWithStartNumber(int num, double dScale)
+    void insertBalloonNumberBlockWithStartNumber(int num, double dScale)
     {
         if (num < 0)
         {
@@ -252,13 +252,13 @@ namespace Block
 
         while (true)
         {
-            Block::SerialNumberJig jig(static_cast<unsigned int>(num), dScale);
+            Block::BalloonNumberJig jig(static_cast<unsigned int>(num), dScale);
             asPrompt.format(L"\n指定序号 %d 的插入点[退出(Esc)]：\n", num);
             jig.setDispPrompt(asPrompt);
 
             if (jig.drag() == AcEdJig::kNormal)
             {
-                Block::insertSerialNumber(jig.getPoint(), static_cast<unsigned int>(num), dScale);
+                Block::insertBalloonNumber(jig.getPoint(), static_cast<unsigned int>(num), dScale);
                 ++num;
             }
             else
@@ -268,7 +268,7 @@ namespace Block
         }
     }
 
-    bool updateSerialNumberBlock(AcDbObjectId blockRefId, unsigned int newNum)
+    bool updateBalloonNumberBlock(AcDbObjectId blockRefId, unsigned int newNum)
     {
         AcDbBlockReference* pBlkRef = nullptr;
         bool bSuccess = false;
@@ -286,7 +286,7 @@ namespace Block
                 if (acdbOpenObject(pAtt, attId, AcDb::kForWrite) == Acad::eOk)
                 {
                     // 检查标签是否匹配
-                    if (AcString(pAtt->tag()) == Common::SerialNumberCircleBlock::AttTag)
+                    if (AcString(pAtt->tag()) == Common::BalloonNumberBlock::AttTag)
                     {
                         // 修改文本内容
                         pAtt->setTextString(std::to_wstring(newNum).c_str());

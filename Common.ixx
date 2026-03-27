@@ -159,10 +159,10 @@ export namespace Common
 	}
 
 	// 序号圆
-	namespace SerialNumberCircleBlock
+	namespace BalloonNumberBlock
 	{
-		constexpr const ACHAR* blockName = L"SerialNumberCircle";
-		constexpr const ACHAR* AttTag = L"number";
+		constexpr const ACHAR* blockName = L"气泡号块";
+		constexpr const ACHAR* AttTag = L"序号";
 		constexpr const ACHAR* AttPrompt = L"输入序号：";
 		constexpr double defaultCircleRadius = 2.5;
 		constexpr double defaultTextHeight = 2.5;

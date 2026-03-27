@@ -20,10 +20,10 @@
 * yxUnsetBasicBox 或 yxUBB：为标注取消理论尺寸框
 * yxSetRefDim 或 yxSRD：为标注设置参考尺寸括号
 * yxUnsetRefDim 或 yxURD：为标注取消参考尺寸括号
-* yxInsertSerialNumberBlockWithStartNumber 或 yxISNSBN：从指定序号开始插入序号块
+* yxInsertBalloonNumberBlockWithStartNumber 或 yxISNSBN：从指定序号开始插入气泡号块，序号自动递增  
 ![alt text](doc/image2.png)  
 ![alt text](doc/image3.png)  
-* yxUpdateSerialNumberBlock 或 yxUSNB：更新序号块。指定开始序号值，点击已插入的序号块更新序号值，序号值会自动递增。  
+* yxUpdateBalloonNumberBlock 或 yxUSNB：更新气泡号块。指定开始序号值，点击已插入的气泡号块更新序号值，序号值会自动递增。  
 ![alt text](doc/image7.png)  
 ![alt text](doc/image8.png)  
 * yxExtractAnnotations 或 yxEA：提取指定标注和形位公差到 csv 文件。
