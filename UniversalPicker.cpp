@@ -262,5 +262,6 @@ void UniversalPicker::freeFilter(resbuf* filterRb)
     if (filterRb != nullptr)
     {
         acutRelRb(filterRb);
+        filterRb = nullptr;
     }
 }
