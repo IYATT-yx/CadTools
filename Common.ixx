@@ -173,7 +173,6 @@ export namespace Common
 	// 标注类型的子类
 	UniversalPicker::AcRxClassVector DimensionSubClasses =
 	{
-		AcDbDimension::desc(),
 		AcDb2LineAngularDimension::desc(),
 		AcDb3PointAngularDimension::desc(),
 		AcDbAlignedDimension::desc(),
