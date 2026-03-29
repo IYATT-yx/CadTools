@@ -4,10 +4,13 @@ module;
 
 #include <unordered_set>
 
-namespace std {
+namespace std
+{
     template <>
-    struct hash<AcDbObjectId> {
-        size_t operator()(const AcDbObjectId& id) const {
+    struct hash<AcDbObjectId>
+    {
+        size_t operator()(const AcDbObjectId& id) const
+        {
             // 使用 asOldId() 将其转换为内部的整数 ID 作为哈希基础
             return std::hash<INT_PTR>{}((INT_PTR)id.asOldId());
         }
@@ -16,18 +19,57 @@ namespace std {
 
 module UniversalPicker;
 
-resbuf* UniversalPicker::buildFilter(const ACHAR* filterStr)
+resbuf* UniversalPicker::buildFilter(UniversalPicker::AcRxClassVectorPtr arcv)
 {
-	if (!filterStr || std::wcslen(filterStr) == 0)
-	{
-		return nullptr;
-	}
-	return acutBuildList(RTDXF0, filterStr, RTNONE);
+    if (arcv == nullptr || arcv->empty())
+    {
+        return nullptr;
+    }
+
+    resbuf* head = nullptr;
+    resbuf* tail = nullptr;
+
+    // 使用 <OR ... OR> 结构，这样即便向量里有多个不相关的类（如标注和形位公差），也能共存
+    head = acutBuildList(-4, L"<OR", 0);
+    tail = head;
+
+    for (AcRxClass* cls : *arcv)
+    {
+        if (!cls)
+        {
+            continue;
+        }
+
+        const ACHAR* dxfName = cls->dxfName();
+        if (!dxfName || !*dxfName)
+        {
+            continue;
+        }
+
+        // 构造当前类的过滤项
+        resbuf* item = acutBuildList(RTDXF0, dxfName, 0);
+
+        if (item)
+        {
+            tail->rbnext = item;
+            // 移动到当前链表末端
+            while (tail->rbnext)
+            {
+                tail = tail->rbnext;
+            }
+        }
+    }
+
+    // 闭合 OR 结构
+    tail->rbnext = acutBuildList(-4, L"OR>", 0);
+
+    return head;
 }
-void UniversalPicker::batchSelect(const ACHAR* filter, EntityProcessor processor)
+
+void UniversalPicker::batchSelect(UniversalPicker::AcRxClassVectorPtr arcv, UniversalPicker::EntityProcessor processor)
 {
     ads_name ss;
-    resbuf* filterRb = buildFilter(filter);
+    resbuf* filterRb = buildFilter(arcv);
 
     if (acedSSGet(nullptr, nullptr, nullptr, filterRb, ss) != RTNORM)
     {
@@ -91,10 +133,10 @@ void UniversalPicker::batchSelect(const ACHAR* filter, EntityProcessor processor
     UniversalPicker::freeFilter(filterRb);
 }
 
-void UniversalPicker::immediateSelect(const ACHAR* filter, EntityProcessor processor)
+void UniversalPicker::immediateSelect(UniversalPicker::AcRxClassVectorPtr arcv, UniversalPicker::EntityProcessor processor)
 {
     AcDbTransactionManager* pTransMgr = acdbHostApplicationServices()->workingDatabase()->transactionManager();
-    resbuf* filterRb = buildFilter(filter);
+    resbuf* filterRb = buildFilter(arcv);
 
     while (true)
     {
@@ -157,7 +199,7 @@ void UniversalPicker::immediateSelect(const ACHAR* filter, EntityProcessor proce
 }
 
 
-void UniversalPicker::run(const ACHAR* filter, EntityProcessor processor, const ACHAR* prompt, UniversalPicker::SelectMode defaultSelectMode, bool lockSelectMode)
+void UniversalPicker::run(UniversalPicker::AcRxClassVectorPtr arcv, UniversalPicker::EntityProcessor processor, const ACHAR* prompt, UniversalPicker::SelectMode defaultSelectMode, bool lockSelectMode)
 {
     if (prompt != nullptr)
     {
@@ -207,11 +249,11 @@ void UniversalPicker::run(const ACHAR* filter, EntityProcessor processor, const 
 
     if (inputMode == UniversalPicker::SelectMode::Batch)
     {
-        UniversalPicker::batchSelect(filter, processor);
+        UniversalPicker::batchSelect(arcv, processor);
     }
     else
     {
-        UniversalPicker::immediateSelect(filter, processor);
+        UniversalPicker::immediateSelect(arcv, processor);
     }
 }
 
@@ -220,6 +262,5 @@ void UniversalPicker::freeFilter(resbuf* filterRb)
     if (filterRb != nullptr)
     {
         acutRelRb(filterRb);
-        filterRb = nullptr;
     }
 }

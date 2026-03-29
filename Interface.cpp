@@ -12,6 +12,7 @@ import Common;
 import Block;
 import CsvWriter;
 import GeometricTolerance;
+import TextUtil;
 
 void Interface::init()
 {
@@ -37,6 +38,7 @@ void Interface::init()
 // 测试使用
 void Interface::test()
 {
+
 }
 
 void Interface::unload()
@@ -59,16 +61,14 @@ void Interface::cmdSetByLayer()
 
 void Interface::cmdDimensionFix()
 {
-    const ACHAR* filter = AcDbDimension::desc()->dxfName();
     const ACHAR* prompt = L"\n功能：固定选中标注的文本\n";
-    UniversalPicker::run(filter, Dimension::dimensionFix, prompt);
+    UniversalPicker::run(&Common::DimensionSubClasses, Dimension::dimensionFix, prompt);
 }
 
 void Interface::cmdDimensionResume()
 {
-    const ACHAR* filter = AcDbDimension::desc()->dxfName();
     const ACHAR* prompt = L"\n功能：清空选中标注的文本，恢复关联标注。注意可能造成手动编辑的符号、公差等丢失。\n";
-    UniversalPicker::run(filter, Dimension::dimensionResume, prompt);
+    UniversalPicker::run(&Common::DimensionSubClasses, Dimension::dimensionResume, prompt);
 }
 
 void Interface::cmdiAddSurroundingCharsForDimension()
@@ -88,15 +88,15 @@ void Interface::cmdiAddSurroundingCharsForDimension()
         return;
     }
 
-    const ACHAR* filter = AcDbDimension::desc()->dxfName();
     const ACHAR* prompt = L"\n功能：在标注首末位置添加符号\n";
     const ACHAR* left = edit1Result.GetString();
     const ACHAR* right = edit2Result.GetString();
     bool isLGdt = dlg.getGdtCheckStatus(0);
     bool isRGdt = dlg.getGdtCheckStatus(1);
     acutPrintf(L"\n开始 %d %d \n", isLGdt, isRGdt);
+
     UniversalPicker::run(
-        filter,
+        &Common::DimensionSubClasses,
         [left, right, isLGdt, isRGdt](AcDbObjectId objId)
         {
             Dimension::addSurroundingCharsForDimension(objId, left, right, isLGdt, isRGdt);
@@ -124,14 +124,13 @@ void Interface::cmdiRemoveSurroundingCharsForDimension()
         return;
     }
 
-    const ACHAR* filter = AcDbDimension::desc()->dxfName();
     const ACHAR* prompt = L"\n功能：在标注首末位置移除符号\n";
     const ACHAR* left = edit1Result.GetString();
     const ACHAR* right = edit2Result.GetString();
     bool isLGdt = dlg.getGdtCheckStatus(0);
     bool isRGdt = dlg.getGdtCheckStatus(1);
     UniversalPicker::run(
-        filter,
+        &Common::DimensionSubClasses,
         [left, right, isLGdt, isRGdt](AcDbObjectId objId)
         {
             Dimension::removeSurroundingCharsForDimension(objId, left, right, isLGdt, isRGdt);
@@ -143,10 +142,9 @@ void Interface::cmdiRemoveSurroundingCharsForDimension()
 
 void Interface::cmdSetBasicBox()
 {
-    const ACHAR* filter = AcDbDimension::desc()->dxfName();
     const ACHAR* prompt = L"\n功能：设置理论尺寸框\n";
     UniversalPicker::run(
-        filter,
+        &Common::DimensionSubClasses,
         [](AcDbObjectId objId)
         {
             Dimension::setAndUnsetBasicBox(objId, true);
@@ -158,10 +156,9 @@ void Interface::cmdSetBasicBox()
 
 void Interface::cmdUnsetBasicBox()
 {
-    const ACHAR* filter = AcDbDimension::desc()->dxfName();
     const ACHAR* prompt = L"\n功能：取消理论尺寸框\n";
     UniversalPicker::run(
-        filter,
+        &Common::DimensionSubClasses,
         [](AcDbObjectId objId)
         {
             Dimension::setAndUnsetBasicBox(objId, false);
@@ -173,10 +170,9 @@ void Interface::cmdUnsetBasicBox()
 
 void Interface::cmdSetRefDim()
 {
-    const ACHAR* filter = AcDbDimension::desc()->dxfName();
     const ACHAR* prompt = L"\n功能：设置参考尺寸括号\n";
     UniversalPicker::run(
-        filter,
+        &Common::DimensionSubClasses,
         [](AcDbObjectId objId)
         {
             Dimension::setAndUnsetRefDim(objId, true);
@@ -188,10 +184,9 @@ void Interface::cmdSetRefDim()
 
 void Interface::cmdUnsetRefDim()
 {
-    const ACHAR* filter = AcDbDimension::desc()->dxfName();
     const ACHAR* prompt = L"\n功能：取消参考尺寸括号\n";
     UniversalPicker::run(
-        filter,
+        &Common::DimensionSubClasses,
         [](AcDbObjectId objId)
         {
             Dimension::setAndUnsetRefDim(objId, false);
@@ -287,16 +282,17 @@ void Interface::cmdExtractAnnotations()
     }
 
     const ACHAR* prompt = L"\n功能：提取标注到 csv 文件\n";
-    AcString filter;
-    filter.format(L"%s\0%s", AcDbDimension::desc()->dxfName(), AcmFCF::desc()->dxfName());
+    UniversalPicker::AcRxClassVector filter = { AcmFCF::desc(), AcDbMText::desc(), AcDbText::desc()};
+    filter.insert(filter.end(), Common::DimensionSubClasses.begin(), Common::DimensionSubClasses.end());
     UniversalPicker::run(
-        filter.kACharPtr(),
+        &filter,
         [&csv](AcDbObjectId objId)
         {
             Dimension::DimensionData dimData{};
             Dimension::readDim(objId, dimData);
             GeometricTolerance::GeometricToleranceData gtData{};
             GeometricTolerance::readFcf(objId, gtData);
+            AcString asMText, asDText;
 
             if (dimData.status) // 尺寸
             {
@@ -332,7 +328,7 @@ void Interface::cmdExtractAnnotations()
                         
                         Common::double2AcString(dimData.tolUpper, asTolUpper, dimData.tolPrecision);
                         Common::double2AcString(dimData.tolLower, asTolLower, dimData.tolPrecision);
-                        asTol.format(L"(+%s/%s)", asTolUpper.kACharPtr(), asTolLower.kACharPtr());
+                        asTol.format(L"+%s/%s", asTolUpper.kACharPtr(), asTolLower.kACharPtr());
                         asTolUpper.format(L"%.*g", dimData.tolPrecision, dimData.tolUpper);
                         asTolLower.format(L"%.*g", dimData.tolPrecision, dimData.tolLower);
                     }
@@ -382,6 +378,18 @@ void Interface::cmdExtractAnnotations()
                         csv.writeRow( rows );
                     }
                 }
+            }
+            else if (TextUtil::readMText(objId, asMText))
+            {
+                acutPrintf(L"\n多行文本：%s", asMText.kACharPtr());
+                std::vector<AcString> rows = { asMText };
+                csv.writeRow(rows);
+            }
+            else if (TextUtil::readDText(objId, asDText))
+            {
+                acutPrintf(L"\n单行文本：%s", asDText.kACharPtr());
+                std::vector<AcString> rows = { asDText };
+                csv.writeRow(rows);
             }
         },
         prompt,
