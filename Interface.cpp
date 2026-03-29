@@ -48,7 +48,7 @@ void Interface::unload()
 
 void Interface::cmdHelp()
 {
-    acutPrintf(L"\nCAD 工具箱  %s %s\n", BuildingTime::WDATE, BuildingTime::WTIME);
+    acutPrintf(L"\nCAD 工具箱  %s_%s\n", BuildingTime::WDATE, BuildingTime::WTIME);
     acutPrintf(L"作者：IYATT-yx\n");
     acutPrintf(L"项目开源地址：https://github.com/IYATT-yx/IYATTyxCadTools\n");
 }

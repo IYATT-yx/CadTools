@@ -22,18 +22,16 @@ export namespace BuildingTime
 {
     constexpr wchar_t WDATE[] = {
         __DATE__[7], __DATE__[8], __DATE__[9], __DATE__[10],
-        L'/',
         (wchar_t)(L'0' + MONTH_TO_NUM(__DATE__) / 10),
         (wchar_t)(L'0' + MONTH_TO_NUM(__DATE__) % 10),
-        L'/',
         (wchar_t)((__DATE__[4] == ' ') ? L'0' : __DATE__[4]),
         (wchar_t)__DATE__[5],
         0
     };
 
     constexpr wchar_t WTIME[] = {
-        __TIME__[0], __TIME__[1], __TIME__[2], __TIME__[3],
-        __TIME__[4], __TIME__[5], __TIME__[6], __TIME__[7],
+        __TIME__[0], __TIME__[1], __TIME__[3],
+        __TIME__[4],  __TIME__[6], __TIME__[7],
         __TIME__[8], 0
     };
 }
