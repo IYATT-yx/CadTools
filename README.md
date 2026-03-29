@@ -26,7 +26,7 @@
 * yxUpdateBalloonNumberBlock 或 yxUSNB：更新气泡号块。指定开始序号值，点击已插入的气泡号块更新序号值，序号值会自动递增。  
 ![alt text](doc/image7.png)  
 ![alt text](doc/image8.png)  
-* yxExtractAnnotations 或 yxEA：提取指定标注和形位公差到 csv 文件。
+* yxExtractAnnotations 或 yxEA：提取尺寸标注、形位公差、多行文本、单行文本到 csv 文件。
 ![alt text](doc/image4.png)  
 ![alt text](doc/image5.png)  
 在 Excel 中，切换到`数据`选项卡，打开`从文本/CSV`，在里面导入 csv 文件  
