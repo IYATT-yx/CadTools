@@ -20,7 +20,7 @@
 * yxUnsetBasicBox 或 yxUBB：为标注取消理论尺寸框
 * yxSetRefDim 或 yxSRD：为标注设置参考尺寸括号
 * yxUnsetRefDim 或 yxURD：为标注取消参考尺寸括号
-* yxInsertBalloonNumberBlockWithStartNumber 或 yxISNSBN：从指定序号开始插入气泡号块，序号自动递增  
+* yxInsertBalloonNumberBlockWithStartNumber 或 yxISNSBN：从指定序号开始插入气泡号块，序号自动递增。注释缩放比例由注释比例控制。  
 ![alt text](doc/image2.png)  
 ![alt text](doc/image3.png)  
 * yxUpdateBalloonNumberBlock 或 yxUSNB：更新气泡号块。指定开始序号值，点击已插入的气泡号块更新序号值，序号值会自动递增。  
