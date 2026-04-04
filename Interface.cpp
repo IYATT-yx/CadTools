@@ -38,7 +38,7 @@ void Interface::init()
 // 测试使用
 void Interface::test()
 {
-
+    
 }
 
 void Interface::unload()
@@ -201,17 +201,16 @@ void Interface::cmdInsertBalloonNumberBlockWithStartNumber()
     acutPrintf(L"\n功能：插入气泡号，自动递增序号\n");
 
     CAcModuleResourceOverride resOverride;
-    GenericPairEditDlg dlg(L"设置气泡号起始序号", L"起始序号：", L"序号字高：", false, true, true);
+    GenericPairEditDlg dlg(L"设置气泡号起始序号", L"起始序号：", L"提示：", false, true, true);
     // 设置默认字高
-    CString csTextHeight;
-    csTextHeight.Format(L"%f", Common::BalloonNumberBlock::defaultTextHeight);
-    dlg.modifyEditControl(L"", csTextHeight);
+    CString csTips;
+    csTips.Format(L"默认序号字体高度（圆圈半径）：%g，气泡缩放比例由注释性比例控制", Common::BalloonNumberBlock::defaultTextHeight);
+    dlg.modifyEditControl(L"", csTips);
 
-    CString edit1Result, edit2Result;
+    CString edit1Result;
     if (dlg.DoModal() == IDOK)
     {
         edit1Result = dlg.getEdit1Result();
-        edit2Result = dlg.getEdit2Result();
     }
     else
     {
@@ -229,33 +228,9 @@ void Interface::cmdInsertBalloonNumberBlockWithStartNumber()
         AfxMessageBox(L"起始序号必须为非 0 整数", MB_OK | MB_ICONERROR);
         return;
     }
-
     int startNum = _wtoi(edit1Result);
-
-    if (edit2Result.IsEmpty())
-    {
-        AfxMessageBox(L"必须输入序号字高", MB_OK | MB_ICONERROR);
-        return;
-    }
-
-    if (edit2Result.SpanIncluding(L"0123456789.") != edit2Result)
-    {
-        AfxMessageBox(L"序号字高必须为非负数", MB_OK | MB_ICONERROR);
-        return;
-    }
-
-    double dTextHeight = _wtof(edit2Result);
-    if (dTextHeight <= 0)
-    {
-        AfxMessageBox(L"序号字高必须为非负数", MB_OK | MB_ICONERROR);
-        return;
-    }
-
-    // 气泡号块比例
-    double dScale = dTextHeight / Common::BalloonNumberBlock::defaultTextHeight;
-
     Block::createBalloonNumberBlock();
-    Block::insertBalloonNumberBlockWithStartNumber(startNum, dScale);
+    Block::insertBalloonNumberBlockWithStartNumber(startNum);
 }
 
 void Interface::cmdPrintClassHierarchy()
