@@ -238,6 +238,8 @@ namespace Block
 
     bool updateBalloonNumberBlock(AcDbObjectId blockRefId, unsigned int newNum)
     {
+        bool bChanged = false;
+
         // 以写模式打开块参照
         AcDbBlockReference* pBlkRef = Common::getObject<AcDbBlockReference>(blockRefId, AcDb::kForWrite);
         if (pBlkRef == nullptr)
@@ -258,9 +260,10 @@ namespace Block
             if (AcString(pAtt->tag()) == Common::BalloonNumberBlock::AttTag)
             {
                 // 修改文本内容
-                pAtt->setTextString(std::to_wstring(newNum).c_str());
+                pAtt->setTextString(std::to_wstring(newNum).c_str()); // 修改序号属性
                 pAtt->adjustAlignment(pBlkRef->database()); // 重新计算对齐位置
                 actrTransactionManager->queueForGraphicsFlush(); // 强制刷新图形缓冲区
+                bChanged = true;
                 break;
             }
         }
@@ -269,7 +272,7 @@ namespace Block
         // 如果修改了位置或比例，建议调用记录更新
         //pBlkRef->recordGraphicsModified();
 
-        return true;
+        return bChanged;
     }
 
     void syncAttributesFromDefinition(AcDbBlockReference* pBlkRef, unsigned int num)
