@@ -480,7 +480,10 @@ void Interface::cmdExtractAnnotations()
             }
         },
         prompt,
-        UniversalPicker::SelectMode::Immediate
+        UniversalPicker::SelectMode::Immediate,
+        false,
+        UniversalPicker::SortMode::RD,
+        false
     );
 }
 
