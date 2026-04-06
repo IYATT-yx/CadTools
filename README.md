@@ -51,6 +51,11 @@ SDK：
 ObjectARX 环境配置参考：https://blog.iyatt.com/?p=21187  
 AutoCAD Mechanical SDK 环境配置参考：https://blog.iyatt.com/?p=23776  
 
+## 项目开发策略
+
+紧跟最新版本的原则。  
+本插件的定位是个人效率提升工具，当新版本 AutoCAD Mechanical 及 SDK 发布后，我将切换最新版进行测试。由于个人精力有限，不再针对旧版本进行维护。  
+
 ## 许可证
 
 本项目采用 [MIT 许可证](LICENSE) 进行许可。  
