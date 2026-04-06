@@ -1,26 +1,34 @@
 module;
 #include "StdAfx.h"
-//#include <windows.h>
 
 export module ImeAutoSwitcher;
+
+namespace ImeAutoSwitcher
+{
+    constexpr const ACHAR* cmdActive = L"CMDACTIVE";
+    constexpr DWORD defaultIntervalMs = 200; // 默认 200 ms，同时插件实现中也用这个值作为最小值检查，不允许低于这个值。（防止系统卡顿）
+    constexpr const ACHAR* regAutoStartKey = L"ImeAutoSwitcherAutoStart";
+    constexpr const ACHAR* regIntervalKey = L"ImeAutoSwitcherIntervalMs";
+    constexpr const ACHAR* regSettingsPath = L"\\Applications\\IYATTyxCadTools\\Settings";
+};
 
 export namespace ImeAutoSwitcher
 {
     /**
-     * @brief 启动输入法语言监控
-     * @param intervlMs 监控间隔时间，单位毫秒。设置低于 200 ms时还是按 200ms 执行，防止系统卡顿。
+     * @brief 启动输入法自动切换
+     * @param intervlMs 语言切换间隔时间，单位毫秒。
      */
     void start(DWORD intervlMs = 200);
 
     /**
-     * @brief 停止输入法语言监控
+     * @brief 停止输入法自动切换
      */
     void stop();
 
     /**
      * @brief 保存配置到注册表
-     * * @param bAutoStart 是否自启动
-     * @param nIntervalMS 监控时间间隔
+     * @param bAutoStart 是否自启动
+     * @param nIntervalMS 语言切换间隔时间
      * @return true 保存成功
      * @return false 保存失败
      */
@@ -28,8 +36,8 @@ export namespace ImeAutoSwitcher
 
     /**
      * @brief 从注册表加载配置
-     * * @param bAutoStart [out] 输出自启动状态
-     * @param nIntervalMS [out] 输出间隔时间
+     * * @param bAutoStart [out] 输入法自动切换启用状态
+     * @param nIntervalMS [out] 语言切换间隔时间
      * @return true 加载成功
      * @return false 加载失败，返回默认值
      */

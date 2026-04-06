@@ -553,7 +553,7 @@ void Interface::cmdUpdateBalloonNumberBlock()
 void Interface::cmdImeAutoSwitch()
 {
     CAcModuleResourceOverride resOverride;
-    GenericPairEditDlg dlg(L"设置输入法语言自动切换", L"自启动：", L"检查间隔(ms)：", false, true, true);
+    GenericPairEditDlg dlg(L"设置输入法自动切换", L"自启动：", L"切换间隔(ms)：", false, true, true);
 
     CString edit1Result, edit2Result;
     bool bAutoStart;
@@ -575,7 +575,7 @@ void Interface::cmdImeAutoSwitch()
 
     if (edit1Result.IsEmpty() || edit2Result.IsEmpty())
     {
-        AfxMessageBox(L"必须输入自启动状态和检查间隔", MB_OK | MB_ICONERROR);
+        AfxMessageBox(L"必须输入自启动状态和切换间隔", MB_OK | MB_ICONERROR);
     }
 
     if (edit1Result.SpanIncluding(L"01") != edit1Result)
@@ -586,7 +586,7 @@ void Interface::cmdImeAutoSwitch()
 
     if (edit2Result.SpanIncluding(L"0123456789") != edit2Result)
     {
-        AfxMessageBox(L"检查间隔必须为非负整数，且不小于 200", MB_OK | MB_ICONERROR);
+        AfxMessageBox(L"切换间隔必须为非负整数，且不小于 200", MB_OK | MB_ICONERROR);
     }
 
     bAutoStart = edit1Result == L"1";
@@ -594,7 +594,7 @@ void Interface::cmdImeAutoSwitch()
 
     if (nInterval < 200)
     {
-        AfxMessageBox(L"检查间隔必须不小于 200", MB_OK | MB_ICONERROR);
+        AfxMessageBox(L"切换间隔不能小于 200", MB_OK | MB_ICONERROR);
         return;
     }
 

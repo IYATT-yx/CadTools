@@ -9,13 +9,12 @@ namespace ImeAutoSwitcher
 {
     HHOOK g_hKeyboardHook = nullptr;
     DWORD g_lastSwitchTime = 0;
-    DWORD g_intervalMs = 200;
+    DWORD g_intervalMs = ImeAutoSwitcher::defaultIntervalMs;
 
     bool isCommandRunning()
     {
         struct resbuf rb;
-        // 获取 CMDACTIVE 变量：0 为空闲，>0 为有命令或交互
-        if (acedGetVar(_T("CMDACTIVE"), &rb) == RTNORM)
+        if (acedGetVar(ImeAutoSwitcher::cmdActive, &rb) == RTNORM)
         {
             return (rb.resval.rint > 0);
         }
@@ -24,26 +23,32 @@ namespace ImeAutoSwitcher
 
     void ForceEnglishMode(HWND hWnd)
     {
-        // 1. 尝试通过 IMM 接口切换
         HIMC hIMC = ImmGetContext(hWnd);
         if (hIMC)
         {
             DWORD dwConv, dwSent;
             if (ImmGetConversionStatus(hIMC, &dwConv, &dwSent))
             {
-                if (dwConv != IME_CMODE_ALPHANUMERIC)
+                // 使用位掩码判断是否处于非英文模式
+                // 只要不是纯粹的 ALPHANUMERIC，或者处于 NATIVE (中文) 模式，就触发切换
+                if ((dwConv & IME_CMODE_NATIVE) != 0 || dwConv != IME_CMODE_ALPHANUMERIC)
                 {
-                    ImmSetConversionStatus(hIMC, IME_CMODE_ALPHANUMERIC, IME_SMODE_NONE);
-                    acutPrintf(L"\n自动切换到英文输入法\n");
+                    INPUT inputs[2] = {};
+
+                    inputs[0].type = INPUT_KEYBOARD;
+                    inputs[0].ki.wVk = VK_SHIFT;
+
+                    inputs[1].type = INPUT_KEYBOARD;
+                    inputs[1].ki.wVk = VK_SHIFT;
+                    inputs[1].ki.dwFlags = KEYEVENTF_KEYUP;
+
+                    SendInput(2, inputs, sizeof(INPUT));
+
+                    acutPrintf(L"\n发送 Shift 切换语言。\n");
                 }
             }
             ImmReleaseContext(hWnd, hIMC);
         }
-
-        // 2. 模拟 Shift 键：针对不听 Windows 话的国产输入法（如搜狗/微软拼音中英切换）
-        // 只有当 IMM 切换后图标没变时，物理模拟才最有效
-        keybd_event(VK_SHIFT, 0, 0, 0);
-        keybd_event(VK_SHIFT, 0, KEYEVENTF_KEYUP, 0);
     }
 
     LRESULT CALLBACK lowLevelKeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
@@ -52,31 +57,30 @@ namespace ImeAutoSwitcher
         {
             KBDLLHOOKSTRUCT* pKey = (KBDLLHOOKSTRUCT*)lParam;
 
-            // 过滤：仅字母 A-Z
+            // 先过滤按键范围，减少后续昂贵 API 的调用
             if (pKey->vkCode >= 'A' && pKey->vkCode <= 'Z')
             {
-                DWORD currentTime = GetTickCount();
+                // 检查修饰键
+                bool bControl = (GetKeyState(VK_CONTROL) & 0x8000) != 0;
+                bool bAlt = (GetKeyState(VK_MENU) & 0x8000) != 0;
+                bool bWin = (GetKeyState(VK_LWIN) & 0x8000) != 0 || (GetKeyState(VK_RWIN) & 0x8000) != 0;
 
-                // 控制周期：300ms 冷却，解决卡顿
-                if (currentTime - g_lastSwitchTime > 300)
+                if (bControl || bAlt || bWin)
+                {
+                    return CallNextHookEx(g_hKeyboardHook, nCode, wParam, lParam);
+                }
+
+                DWORD currentTime = GetTickCount();
+                if (currentTime - g_lastSwitchTime > g_intervalMs)
                 {
                     HWND hAcadWnd = adsw_acadMainWnd();
-
-                    // 只有 CAD 在前台时处理
+                    // 仅在 CAD 是当前活动窗口时才进一步检查变量
                     if (GetForegroundWindow() == hAcadWnd)
                     {
-                        // 使用你提供的 acedGetVar 方案，增加异常保护
-                        __try
+                        if (!ImeAutoSwitcher::isCommandRunning())
                         {
-                            if (!isCommandRunning())
-                            {
-                                ForceEnglishMode(hAcadWnd);
-                                g_lastSwitchTime = currentTime;
-                            }
-                        }
-                        __except (EXCEPTION_EXECUTE_HANDLER)
-                        {
-                            // 防止某些特殊时刻读取变量导致异常
+                            ForceEnglishMode(hAcadWnd);
+                            g_lastSwitchTime = currentTime;
                         }
                     }
                 }
@@ -93,7 +97,7 @@ namespace ImeAutoSwitcher
             g_hKeyboardHook = SetWindowsHookEx(WH_KEYBOARD_LL, lowLevelKeyboardProc, GetModuleHandle(nullptr), 0);
             if (g_hKeyboardHook)
             {
-                acutPrintf(L"\n启动输入法语言状态监控，扫描周期：%dms", g_intervalMs);
+                acutPrintf(L"\n启动输入法自动切换，切换间隔：%dms", g_intervalMs);
             }
         }
     }
@@ -104,7 +108,7 @@ namespace ImeAutoSwitcher
         {
             UnhookWindowsHookEx(g_hKeyboardHook);
             g_hKeyboardHook = nullptr;
-            acutPrintf(L"\n停止输入法语言状态监控");
+            acutPrintf(L"\n停止输入法自动切换");
         }
     }
 
@@ -119,18 +123,18 @@ namespace ImeAutoSwitcher
         }
 
         AcString sFullKey;
-        sFullKey.format(_T("%s\\Applications\\IYATTyxCadTools\\Settings"), pProductRoot);
+        sFullKey.format(L"%s%s", pProductRoot, ImeAutoSwitcher::regSettingsPath);
 
         LSTATUS ls = RegCreateKeyEx(
             HKEY_CURRENT_USER,
             sFullKey.constPtr(),
             0,
-            NULL,
+            nullptr,
             REG_OPTION_NON_VOLATILE,
             KEY_WRITE,
-            NULL,
+            nullptr,
             &hKey,
-            NULL
+            nullptr
         );
 
         if (ls != ERROR_SUCCESS)
@@ -141,8 +145,8 @@ namespace ImeAutoSwitcher
         DWORD dwAuto = bAutoStart ? 1 : 0;
         DWORD dwInterval = static_cast<DWORD>(nIntervalMS);
 
-        RegSetValueEx(hKey, _T("AutoMonitor"), 0, REG_DWORD, reinterpret_cast<BYTE*>(&dwAuto), sizeof(DWORD));
-        RegSetValueEx(hKey, _T("MonitorInterval"), 0, REG_DWORD, reinterpret_cast<BYTE*>(&dwInterval), sizeof(DWORD));
+        RegSetValueEx(hKey, ImeAutoSwitcher::regAutoStartKey, 0, REG_DWORD, reinterpret_cast<BYTE*>(&dwAuto), sizeof(DWORD));
+        RegSetValueEx(hKey, ImeAutoSwitcher::regIntervalKey, 0, REG_DWORD, reinterpret_cast<BYTE*>(&dwInterval), sizeof(DWORD));
 
         RegCloseKey(hKey);
         return true;
@@ -156,30 +160,30 @@ namespace ImeAutoSwitcher
         if (pProductRoot == nullptr)
         {
             bAutoStart = false;
-            nIntervalMS = 200;
+            nIntervalMS = ImeAutoSwitcher::defaultIntervalMs;
             return false;
         }
 
         AcString sFullKey;
-        sFullKey.format(_T("%s\\Applications\\IYATTyxCadTools\\Settings"), pProductRoot);
+        sFullKey.format(L"%s%s", pProductRoot, ImeAutoSwitcher::regSettingsPath);
 
         LSTATUS ls = RegOpenKeyEx(HKEY_CURRENT_USER, sFullKey.constPtr(), 0, KEY_READ, &hKey);
 
         if (ls != ERROR_SUCCESS)
         {
             bAutoStart = false;
-            nIntervalMS = 200;
+            nIntervalMS = ImeAutoSwitcher::defaultIntervalMs;
             return false;
         }
 
         DWORD dwAuto = 0;
-        DWORD dwInterval = 0;
+        DWORD dwInterval = ImeAutoSwitcher::defaultIntervalMs;
         DWORD dwSize = sizeof(DWORD);
 
-        RegQueryValueEx(hKey, _T("AutoMonitor"), NULL, NULL, reinterpret_cast<BYTE*>(&dwAuto), &dwSize);
+        RegQueryValueEx(hKey, ImeAutoSwitcher::regAutoStartKey, nullptr, nullptr, reinterpret_cast<BYTE*>(&dwAuto), &dwSize);
 
         dwSize = sizeof(DWORD);
-        RegQueryValueEx(hKey, _T("MonitorInterval"), NULL, NULL, reinterpret_cast<BYTE*>(&dwInterval), &dwSize);
+        RegQueryValueEx(hKey, ImeAutoSwitcher::regIntervalKey, nullptr, nullptr, reinterpret_cast<BYTE*>(&dwInterval), &dwSize);
 
         bAutoStart = (dwAuto != 0);
         nIntervalMS = static_cast<int>(dwInterval);
