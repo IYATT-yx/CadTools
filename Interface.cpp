@@ -53,7 +53,7 @@ void Interface::init()
     {
         ImeAutoSwitcher::start(nAutoMonitorInterval);
     }
-
+    // 显示命令报表悬浮窗
     MainBar::showBar(Commands::commandInfoList);
 }
 
@@ -78,7 +78,11 @@ void Interface::unload()
 
 void Interface::cmdHelp()
 {
-    acutPrintf(L"\nCAD 工具箱  %s_%s\n", BuildingTime::WDATE, BuildingTime::WTIME);
+    CAcModuleResourceOverride resOverride;
+    CString csName;
+    csName.LoadStringW(IDS_ChineseProjectName);
+
+    acutPrintf(L"\n%s %s_%s\n", csName, BuildingTime::WDATE, BuildingTime::WTIME);
     acutPrintf(L"作者：IYATT-yx\n");
     acutPrintf(L"项目开源地址：https://github.com/IYATT-yx/IYATTyxCadTools\n");
     MainBar::showBar(Commands::commandInfoList);
