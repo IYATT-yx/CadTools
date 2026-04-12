@@ -9,6 +9,7 @@ namespace Commands
 {
 	void registerYxCmds(Commands::CommandInfoList& cil)
 	{
+		CAcModuleResourceOverride resOverride;
 		CString cmdGroup;
 		cmdGroup.LoadStringW(IDS_CommandGroup);
 		for (Commands::CommandInfo commandInfo : cil)

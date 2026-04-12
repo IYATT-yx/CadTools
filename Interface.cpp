@@ -71,6 +71,7 @@ void Interface::unload()
     // ¹Ø±ÕÃüÁî²Ëµ¥
     MainBar::terminateBar();
     // Ð¶ÔØÃüÁî
+    CAcModuleResourceOverride resOverride;
     CString cmdGroup;
     cmdGroup.LoadStringW(IDS_CommandGroup);
 	acedRegCmds->removeGroup(cmdGroup);
