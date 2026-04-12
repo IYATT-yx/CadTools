@@ -25,7 +25,7 @@ void Interface::init()
     Commands::commandInfoList =
     {
         {L"yx", L"显示或隐藏命令菜单", Commands::CommandFlags::Base, Interface::cmdHelp},
-        {L"yxT", L"开发用测试命令", Commands::CommandFlags::Base, Interface::test},
+        {L"yxTest", L"开发用测试命令", Commands::CommandFlags::Base, Interface::test},
         {L"yxSetByLayer", L"设置实体样式为当前层样式", Commands::CommandFlags::Pick, Interface::cmdSetByLayer},
         {L"yxDimensionFx", L"固定标注尺寸", Commands::CommandFlags::Pick, Interface::cmdDimensionFix},
         {L"yxDimensionResume", L"恢复实体驱动的标注尺寸", Commands::CommandFlags::Pick, Interface::cmdDimensionResume},
