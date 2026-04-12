@@ -1,6 +1,8 @@
 module;
 #include "stdafx.h"
 #include "GenericPairEditDlg.hpp"
+#include "MainBar.hpp"
+#include "resource.h"
 
 module Interface;
 
@@ -14,28 +16,34 @@ import CsvWriter;
 import GeometricTolerance;
 import TextUtil;
 import ImeAutoSwitcher;
+import Commands;
 
 
 void Interface::init()
 {
-    int baseFlags = ACRX_CMD_MODAL;
-    int pickFlags = ACRX_CMD_MODAL | ACRX_CMD_USEPICKSET;
-    Common::registerYxCmd(L"yx", baseFlags, Interface::cmdHelp);
-    Common::registerYxCmd(L"yxTest", baseFlags, test);
-    Common::registerYxCmd(L"yxSetByLayer", pickFlags, Interface::cmdSetByLayer);
-    Common::registerYxCmd(L"yxDimensionFx", pickFlags, Interface::cmdDimensionFix);
-    Common::registerYxCmd(L"yxDimensionResume", pickFlags, Interface::cmdDimensionResume);
-    Common::registerYxCmd(L"yxAddSurroundingCharsForDimension", pickFlags, Interface::cmdiAddSurroundingCharsForDimension);
-    Common::registerYxCmd(L"yxRemoveSurroundingCharsForDimension", pickFlags, Interface::cmdiRemoveSurroundingCharsForDimension);
-    Common::registerYxCmd(L"yxSetBasicBox", pickFlags, Interface::cmdSetBasicBox);
-    Common::registerYxCmd(L"yxUnsetBasicBox", pickFlags, Interface::cmdUnsetBasicBox);
-    Common::registerYxCmd(L"yxSetRefDim", pickFlags, Interface::cmdSetRefDim);
-    Common::registerYxCmd(L"yxUnsetRefDim", pickFlags, Interface::cmdUnsetRefDim);
-    Common::registerYxCmd(L"yxInsertBalloonNumberBlockWithStartNumber", baseFlags, Interface::cmdInsertBalloonNumberBlockWithStartNumber);
-    Common::registerYxCmd(L"yxPrintClassHierarchy", baseFlags, Interface::cmdPrintClassHierarchy);
-    Common::registerYxCmd(L"yxExtractAnnotations", baseFlags, Interface::cmdExtractAnnotations);
-    Common::registerYxCmd(L"yxUpdateBalloonNumberBlock", baseFlags, Interface::cmdUpdateBalloonNumberBlock);
-    Common::registerYxCmd(L"yxImeAutoSwitch", baseFlags, Interface::cmdImeAutoSwitch);
+    // 命令列表
+    Commands::commandInfoList =
+    {
+        {L"yx", L"显示或隐藏命令菜单", Commands::CommandFlags::Base, Interface::cmdHelp},
+        {L"yxT", L"开发用测试命令", Commands::CommandFlags::Base, Interface::test},
+        {L"yxSetByLayer", L"设置实体样式为当前层样式", Commands::CommandFlags::Pick, Interface::cmdSetByLayer},
+        {L"yxDimensionFx", L"固定标注尺寸", Commands::CommandFlags::Pick, Interface::cmdDimensionFix},
+        {L"yxDimensionResume", L"恢复实体驱动的标注尺寸", Commands::CommandFlags::Pick, Interface::cmdDimensionResume},
+        {L"yxAddSurroundingCharsForDimension", L"为标注添加前后缀", Commands::CommandFlags::Pick, Interface::cmdiAddSurroundingCharsForDimension},
+        {L"yxRemoveSurroundingCharsForDimension", L"为标注移除前后缀", Commands::CommandFlags::Pick, Interface::cmdiRemoveSurroundingCharsForDimension},
+        {L"yxSetBasicBox", L"设置理论尺寸框", Commands::CommandFlags::Pick, Interface::cmdSetBasicBox},
+        {L"yxUnsetBasicBox", L"取消标注理论尺寸框", Commands::CommandFlags::Pick, Interface::cmdUnsetBasicBox},
+        {L"yxSetRefDim", L"设置参考尺寸括号", Commands::CommandFlags::Pick, Interface::cmdSetRefDim},
+        {L"yxUnsetRefDim", L"取消参考尺寸括号", Commands::CommandFlags::Pick, Interface::cmdUnsetRefDim},
+        {L"yxInsertBalloonNumberBlockWithStartNumber", L"插入带起始编号的气泡号", Commands::CommandFlags::Base, Interface::cmdInsertBalloonNumberBlockWithStartNumber},
+        {L"yxPrintClassHierarchy", L"打印类层次结构", Commands::CommandFlags::Base, Interface::cmdPrintClassHierarchy},
+        {L"yxExtractAnnotations", L"提取标注到CSV文件", Commands::CommandFlags::Base, Interface::cmdExtractAnnotations},
+        {L"yxUpdateBalloonNumberBlock", L"更新气泡号", Commands::CommandFlags::Base, Interface::cmdUpdateBalloonNumberBlock},
+        {L"yxImeAutoSwitch", L"设置输入法自动切换", Commands::CommandFlags::Base, Interface::cmdImeAutoSwitch}
+    };
+
+    // 注册命令
+    Commands::registerYxCmds(Commands::commandInfoList);
 
     // 输入法自动切换自启动 
     bool bAutoStart = false;
@@ -45,16 +53,27 @@ void Interface::init()
     {
         ImeAutoSwitcher::start(nAutoMonitorInterval);
     }
+
+    MainBar::showBar(Commands::commandInfoList);
 }
 
 // 测试使用
 void Interface::test()
 {
+    
+    
 }
 
 void Interface::unload()
 {
-	acedRegCmds->removeGroup(Common::commandGroup);
+    // 关闭输入法自动切换
+    ImeAutoSwitcher::stop();
+    // 关闭命令菜单
+    MainBar::terminateBar();
+    // 卸载命令
+    CString cmdGroup;
+    cmdGroup.LoadStringW(IDS_CommandGroup);
+	acedRegCmds->removeGroup(cmdGroup);
 }
 
 void Interface::cmdHelp()
@@ -62,6 +81,7 @@ void Interface::cmdHelp()
     acutPrintf(L"\nCAD 工具箱  %s_%s\n", BuildingTime::WDATE, BuildingTime::WTIME);
     acutPrintf(L"作者：IYATT-yx\n");
     acutPrintf(L"项目开源地址：https://github.com/IYATT-yx/IYATTyxCadTools\n");
+    MainBar::showBar(Commands::commandInfoList);
 }
 
 void Interface::cmdSetByLayer()
