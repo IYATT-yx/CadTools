@@ -315,7 +315,7 @@ void UniversalPicker::run(UniversalPicker::AcRxClassVectorPtr arcv, UniversalPic
 {
     if (prompt != nullptr)
     {
-        acutPrintf(L"\n%s", prompt);
+        acutPrintf(L"\n%s\n", prompt);
     }
 
     // 模式选择提示
