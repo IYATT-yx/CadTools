@@ -165,7 +165,7 @@ void MainBar::showBar(Commands::CommandInfoList& commandInfoList)
 		CAcModuleResourceOverride resOverride;
 		CWnd* pAcadWnd = acedGetAcadFrame();
 		CString title;
-		title.LoadStringW(IDS_ChineseProjectName);
+		title.LoadStringW(IDS_LocaleProjectName);
 
 		if (!gpMainBar->Create(pAcadWnd, title))
 		{
@@ -174,7 +174,7 @@ void MainBar::showBar(Commands::CommandInfoList& commandInfoList)
 			return;
 		}
 	}
-
+	
 	gpMainBar->EnableDocking(CBRS_ALIGN_ANY);
 	gpMainBar->RestoreControlBar();
 	acedGetAcadFrame()->ShowControlBar(gpMainBar, TRUE, FALSE);
