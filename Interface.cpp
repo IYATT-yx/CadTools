@@ -21,25 +21,26 @@ import Commands;
 
 void Interface::init()
 {
+    CAcModuleResourceOverride resOverride;
     // 命令列表
     Commands::commandInfoList =
     {
-        {L"yx", L"显示或隐藏命令菜单", Commands::CommandFlags::Base, Interface::cmdHelp},
-        {L"yxTest", L"开发用测试命令", Commands::CommandFlags::Base, Interface::test},
-        {L"yxSetByLayer", L"设置实体样式为当前层样式", Commands::CommandFlags::Pick, Interface::cmdSetByLayer},
-        {L"yxDimensionFx", L"固定标注尺寸", Commands::CommandFlags::Pick, Interface::cmdDimensionFix},
-        {L"yxDimensionResume", L"恢复实体驱动的标注尺寸", Commands::CommandFlags::Pick, Interface::cmdDimensionResume},
-        {L"yxAddSurroundingCharsForDimension", L"为标注添加前后缀", Commands::CommandFlags::Pick, Interface::cmdiAddSurroundingCharsForDimension},
-        {L"yxRemoveSurroundingCharsForDimension", L"为标注移除前后缀", Commands::CommandFlags::Pick, Interface::cmdiRemoveSurroundingCharsForDimension},
-        {L"yxSetBasicBox", L"设置理论尺寸框", Commands::CommandFlags::Pick, Interface::cmdSetBasicBox},
-        {L"yxUnsetBasicBox", L"取消标注理论尺寸框", Commands::CommandFlags::Pick, Interface::cmdUnsetBasicBox},
-        {L"yxSetRefDim", L"设置参考尺寸括号", Commands::CommandFlags::Pick, Interface::cmdSetRefDim},
-        {L"yxUnsetRefDim", L"取消参考尺寸括号", Commands::CommandFlags::Pick, Interface::cmdUnsetRefDim},
-        {L"yxInsertBalloonNumberBlockWithStartNumber", L"插入带起始编号的气泡号", Commands::CommandFlags::Base, Interface::cmdInsertBalloonNumberBlockWithStartNumber},
-        {L"yxPrintClassHierarchy", L"打印类层次结构", Commands::CommandFlags::Base, Interface::cmdPrintClassHierarchy},
-        {L"yxExtractAnnotations", L"提取标注到CSV文件", Commands::CommandFlags::Base, Interface::cmdExtractAnnotations},
-        {L"yxUpdateBalloonNumberBlock", L"更新气泡号", Commands::CommandFlags::Base, Interface::cmdUpdateBalloonNumberBlock},
-        {L"yxImeAutoSwitch", L"设置输入法自动切换", Commands::CommandFlags::Base, Interface::cmdImeAutoSwitch}
+        {L"yx", Common::loadString(IDS_yxCommandDescription), Commands::CommandFlags::Base, Interface::cmdHelp},
+        {L"yxTest", Common::loadString(IDS_yxTestCommandDescription), Commands::CommandFlags::Base, Interface::test},
+        {L"yxSetByLayer", Common::loadString(IDS_yxSetByLayerCommandDescription), Commands::CommandFlags::Pick, Interface::cmdSetByLayer},
+        {L"yxDimensionFix", Common::loadString(IDS_yxDimensionFixCommandDescription), Commands::CommandFlags::Pick, Interface::cmdDimensionFix},
+        {L"yxDimensionResume", Common::loadString(IDS_yxDimensionResumeCommandDescription), Commands::CommandFlags::Pick, Interface::cmdDimensionResume},
+        {L"yxAddSurroundingCharsForDimension", Common::loadString(IDS_yxAddSurroundingCharsForDimensionCommandDescription), Commands::CommandFlags::Pick, Interface::cmdAddSurroundingCharsForDimension},
+        {L"yxRemoveSurroundingCharsForDimension", Common::loadString(IDS_yxRemoveSurroundingCharsForDimensionCommandDescription), Commands::CommandFlags::Pick, Interface::cmdRemoveSurroundingCharsForDimension},
+        {L"yxSetBasicBox", Common::loadString(IDS_yxSetBasicBoxCommandDescription), Commands::CommandFlags::Pick, Interface::cmdSetBasicBox},
+        {L"yxUnsetBasicBox", Common::loadString(IDS_yxUnsetBasicBoxCommandDescription), Commands::CommandFlags::Pick, Interface::cmdUnsetBasicBox},
+        {L"yxSetRefDim", Common::loadString(IDS_yxSetRefDimCommandDescription), Commands::CommandFlags::Pick, Interface::cmdSetRefDim},
+        {L"yxUnsetRefDim", Common::loadString(IDS_yxUnsetRefDimCommandDescription), Commands::CommandFlags::Pick, Interface::cmdUnsetRefDim},
+        {L"yxInsertBalloonNumberBlockWithStartNumber", Common::loadString(IDS_yxInsertBalloonNumberBlockWithStartNumberCommandDescription), Commands::CommandFlags::Base, Interface::cmdInsertBalloonNumberBlockWithStartNumber},
+        {L"yxPrintClassHierarchy", Common::loadString(IDS_yxPrintClassHierarchyCommandDescription), Commands::CommandFlags::Base, Interface::cmdPrintClassHierarchy},
+        {L"yxExtractAnnotations", Common::loadString(IDS_yxExtractAnnotationsCommandDescription), Commands::CommandFlags::Base, Interface::cmdExtractAnnotations},
+        {L"yxUpdateBalloonNumberBlock", Common::loadString(IDS_yxUpdateBalloonNumberBlockCommandDescription), Commands::CommandFlags::Base, Interface::cmdUpdateBalloonNumberBlock},
+        {L"yxImeAutoSwitch", Common::loadString(IDS_yxImeAutoSwitchCommandDescription), Commands::CommandFlags::Base, Interface::cmdImeAutoSwitch}
     };
 
     // 注册命令
@@ -80,37 +81,35 @@ void Interface::unload()
 void Interface::cmdHelp()
 {
     CAcModuleResourceOverride resOverride;
-    CString csName;
-    csName.LoadStringW(IDS_ChineseProjectName);
-
-    acutPrintf(L"\n%s %s_%s\n", csName, BuildingTime::WDATE, BuildingTime::WTIME);
-    acutPrintf(L"作者：IYATT-yx\n");
-    acutPrintf(L"项目开源地址：https://github.com/IYATT-yx/IYATTyxCadTools\n");
+    acutPrintf(L"\n%s %s_%s\n", Common::loadString(IDS_LocaleProjectName), BuildingTime::WDATE, BuildingTime::WTIME);
+    acutPrintf(L"%s：IYATT-yx\n", Common::loadString(IDS_Author));
+    acutPrintf(L"%s：https://github.com/IYATT-yx/IYATTyxCadTools\n", Common::loadString(IDS_ProjectUrl));
     MainBar::showBar(Commands::commandInfoList);
 }
 
 void Interface::cmdSetByLayer()
 {
-    const ACHAR* prompt = L"\n功能：设置选中实体的图层属性为ByLayer。\n";
-    UniversalPicker::run(nullptr, EntityStyle::setByLayer, prompt);
+    CAcModuleResourceOverride resOverride;
+    UniversalPicker::run(nullptr, EntityStyle::setByLayer, Common::loadString(IDS_yxSetByLayerCommandDescription));
 }
 
 void Interface::cmdDimensionFix()
 {
-    const ACHAR* prompt = L"\n功能：固定选中标注的文本\n";
-    UniversalPicker::run(&Common::DimensionSubClasses, Dimension::dimensionFix, prompt);
+    CAcModuleResourceOverride resOverride;
+    UniversalPicker::run(&Common::DimensionSubClasses, Dimension::dimensionFix, Common::loadString(IDS_yxDimensionFixCommandDescription));
 }
 
 void Interface::cmdDimensionResume()
 {
-    const ACHAR* prompt = L"\n功能：清空选中标注的文本，恢复关联标注。注意可能造成手动编辑的符号、公差等丢失。\n";
-    UniversalPicker::run(&Common::DimensionSubClasses, Dimension::dimensionResume, prompt);
+    CAcModuleResourceOverride resOverride;
+    UniversalPicker::run(&Common::DimensionSubClasses, Dimension::dimensionResume, Common::loadString(IDS_yxDimensionResumeCommandDescription));
 }
 
-void Interface::cmdiAddSurroundingCharsForDimension()
+void Interface::cmdAddSurroundingCharsForDimension()
 {
     CAcModuleResourceOverride resOverride;
-    GenericPairEditDlg dlg(L"在标注首末位置添加符号", L"首位符号：", L"末位符号：");
+    CString title = Common::loadString(IDS_yxAddSurroundingCharsForDimensionCommandDescription);
+    GenericPairEditDlg dlg(title, Common::loadString(IDS_PrefixSymbol), Common::loadString(IDS_SuffixSymbol));
 
     CString edit1Result;
     CString edit2Result;
@@ -124,12 +123,10 @@ void Interface::cmdiAddSurroundingCharsForDimension()
         return;
     }
 
-    const ACHAR* prompt = L"\n功能：在标注首末位置添加符号\n";
     const ACHAR* left = edit1Result.GetString();
     const ACHAR* right = edit2Result.GetString();
     bool isLGdt = dlg.getGdtCheckStatus(0);
     bool isRGdt = dlg.getGdtCheckStatus(1);
-    acutPrintf(L"\n开始 %d %d \n", isLGdt, isRGdt);
 
     UniversalPicker::run(
         &Common::DimensionSubClasses,
@@ -137,15 +134,16 @@ void Interface::cmdiAddSurroundingCharsForDimension()
         {
             Dimension::addSurroundingCharsForDimension(objId, left, right, isLGdt, isRGdt);
         },
-        prompt,
+        title,
         UniversalPicker::SelectMode::Immediate
     );
 }
 
-void Interface::cmdiRemoveSurroundingCharsForDimension()
+void Interface::cmdRemoveSurroundingCharsForDimension()
 {
     CAcModuleResourceOverride resOverride;
-    GenericPairEditDlg dlg(L"在标注首末位置移除符号", L"首位符号：", L"末位符号：");
+    CString title = Common::loadString(IDS_yxRemoveSurroundingCharsForDimensionCommandDescription);
+    GenericPairEditDlg dlg(title, Common::loadString(IDS_PrefixSymbol), Common::loadString(IDS_SuffixSymbol));
 
     CString edit1Result;
     CString edit2Result;
@@ -156,11 +154,10 @@ void Interface::cmdiRemoveSurroundingCharsForDimension()
     }
     else
     {
-        acutPrintf(L"\n取消操作");
+        acutPrintf(L"\n%s", Common::loadString(IDS_CancelOperation));
         return;
     }
 
-    const ACHAR* prompt = L"\n功能：在标注首末位置移除符号\n";
     const ACHAR* left = edit1Result.GetString();
     const ACHAR* right = edit2Result.GetString();
     bool isLGdt = dlg.getGdtCheckStatus(0);
@@ -171,76 +168,77 @@ void Interface::cmdiRemoveSurroundingCharsForDimension()
         {
             Dimension::removeSurroundingCharsForDimension(objId, left, right, isLGdt, isRGdt);
         },
-        prompt,
+        title,
         UniversalPicker::SelectMode::Immediate
     );
 }
 
 void Interface::cmdSetBasicBox()
 {
-    const ACHAR* prompt = L"\n功能：设置理论尺寸框\n";
+    CAcModuleResourceOverride resOverride;
     UniversalPicker::run(
         &Common::DimensionSubClasses,
         [](AcDbObjectId objId)
         {
             Dimension::setAndUnsetBasicBox(objId, true);
         },
-        prompt,
+        Common::loadString(IDS_yxSetBasicBoxCommandDescription),
         UniversalPicker::SelectMode::Immediate
     );
 }
 
 void Interface::cmdUnsetBasicBox()
 {
-    const ACHAR* prompt = L"\n功能：取消理论尺寸框\n";
+    CAcModuleResourceOverride resOverride;
     UniversalPicker::run(
         &Common::DimensionSubClasses,
         [](AcDbObjectId objId)
         {
             Dimension::setAndUnsetBasicBox(objId, false);
         },
-        prompt,
+        Common::loadString(IDS_yxUnsetBasicBoxCommandDescription),
         UniversalPicker::SelectMode::Immediate
     );
 }
 
 void Interface::cmdSetRefDim()
 {
-    const ACHAR* prompt = L"\n功能：设置参考尺寸括号\n";
+    CAcModuleResourceOverride resOverride;
     UniversalPicker::run(
         &Common::DimensionSubClasses,
         [](AcDbObjectId objId)
         {
             Dimension::setAndUnsetRefDim(objId, true);
         },
-        prompt,
+        Common::loadString(IDS_yxSetRefDimCommandDescription),
         UniversalPicker::SelectMode::Immediate
     );
 }
 
 void Interface::cmdUnsetRefDim()
 {
-    const ACHAR* prompt = L"\n功能：取消参考尺寸括号\n";
+    CAcModuleResourceOverride resOverride;
     UniversalPicker::run(
         &Common::DimensionSubClasses,
         [](AcDbObjectId objId)
         {
             Dimension::setAndUnsetRefDim(objId, false);
         },
-        prompt,
+        Common::loadString(IDS_yxUnsetRefDimCommandDescription),
         UniversalPicker::SelectMode::Immediate
     );
 }
 
 void Interface::cmdInsertBalloonNumberBlockWithStartNumber()
 {
-    acutPrintf(L"\n功能：插入气泡号，自动递增序号\n");
-
     CAcModuleResourceOverride resOverride;
-    GenericPairEditDlg dlg(L"设置气泡号起始序号", L"起始序号：", L"提示：", false, true, true);
+    CString title = Common::loadString(IDS_yxInsertBalloonNumberBlockWithStartNumberCommandDescription);
+    acutPrintf(L"\n%s\n", title);
+
+    GenericPairEditDlg dlg(title, Common::loadString(IDS_StartNumber), Common::loadString(IDS_Prompt), false, true, true);
     // 设置默认字高
     CString csTips;
-    csTips.Format(L"默认序号字体高度（圆圈半径）：%g，气泡缩放比例由注释性比例控制", Common::BalloonNumberBlock::defaultTextHeight);
+    csTips.Format(Common::loadString(IDS_Msg_BalloonTips_FMT), Common::BalloonNumberBlock::defaultTextHeight);
     dlg.modifyEditControl(L"", csTips);
 
     CString edit1Result;
@@ -250,18 +248,19 @@ void Interface::cmdInsertBalloonNumberBlockWithStartNumber()
     }
     else
     {
+        acutPrintf(L"\n%s", Common::loadString(IDS_CancelOperation));
         return;
     }
 
     if (edit1Result.IsEmpty())
     {
-        AfxMessageBox(L"必须输入起始序号", MB_OK | MB_ICONERROR);
+        AfxMessageBox(Common::loadString(IDS_Err_EmptyStartNumber), MB_OK | MB_ICONERROR);
         return;
     }
 
     if (edit1Result.SpanIncluding(L"0123456789") != edit1Result)
     {
-        AfxMessageBox(L"起始序号必须为非 0 整数", MB_OK | MB_ICONERROR);
+        AfxMessageBox(Common::loadString(IDS_Err_InvalidStartNumber), MB_OK | MB_ICONERROR);
         return;
     }
     int startNum = _wtoi(edit1Result);
@@ -271,28 +270,27 @@ void Interface::cmdInsertBalloonNumberBlockWithStartNumber()
 
 void Interface::cmdPrintClassHierarchy()
 {
-    const ACHAR* prompt = L"\n功能：打印类层级关系\n";
-    UniversalPicker::run(nullptr, Common::printClassHierarchy, prompt, UniversalPicker::SelectMode::Immediate, true);
+    CAcModuleResourceOverride resOverride;
+    UniversalPicker::run(nullptr, Common::printClassHierarchy, Common::loadString(IDS_yxPrintClassHierarchyCommandDescription), UniversalPicker::SelectMode::Immediate, true);
 }
 
 void Interface::cmdExtractAnnotations()
 {
-    acutPrintf(L"\n请选择提取标注后保存的文件。");
-    CString filePath = Common::ShowSaveFileDialog(L"选择提取标注保存的文件路径");
+    CAcModuleResourceOverride resOverride;
+    CString filePath = Common::ShowSaveFileDialog(Common::loadString(IDS_SaveCsvTitle));
     if (filePath.IsEmpty())
     {
-        acutPrintf(L"\n取消。");
+        acutPrintf(L"\n%s", Common::loadString(IDS_CancelOperation));
         return;
     }
 
     CsvWriter csv(filePath);
     if (!csv.isValid())
     {
-        AfxMessageBox(L"文件路径打开失败，请检查是否被占用或不", MB_OK | MB_ICONERROR);
+        AfxMessageBox(Common::loadString(IDS_Err_FileOpenFailed), MB_OK | MB_ICONERROR);
         return;
     }
 
-    const ACHAR* prompt = L"\n功能：提取标注到 csv 文件\n";
     UniversalPicker::AcRxClassVector filter = { AcmFCF::desc(), AcDbMText::desc(), AcDbText::desc()};
     filter.insert(filter.end(), Common::DimensionSubClasses.begin(), Common::DimensionSubClasses.end());
     UniversalPicker::run(
@@ -347,7 +345,7 @@ void Interface::cmdExtractAnnotations()
                 AcString asPrefix = Common::getSymbol(dimData.prefix);
                 AcString asSuffix = Common::getSymbol(dimData.suffix);
                 AcString asDimText = asPrefix + asMeasuredValue + asTol + asSuffix;
-                acutPrintf(L"\n尺寸：%s", asDimText.kACharPtr());
+                acutPrintf(L"\n%s：%s", Common::loadString(IDS_Dimension), asDimText.kACharPtr());
                 std::vector<AcString> row = { asDimText, asMeasuredValue, asTolUpper, asTolLower }; // 完整尺寸文本、名义值、上极限偏差、下极限偏差
                 csv.writeRow(row);
             }
@@ -364,7 +362,7 @@ void Interface::cmdExtractAnnotations()
                         AcString secondary = row.secondary;
                         AcString tertiary = row.tertiary;
                         AcString row = name + " " + value + " " + primary + " " + secondary + " " + tertiary;
-                        acutPrintf(L"\n形位公差：%s", row.kACharPtr());
+                        acutPrintf(L"\n%s：%s", Common::loadString(IDS_GDT), row.kACharPtr());
                         std::vector<AcString> asvRow = { row, name, value, primary, secondary, tertiary };
                         csv.writeRow(asvRow);
                     }
@@ -376,18 +374,18 @@ void Interface::cmdExtractAnnotations()
             }
             else if (TextUtil::readMText(objId, asMText))
             {
-                acutPrintf(L"\n多行文本：%s", asMText.kACharPtr());
+                acutPrintf(L"\n%s：%s", Common::loadString(IDS_MText), asMText.kACharPtr());
                 std::vector<AcString> rows = { asMText };
                 csv.writeRow(rows);
             }
             else if (TextUtil::readDText(objId, asDText))
             {
-                acutPrintf(L"\n单行文本：%s", asDText.kACharPtr());
+                acutPrintf(L"\n%s：%s", Common::loadString(IDS_DText), asDText.kACharPtr());
                 std::vector<AcString> rows = { asDText };
                 csv.writeRow(rows);
             }
         },
-        prompt,
+        Common::loadString(IDS_yxExtractAnnotationsCommandDescription),
         UniversalPicker::SelectMode::Immediate,
         false,
         UniversalPicker::SortMode::RD,
@@ -397,10 +395,11 @@ void Interface::cmdExtractAnnotations()
 
 void Interface::cmdUpdateBalloonNumberBlock()
 {
-    acutPrintf(L"\n功能：更新气泡号块，并自动递增序号\n");
-
     CAcModuleResourceOverride resOverride;
-    GenericPairEditDlg dlg(L"设置气泡号块起始序号", L"起始序号：", L"序号字高：", true, true, true);
+    CString title = Common::loadString(IDS_yxUpdateBalloonNumberBlockCommandDescription);
+    acutPrintf(L"\n%s\n", title);
+
+    GenericPairEditDlg dlg(title, Common::loadString(IDS_StartNumber), Common::loadString(IDS_BalloonNumberHeight), true, true, true);
 
     CString edit1Result;
     if (dlg.DoModal() == IDOK)
@@ -409,24 +408,24 @@ void Interface::cmdUpdateBalloonNumberBlock()
     }
     else
     {
-        acutPrintf(L"\n取消操作");
+        acutPrintf(L"\n%s", Common::loadString(IDS_CancelOperation));
         return;
     }
 
     if (edit1Result.IsEmpty())
     {
-        AfxMessageBox(L"必须输入起始序号", MB_OK | MB_ICONERROR);
+        AfxMessageBox(Common::loadString(IDS_Err_EmptyStartNumber), MB_OK | MB_ICONERROR);
         return;
     }
 
     if (edit1Result.SpanIncluding(L"0123456789") != edit1Result)
     {
-        AfxMessageBox(L"起始序号必须为非 0 整数", MB_OK | MB_ICONERROR);
+        AfxMessageBox(Common::loadString(IDS_Err_InvalidStartNumber), MB_OK | MB_ICONERROR);
         return;
     }
     int startNum = _wtoi(edit1Result);
 
-    acutPrintf(L"\n选中的气泡号块将被设置为：%d", startNum);
+    acutPrintf(Common::loadString(IDS_BalloonNextNumber_FMT), startNum);
     UniversalPicker::run(
         nullptr,
         [&startNum](const AcDbObjectId& id)
@@ -434,7 +433,7 @@ void Interface::cmdUpdateBalloonNumberBlock()
             if (Block::updateBalloonNumberBlock(id, startNum))
             {
                 ++startNum;
-                acutPrintf(L"\n选中的气泡号块将被设置为：%d", startNum);
+                acutPrintf(Common::loadString(IDS_BalloonNextNumber_FMT), startNum);
             }
         },
         nullptr,
@@ -448,7 +447,8 @@ void Interface::cmdUpdateBalloonNumberBlock()
 void Interface::cmdImeAutoSwitch()
 {
     CAcModuleResourceOverride resOverride;
-    GenericPairEditDlg dlg(L"设置输入法自动切换", L"自启动：", L"切换间隔(ms)：", false, true, true);
+    CString title = Common::loadString(IDS_yxImeAutoSwitchCommandDescription);
+    GenericPairEditDlg dlg(title, Common::loadString(IDS_AutoStart), Common::loadString(IDS_Interval), false, true, true);
 
     CString edit1Result, edit2Result;
     bool bAutoStart;
@@ -464,32 +464,35 @@ void Interface::cmdImeAutoSwitch()
     }
     else
     {
-        acutPrintf(L"\n取消操作");
+        acutPrintf(L"\n%s", Common::loadString(IDS_CancelOperation));
         return;
     }
 
     if (edit1Result.IsEmpty() || edit2Result.IsEmpty())
     {
-        AfxMessageBox(L"必须输入自启动状态和切换间隔", MB_OK | MB_ICONERROR);
+        AfxMessageBox(Common::loadString(IDS_Err_ImeAutoSwitchEmptySetting), MB_OK | MB_ICONERROR);
     }
 
     if (edit1Result.SpanIncluding(L"01") != edit1Result)
     {
-        AfxMessageBox(L"自启动状态必须为 0 或 1，1表示自启动，0 表示不自启动", MB_OK | MB_ICONERROR);
+        AfxMessageBox(Common::loadString(IDS_Err_InvalidAutoStart), MB_OK | MB_ICONERROR);
         return;
     }
 
+    CString csInvalidInterval;
+    csInvalidInterval.Format(Common::loadString(IDS_Err_InvalidInterval_FMT), ImeAutoSwitcher::defaultIntervalMs);
+
     if (edit2Result.SpanIncluding(L"0123456789") != edit2Result)
     {
-        AfxMessageBox(L"切换间隔必须为非负整数，且不小于 200", MB_OK | MB_ICONERROR);
+        AfxMessageBox(csInvalidInterval, MB_OK | MB_ICONERROR);
     }
 
     bAutoStart = edit1Result == L"1";
     nInterval = _wtoi(edit2Result);
 
-    if (nInterval < 200)
+    if (nInterval < ImeAutoSwitcher::defaultIntervalMs)
     {
-        AfxMessageBox(L"切换间隔不能小于 200", MB_OK | MB_ICONERROR);
+        AfxMessageBox(csInvalidInterval, MB_OK | MB_ICONERROR);
         return;
     }
 

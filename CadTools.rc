@@ -162,7 +162,59 @@ BEGIN
     IDS_CommandName         "命令名"
     IDS_CommandDescription  "命令描述"
     IDS_CommandGroup        "IYATTyxCadTools"
-    IDS_ChineseProjectName  "IYATT-yx AutoCAD Mechanical 工具箱"
+    IDS_LocaleProjectName   "IYATT-yx AutoCAD Mechanical 工具箱"
+    IDS_PrefixSymbol        "前缀符号"
+    IDS_yxCommandDescription "显示或隐藏命令菜单"
+    IDS_yxTestCommandDescription "开发用测试命令"
+    IDS_yxSetByLayerCommandDescription "设置实体样式为当前层样式"
+    IDS_yxDimensionFixCommandDescription "固定标注尺寸"
+    IDS_yxDimensionResumeCommandDescription "恢复实体驱动的标注尺寸"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_yxAddSurroundingCharsForDimensionCommandDescription "为标注添加前后缀"
+    IDS_yxRemoveSurroundingCharsForDimensionCommandDescription "为标注移除前后缀"
+    IDS_yxSetBasicBoxCommandDescription "设置理论尺寸框"
+    IDS_yxUnsetBasicBoxCommandDescription "取消理论尺寸框"
+    IDS_yxSetRefDimCommandDescription "设置参考尺寸括号"
+    IDS_yxUnsetRefDimCommandDescription "取消参考尺寸括号"
+    IDS_yxInsertBalloonNumberBlockWithStartNumberCommandDescription 
+                            "插入带起始编号的气泡号"
+    IDS_yxPrintClassHierarchyCommandDescription "打印类层次结构"
+    IDS_yxExtractAnnotationsCommandDescription "提取标注到CSV文件"
+    IDS_yxUpdateBalloonNumberBlockCommandDescription "更新气泡号"
+    IDS_yxImeAutoSwitchCommandDescription "设置输入法自动切换"
+    IDS_Author              "作者"
+    IDS_ProjectUrl          "项目地址"
+    IDS_SuffixSymbol        "后缀符号"
+    IDS_CancelOperation     "取消操作"
+    IDS_StartNumber         "开始序号"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_Prompt              "提示"
+    IDS_Msg_BalloonTips_FMT "默认序号字体高度（圆圈半径）：%g，气泡缩放比例由注释性比例控制"
+    IDS_Err_EmptyStartNumber "必须输入开始序号"
+    IDS_Err_InvalidStartNumber "开始序号必须为非 0 整数"
+    IDS_SaveCsvTitle        "将提取的标注内容保存到"
+    IDS_Err_FileOpenFailed  "文件路径打开失败，请检查是否被占用或路径无效"
+    IDS_GDT                 "几何公差"
+    IDS_MText               "多行文本"
+    IDS_DText               "单行文本"
+    IDS_BalloonNumberHeight "气泡序号字高"
+    IDS_Dimension           "尺寸"
+    IDS_BalloonNextNumber_FMT "选中的气泡号将被设置为：%d"
+    IDS_AutoStart           "自启动(1/0)"
+    IDS_Interval            "间隔(ms)"
+    IDS_Err_ImeAutoSwitchEmptySetting "必须输入自启动状态和切换间隔时间"
+    IDS_Err_InvalidAutoStart "自启动状态必须为 0 或 1，1表示自启动，0 表示不自启动"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_Err_InvalidInterval_FMT "切换间隔必须为不小于 %d 的整数"
 END
 
 #endif    // 中文(简体，中国) resources
