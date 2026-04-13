@@ -6,10 +6,14 @@ export module ImeAutoSwitcher;
 namespace ImeAutoSwitcher
 {
     constexpr const ACHAR* cmdActive = L"CMDACTIVE";
-    constexpr DWORD defaultIntervalMs = 200; // 默认 200 ms，同时插件实现中也用这个值作为最小值检查，不允许低于这个值。（防止系统卡顿）
     constexpr const ACHAR* regAutoStartKey = L"ImeAutoSwitcherAutoStart";
     constexpr const ACHAR* regIntervalKey = L"ImeAutoSwitcherIntervalMs";
     constexpr const ACHAR* regSettingsPath = L"\\Applications\\IYATTyxCadTools\\Settings";
+};
+
+export namespace ImeAutoSwitcher
+{
+    constexpr DWORD defaultIntervalMs = 200; // 默认 200 ms，同时插件实现中也用这个值作为最小值检查，不允许低于这个值。（防止系统卡顿）
 };
 
 export namespace ImeAutoSwitcher
