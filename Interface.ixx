@@ -13,8 +13,8 @@ private:
 	static void cmdHelp();
 	static void cmdDimensionFix();
 	static void cmdDimensionResume();
-	static void cmdiAddSurroundingCharsForDimension();
-	static void cmdiRemoveSurroundingCharsForDimension();
+	static void cmdAddSurroundingCharsForDimension();
+	static void cmdRemoveSurroundingCharsForDimension();
 	static void cmdSetBasicBox();
 	static void cmdUnsetBasicBox();
 	static void cmdSetRefDim();
