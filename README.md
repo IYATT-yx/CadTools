@@ -8,36 +8,7 @@
 
 2026/4/12  
 新增了可停靠的悬浮窗，支持双击执行对应命令。  
-![alt text](doc/image11.png)
-  
-## 使用命令
-
-* yx：查看基本信息
-* yxSetByLayer 或 yxSBL：设置选中实体的颜色、线型、线宽为 ByLayer
-* yxDimensionFix 或 yxDF：固定标注
-* yxDimensionResume 或 yxDR：恢复关联标注
-* yxAddSurroundingCharsForDimension 或 yxASCFD：在标注前后添加指定符号  
-* yxRemoveSurroundingCharsForDimension 或 yxRSCFD：在标注前后移除指定符号   
-![alt text](doc/image.png)  
 ![alt text](doc/image1.png)
-* yxSetBasicBox 或 yxSBB：为标注设置理论尺寸框
-* yxUnsetBasicBox 或 yxUBB：为标注取消理论尺寸框
-* yxSetRefDim 或 yxSRD：为标注设置参考尺寸括号
-* yxUnsetRefDim 或 yxURD：为标注取消参考尺寸括号
-* yxInsertBalloonNumberBlockWithStartNumber 或 yxISNSBN：从指定序号开始插入气泡号块，序号自动递增。缩放比例由注释比例控制。  
-![alt text](doc/image2.png)  
-![alt text](doc/image3.png)  
-* yxUpdateBalloonNumberBlock 或 yxUSNB：更新气泡号，从指定序号值开始递增。可以单点执行，点一个更新一个。可以批量选择，然后选择递增的排序方式，比如 RD 右下，即从左到右，同时从上往下逐行更新。  
-![alt text](doc/image7.png)  
-![alt text](doc/image8.png)  
-* yxExtractAnnotations 或 yxEA：提取尺寸标注、形位公差、多行文本、单行文本到 csv 文件。
-![alt text](doc/image4.png)  
-![alt text](doc/image5.png)  
-在 Excel 中，切换到`数据`选项卡，打开`从文本/CSV`，在里面导入 csv 文件  
-![alt text](doc/image6.png)  
-* yxImeAutoSwitch 或 yxIAS：设置自动切换输入法到英语，方便输入命令。自启动设置为 1 时，加载插件后就会自动监控输入法状态，实现自动切换语言。周期为检查的频率，不能低于 200。  
-![alt text](doc/image9.png)
-![alt text](doc/image10.png)  
 
 ## 测试环境
 
