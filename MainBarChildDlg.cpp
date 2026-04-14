@@ -145,10 +145,8 @@ void MainBarChildDlg::OnNMDblclkList1(NMHDR* pNMHDR, LRESULT* pResult)
 
 		if (!strFullCmd.IsEmpty())
 		{
-			// 构建命令：._命令名 + 空格
 			AcString acCmd;
-			acCmd.format(L"._%s ", (const ACHAR*)strFullCmd);
-
+			acCmd.format(L"._%s\n", (const ACHAR*)strFullCmd);
 			acDocManager->sendStringToExecute(curDoc(), acCmd, false, true, true);
 		}
 	}
