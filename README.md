@@ -10,6 +10,16 @@
 新增了可停靠的悬浮窗，支持双击执行对应命令。  
 ![alt text](doc/image1.png)
 
+## 使用方法
+
+AutoCAD 处于打开图纸状态下，执行`APPLOAD`命令。  
+切换到插件文件所在路径下，双击插件文件加载。  
+![alt text](doc/image2.png)  
+  
+设置随 AutoCAD 自启动：  
+点击页面上公文包图标下的`内容`按钮，点击`添加`将插件文件选入，即设为自启动。  
+![alt text](doc/image3.png)
+
 ## 测试环境
 
 软件：  
