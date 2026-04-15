@@ -90,7 +90,8 @@ void Interface::cmdUnloadApp()
 void Interface::cmdHelp()
 {
     CAcModuleResourceOverride resOverride;
-    acutPrintf(L"\n%s %s_%s\n", Common::loadString(IDS_LocaleProjectName), BuildingTime::WDATE, BuildingTime::WTIME);
+    acutPrintf(L"\n%s\n", Common::loadString(IDS_LocaleProjectName));
+    acutPrintf(L"%s£º%s_%s\n", Common::loadString(IDS_Version), BuildingTime::WDATE, BuildingTime::WTIME);
     acutPrintf(L"%s£ºIYATT-yx\n", Common::loadString(IDS_Author));
     acutPrintf(L"%s£ºhttps://github.com/IYATT-yx/IYATTyxCadTools\n", Common::loadString(IDS_ProjectUrl));
     MainBar::showBar(Commands::commandInfoList);

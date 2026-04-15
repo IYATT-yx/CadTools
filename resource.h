@@ -68,6 +68,7 @@
 #define IDS_Msg_CloneSrcTextPrompt      151
 #define IDS_Msg_CopySrcTextPrompt       151
 #define IDS_Msg_PasteDstTextPrompt      152
+#define IDS_Version                     153
 
 // Next default values for new objects
 // 
