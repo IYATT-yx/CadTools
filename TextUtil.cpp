@@ -4,6 +4,7 @@ module;
 
 module TextUtil;
 import Common;
+import UniversalPicker;
 
 namespace TextUtil
 {
@@ -81,5 +82,38 @@ namespace TextUtil
 		AcDbMText mtext;
 		mtext.setContents(text);
 		mtext.text(text);
+	}
+
+	bool getSelectedTextRawContent(AcString& content)
+	{
+		AcDbObjectId srcId;
+		resbuf* filterRb = UniversalPicker::buildFilter(&TextUtil::textClassList);
+
+		AcDbObjectId entId = UniversalPicker::getSelectedSingleEntityId(&TextUtil::textClassList);
+		if (TextUtil::readMText(entId, content, true))
+		{
+			return true;
+		}
+		else if (TextUtil::readDText(entId, content, true))
+		{
+            return true;
+		}
+        return false;
+	}
+
+	void updateTextEntityContent(const AcDbObjectId& id, const AcString& content)
+	{
+		AcDbMText* pText = Common::getObject<AcDbMText>(id, AcDb::kForWrite);
+		if (pText != nullptr)
+		{
+			pText->setContents(content);
+			return;
+		}
+		AcDbText* pDText = Common::getObject<AcDbText>(id, AcDb::kForWrite);
+		if (pDText != nullptr)
+		{
+            pDText->setTextString(content);
+            return;
+		}
 	}
 }
