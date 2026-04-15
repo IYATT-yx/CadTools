@@ -205,7 +205,7 @@ BEGIN
     IDS_DText               "单行文本"
     IDS_BalloonNumberHeight "气泡序号字高"
     IDS_Dimension           "尺寸"
-    IDS_BalloonNextNumber_FMT "选中的气泡号将被设置为：%d"
+    IDS_BalloonNextNumber_FMT "\n选中的气泡号将被设置为：%d"
     IDS_AutoStart           "自启动(1/0)"
     IDS_Interval            "间隔(ms)"
     IDS_Err_ImeAutoSwitchEmptySetting "必须输入自启动状态和切换间隔时间"
@@ -215,6 +215,14 @@ END
 STRINGTABLE
 BEGIN
     IDS_Err_InvalidInterval_FMT "切换间隔必须为不小于 %d 的整数"
+    IDS_ImeAutoSwitchPrompt "已自动切换输入法"
+    IDS_ImeAutoSwitchStartPrompt_FMT "\n启动输入法自动切换，切换间隔：%dms"
+    IDS_ImeAutoSwitchStopPrompt "停止输入法自动切换"
+    IDS_yxUnloadCommandDescription "卸载本插件"
+    IDS_Msg_Unload_FMT      "\n已卸载 %s"
+    IDS_yxCloneTextCommandDescription "将多行/单行文本内容复制给其它多行/单行文本"
+    IDS_Msg_CopySrcTextPrompt "请选择要复制的源文本对象"
+    IDS_Msg_PasteDstTextPrompt "请选择要粘贴到的文本对象"
 END
 
 #endif    // 中文(简体，中国) resources

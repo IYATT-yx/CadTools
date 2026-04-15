@@ -58,6 +58,16 @@
 #define IDS_Err_InvalidAutoStart        143
 #define IDS_Err_InvalidInterval         144
 #define IDS_Err_InvalidInterval_FMT     144
+#define IDS_ImeAutoSwitchPrompt         145
+#define IDS_ImeAutoSwitchStartPrompt_FMT 146
+#define IDS_ImeAutoSwitchStopPrompt     147
+#define IDS_yxUnloadCommandDescription  148
+#define IDS_Msg_Unload                  149
+#define IDS_Msg_Unload_FMT              149
+#define IDS_yxCloneTextCommandDescription 150
+#define IDS_Msg_CloneSrcTextPrompt      151
+#define IDS_Msg_CopySrcTextPrompt       151
+#define IDS_Msg_PasteDstTextPrompt      152
 
 // Next default values for new objects
 // 
