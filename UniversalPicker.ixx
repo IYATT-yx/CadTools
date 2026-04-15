@@ -49,13 +49,6 @@ public:
 
 private:
 	/**
-	 * @brief 构建过滤器
-	 * @param arcv 实体类型数组指针
-	 * @return 过滤器链表，调用者负责释放
-	 */
-	static resbuf* buildFilter(UniversalPicker::AcRxClassVectorPtr arcv);
-
-	/**
 	 * @brief 批量选择处理
 	 * @param arcv 实体类型数组指针，用于过滤选择对象 
 	 * @param processor 处理函数，接受一个实体ID参数
@@ -88,6 +81,13 @@ private:
 	 */
 	static bool compareEntities(const UniversalPicker::EntityInfo& a, const UniversalPicker::EntityInfo& b, UniversalPicker::SortMode mode, double sortTol);
 
+	/**
+	 * @brief 将排序模式转为字符串
+	 * @param mode 排序模式 
+	 * @return 字符串
+	 */
+	static const ACHAR* SortModeToString(UniversalPicker::SortMode mode);
+
 public:
 	/**
 	 * @brief 运行选择器
@@ -101,5 +101,19 @@ public:
 	 * @param sortTol 坐标容差，默认为 3.5。坐标超过容差认为是不同行或不同列。
 	 */
 	static void run(UniversalPicker::AcRxClassVectorPtr arcv, UniversalPicker::EntityProcessor processor, const ACHAR* prompt, UniversalPicker::SelectMode defaultSelectMode = UniversalPicker::SelectMode::Batch, bool lockSelectMode = false, SortMode defaultSortMode = UniversalPicker::SortMode::None, bool lockSortMode = true, double sortTol = 3.5);
+
+	/**
+	 * @brief 构建过滤器
+	 * @param arcv 实体类型数组指针
+	 * @return 过滤器链表，调用者负责释放
+	 */
+	static resbuf* buildFilter(UniversalPicker::AcRxClassVectorPtr arcv);
+
+	/**
+	 * @brief 获取用户选中的单个实体 ID
+	 * @param arcv 实体类型数组指针，用于过滤选择对象
+	 * @return 实体 ID，返回 AcDbObjectId::kNull 时失败或取消选择。
+	 */
+	static AcDbObjectId getSelectedSingleEntityId(UniversalPicker::AcRxClassVectorPtr arcv);
 };
 

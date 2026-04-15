@@ -92,7 +92,11 @@ void UniversalPicker::batchSelect(UniversalPicker::AcRxClassVectorPtr arcv, Univ
     {
         acedInitGet(0, L"RD RU LD LU DR DL UR UL None");
         wchar_t kword[20];
-        int stat = acedGetKword(L"\n排序模式 [右下(RD)/右上(RU)/左下(LD)/左上(LU)/下右(DR)/下左(DL)/上右(UR)/上左(UL)/无(None)] <RD>: ", kword);
+        AcString asKword;
+        const ACHAR* prefix = L"\n排序模式 [右下(RD)/右上(RU)/左下(LD)/左上(LU)/下右(DR)/下左(DL)/上右(UR)/上左(UL)/无(None)] <";
+        const ACHAR* suffix = L">: ";
+        asKword.format(L"%s%s%s", prefix, UniversalPicker::SortModeToString(finalMode), suffix);
+        int stat = acedGetKword(asKword.kACharPtr(), kword);
 
         if (stat == Acad::eNormal)
         {
@@ -245,15 +249,55 @@ void UniversalPicker::batchSelect(UniversalPicker::AcRxClassVectorPtr arcv, Univ
     UniversalPicker::freeFilter(filterRb);
 }
 
-void UniversalPicker::immediateSelect(UniversalPicker::AcRxClassVectorPtr arcv, UniversalPicker::EntityProcessor processor)
+AcDbObjectId UniversalPicker::getSelectedSingleEntityId(UniversalPicker::AcRxClassVectorPtr arcv)
 {
-    AcDbTransactionManager* pTransMgr = acdbHostApplicationServices()->workingDatabase()->transactionManager();
+    AcDbObjectId selectedId = AcDbObjectId::kNull;
+    ads_name ss;
     resbuf* filterRb = buildFilter(arcv);
 
     while (true)
     {
-        ads_name ss;
-        int rc = acedSSGet(L":S", nullptr, nullptr, filterRb, ss);
+        int rc = acedSSGet(L":S:E", nullptr, nullptr, filterRb, ss);
+        if (rc == RTCAN) // 用户按了 ESC
+        {
+            break;
+        }
+        if (rc != RTNORM) // 没选中实体或其它情况
+        {
+            continue;
+        }
+
+        Adesk::Int32 len = 0;
+        acedSSLength(ss, &len);
+
+        if (len > 0)
+        {
+            ads_name ent;
+            if (acedSSName(ss, 0, ent) == RTNORM) // 获取第一个实体的 ads_name
+            {
+                acdbGetObjectId(selectedId, ent);
+            }
+        }
+        
+        acedSSFree(ss);
+        if (!selectedId.isNull())
+        {
+            break;
+        }
+    }
+    UniversalPicker::freeFilter(filterRb);
+    return selectedId;
+}
+
+void UniversalPicker::immediateSelect(UniversalPicker::AcRxClassVectorPtr arcv, UniversalPicker::EntityProcessor processor)
+{
+    AcDbTransactionManager* pTransMgr = acdbHostApplicationServices()->workingDatabase()->transactionManager();
+    resbuf* filterRb = buildFilter(arcv);
+    ads_name ss;
+
+    while (true)
+    {
+        int rc = acedSSGet(L":S:E", nullptr, nullptr, filterRb, ss);
         if (rc == RTCAN) // 用户按了 ESC
         {
             break;
@@ -457,6 +501,53 @@ bool UniversalPicker::compareEntities(const UniversalPicker::EntityInfo& a, cons
         default:
         {
             return false;
+        }
+    }
+}
+
+const ACHAR* UniversalPicker::SortModeToString(UniversalPicker::SortMode mode)
+{
+    switch (mode)
+    {
+        case SortMode::RD:
+        {
+            return L"RD";
+        }
+        case SortMode::RU:
+        {
+            return L"RU";
+        }
+        case SortMode::LD:
+        {
+            return L"LD";
+        }
+        case SortMode::LU:
+        {
+            return L"LU";
+        }
+        case SortMode::DR:
+        {
+            return L"DR";
+        }
+        case SortMode::DL:
+        {
+            return L"DL";
+        }
+        case SortMode::UR:
+        {
+            return L"UR";
+        }
+        case SortMode::UL:
+        {
+            return L"UL";
+        }
+        case SortMode::None:
+        {
+            return L"None";
+        }
+        default:
+        {
+            return L"None";
         }
     }
 }
