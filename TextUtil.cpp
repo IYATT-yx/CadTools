@@ -42,7 +42,7 @@ namespace TextUtil
 		}
 	}
 
-	bool readMText(AcDbObjectId& id, AcString& text, bool isRawContents)
+	bool readMText(const AcDbObjectId& id, AcString& text, bool isRawContents)
 	{
 		AcDbMText* pMText = Common::getObject<AcDbMText>(id, AcDb::kForRead);
 		if (pMText == nullptr)
@@ -61,7 +61,7 @@ namespace TextUtil
 		return true;
 	}
 
-	bool readDText(AcDbObjectId& id, AcString& text, bool isRawContents)
+	bool readDText(const AcDbObjectId& id, AcString& text, bool isRawContents)
 	{
         AcDbText* pText = Common::getObject<AcDbText>(id, AcDb::kForRead);
 		if (pText == nullptr)

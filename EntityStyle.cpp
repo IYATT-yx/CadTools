@@ -7,7 +7,7 @@ import Common;
 
 namespace EntityStyle
 {
-	void setByLayer(AcDbObjectId objId)
+	void setByLayer(const AcDbObjectId& objId)
 	{
 		AcDbEntity* pEntity = Common::getObject<AcDbEntity>(objId, AcDb::kForWrite);
 		if (pEntity == nullptr)

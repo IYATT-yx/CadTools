@@ -45,12 +45,12 @@ export namespace Dimension
 	 * @brief 固定标注
 	 * @param objId 标注对象ID
 	 */
-	void dimensionFix(AcDbObjectId objId);
+	void dimensionFix(const AcDbObjectId& objId);
 	/**
 	 * @brief 取消固定标注
 	 * @param objId 标注对象ID
 	 */
-	void dimensionResume(AcDbObjectId objId);
+	void dimensionResume(const AcDbObjectId& objId);
 	/**
 	 * @brief 添加标注前后字符
 	 * @param objId 标注对象ID
@@ -59,7 +59,7 @@ export namespace Dimension
 	 * @param isLGdt 左字符是否为 GDT
 	 * @param isRGdt 右字符是否为 GDT
 	 */
-	void addSurroundingCharsForDimension(AcDbObjectId objId, const wchar_t* left, const wchar_t* right, bool isLGdt = false, bool isRGdt = false);
+	void addSurroundingCharsForDimension(const AcDbObjectId& objId, const wchar_t* left, const wchar_t* right, bool isLGdt = false, bool isRGdt = false);
 	/**
 	 * @brief 删除标注前后字符
 	 * @param objId 标注对象ID
@@ -68,26 +68,26 @@ export namespace Dimension
 	 * @param isLGdt 左字符是否为 GDT
 	 * @param isRGdt 右字符是否为 GDT
 	 */
-	void removeSurroundingCharsForDimension(AcDbObjectId objId, const wchar_t* left, const wchar_t* right, bool isLGdt = false, bool isRGdt = false);
+	void removeSurroundingCharsForDimension(const AcDbObjectId& objId, const wchar_t* left, const wchar_t* right, bool isLGdt = false, bool isRGdt = false);
 	/**
 	 * @brief 设置或取消标注的理论尺寸框
 	 * @param objId 标注对象ID
 	 * @param isSet 是否设置
 	 */
-	void setAndUnsetBasicBox(AcDbObjectId objId, bool isSet);
+	void setAndUnsetBasicBox(const AcDbObjectId& objId, bool isSet);
 
 	/**
 	 * @brief 设置或取消标注的参考尺寸括号
 	 * @param objId 标注对象ID
 	 * @param isSet 是否设置
 	 */
-	void setAndUnsetRefDim(AcDbObjectId objId, bool isSet);
+	void setAndUnsetRefDim(const AcDbObjectId& objId, bool isSet);
 
 	/**
 	 * @brief 读取标注数据
 	 * @param id 标注对象ID
 	 * @param data 传出数据
 	 */
-	void readDim(AcDbObjectId id, DimensionData& data);
+	void readDim(const AcDbObjectId& id, DimensionData& data);
 }
 

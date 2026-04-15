@@ -31,7 +31,7 @@ export namespace TextUtil
 	 * @param isRawContent true 获取带控制字符的原始内容；false 获取纯文本内容
 	 * @return true 成功；false 失败
 	 */
-	bool readMText(AcDbObjectId& id, AcString& text, bool isRawContent = false);
+	bool readMText(const AcDbObjectId& id, AcString& text, bool isRawContent = false);
 
 	/**
 	 * @brief 从标注中读取DText内容
@@ -40,7 +40,7 @@ export namespace TextUtil
 	 * @param isRawContent true 获取带控制字符的原始内容；false 获取纯文本内容
 	 * @return true 成功；false 失败
 	 */
-	bool readDText(AcDbObjectId& id, AcString& text, bool isRawContent = false);
+	bool readDText(const AcDbObjectId& id, AcString& text, bool isRawContent = false);
 
 	/**
 	 * @brief 解析控制字符得到纯文本

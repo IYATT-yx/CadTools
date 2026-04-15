@@ -3,7 +3,7 @@ module;
 
 export module EntityStyle;
 
-namespace EntityStyle
+export namespace EntityStyle
 {
-    export void setByLayer(AcDbObjectId objId);
+    void setByLayer(const AcDbObjectId& objId);
 }

@@ -7,7 +7,7 @@ import TextUtil;
 
 namespace GeometricTolerance
 {
-	void readFcf(AcDbObjectId id, GeometricToleranceData& data)
+	void readFcf(const AcDbObjectId& id, GeometricToleranceData& data)
 	{
 		AcmFCF* pFcf = Common::getObject<AcmFCF>(id, AcDb::kForRead);
 		if (pFcf == nullptr)

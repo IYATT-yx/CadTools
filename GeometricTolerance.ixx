@@ -84,7 +84,7 @@ export namespace GeometricTolerance
 	 * @param id 形位公差块表记录ID
 	 * @param data 传出形位公差数据
 	 */
-	void readFcf(AcDbObjectId id, GeometricToleranceData& data);
+	void readFcf(const AcDbObjectId& id, GeometricToleranceData& data);
 
 	/**
 	 * @brief 解析形位公差数据得到纯文本数据

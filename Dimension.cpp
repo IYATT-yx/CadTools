@@ -8,7 +8,7 @@ import TextUtil;
 
 namespace Dimension
 {
-	void dimensionFix(AcDbObjectId objId)
+	void dimensionFix(const AcDbObjectId& objId)
 	{
 		AcDbDimension* pDim = Common::getObject<AcDbDimension>(objId, AcDb::kForWrite);
 		if (pDim == nullptr)
@@ -58,7 +58,7 @@ namespace Dimension
 		}
 	}
 
-	void dimensionResume(AcDbObjectId objId)
+	void dimensionResume(const AcDbObjectId& objId)
 	{
 		AcDbDimension* pDim = Common::getObject<AcDbDimension>(objId, AcDb::kForWrite);
 		if (pDim == nullptr)
@@ -68,7 +68,7 @@ namespace Dimension
 		pDim->setDimensionText(L"");
 	}
 
-	void addSurroundingCharsForDimension(AcDbObjectId objId, const wchar_t* left, const wchar_t* right, bool isLGdt, bool isRGdt)
+	void addSurroundingCharsForDimension(const AcDbObjectId& objId, const wchar_t* left, const wchar_t* right, bool isLGdt, bool isRGdt)
 	{
         AcDbDimension* pDim = Common::getObject<AcDbDimension>(objId, AcDb::kForWrite);
 		if (pDim == nullptr)
@@ -96,7 +96,7 @@ namespace Dimension
         pDim->setDimensionText(dimensionNewText.constPtr());
 	}
 
-	void removeSurroundingCharsForDimension(AcDbObjectId objId, const wchar_t* left, const wchar_t* right, bool isLGdt, bool isRGdt)
+	void removeSurroundingCharsForDimension(const AcDbObjectId& objId, const wchar_t* left, const wchar_t* right, bool isLGdt, bool isRGdt)
 	{
 		AcDbDimension* pDim = Common::getObject<AcDbDimension>(objId, AcDb::kForWrite);
 		if (pDim == nullptr)
@@ -166,7 +166,7 @@ namespace Dimension
 		}
 	}
 
-	void setAndUnsetBasicBox(AcDbObjectId objId, bool isSet)
+	void setAndUnsetBasicBox(const AcDbObjectId& objId, bool isSet)
 	{
 		AcDbDimension* pDim = Common::getObject<AcDbDimension>(objId, AcDb::kForWrite);
 		if (pDim == nullptr)
@@ -185,7 +185,7 @@ namespace Dimension
 		}
 	}
 
-	void setAndUnsetRefDim(AcDbObjectId objId, bool isSet)
+	void setAndUnsetRefDim(const AcDbObjectId& objId, bool isSet)
 	{
 		const wchar_t* left = L"(";
         const wchar_t* right = L")";
@@ -199,7 +199,7 @@ namespace Dimension
 		}
 	}
 
-	void readDim(AcDbObjectId id, DimensionData& data)
+	void readDim(const AcDbObjectId& id, DimensionData& data)
 	{
 		AcDbDimension* pDim = Common::getObject<AcDbDimension>(id, AcDb::kForRead);
 		if (pDim == nullptr)

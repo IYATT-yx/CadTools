@@ -100,7 +100,7 @@ namespace Common
 		return result;
 	}
 
-	void printClassHierarchy(AcDbObjectId objId)
+	void printClassHierarchy(const AcDbObjectId& objId)
 	{
 		if (objId.isNull())
 		{

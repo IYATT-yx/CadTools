@@ -67,7 +67,7 @@ export namespace Common
 	 * @brief 打印指定对象ID的类层次结构
 	 * @param objId 对象ID
 	 */
-	void printClassHierarchy(AcDbObjectId objId);
+	void printClassHierarchy(const AcDbObjectId& objId);
 
 	/**
 	 * @brief 弹出保存文件对话框

@@ -42,7 +42,7 @@ public:
 	};
 
 	// 处理函数原型
-	using EntityProcessor = std::function<void(const AcDbObjectId)>;
+	using EntityProcessor = std::function<void(const AcDbObjectId&)>;
 	// 实体类型数组
 	using AcRxClassVector = std::vector<AcRxClass*>;
 	using AcRxClassVectorPtr = AcRxClassVector*;
