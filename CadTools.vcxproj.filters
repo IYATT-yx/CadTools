@@ -66,10 +66,10 @@
     <ClCompile Include="Dimension.ixx">
       <Filter>头文件</Filter>
     </ClCompile>
-    <ClCompile Include="Block.ixx">
+    <ClCompile Include="BalloonNumber.ixx">
       <Filter>头文件</Filter>
     </ClCompile>
-    <ClCompile Include="Block.cpp">
+    <ClCompile Include="BalloonNumber.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="GeometricTolerance.ixx">

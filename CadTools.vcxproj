@@ -14,8 +14,8 @@
     <ClCompile Include="acrxEntryPoint.cpp" />
     <ClCompile Include="Annotative.cpp" />
     <ClCompile Include="Annotative.ixx" />
-    <ClCompile Include="Block.cpp" />
-    <ClCompile Include="Block.ixx" />
+    <ClCompile Include="BalloonNumber.cpp" />
+    <ClCompile Include="BalloonNumber.ixx" />
     <ClCompile Include="BuildingTime.ixx" />
     <ClCompile Include="CadTools.cpp" />
     <ClCompile Include="Commands.cpp" />

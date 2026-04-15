@@ -11,7 +11,7 @@ import BuildingTime;
 import UniversalPicker;
 import Dimension;
 import Common;
-import Block;
+import BalloonNumber;
 import CsvWriter;
 import GeometricTolerance;
 import TextUtil;
@@ -274,8 +274,8 @@ void Interface::cmdInsertBalloonNumberBlockWithStartNumber()
         return;
     }
     int startNum = _wtoi(edit1Result);
-    Block::createBalloonNumberBlock();
-    Block::insertBalloonNumberBlockWithStartNumber(startNum);
+    BalloonNumber::createBalloonNumberBlock();
+    BalloonNumber::insertBalloonNumberBlockWithStartNumber(startNum);
 }
 
 void Interface::cmdPrintClassHierarchy()
@@ -442,7 +442,7 @@ void Interface::cmdUpdateBalloonNumberBlock()
         &arcv,
         [&startNum](const AcDbObjectId& id)
         {
-            if (Block::updateBalloonNumberBlock(id, startNum))
+            if (BalloonNumber::updateBalloonNumberBlock(id, startNum))
             {
                 ++startNum;
                 acutPrintf(Common::loadString(IDS_BalloonNextNumber_FMT), startNum);

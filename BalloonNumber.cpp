@@ -2,11 +2,11 @@ module;
 #include "StdAfx.h"
 #include <stdexcept>
 
-module Block;
+module BalloonNumber;
 import Common;
 import Annotative;
 
-namespace Block
+namespace BalloonNumber
 {
     BalloonNumberJig::BalloonNumberJig(unsigned int num) : mNum(num)
     {
@@ -33,7 +33,7 @@ namespace Block
         //this->mpBlockReference->setScaleFactors(AcGeScale3d(1.0)); // 缩放比例
 
         Annotative::applyCurrentAnnotativeScale(this->mpBlockReference); // 应用当前注释性比例
-        Block::syncAttributesFromDefinition(this->mpBlockReference, num); // 同步属性值
+        BalloonNumber::syncAttributesFromDefinition(this->mpBlockReference, num); // 同步属性值
 
         this->setupAttributes();
     }
@@ -122,7 +122,7 @@ namespace Block
     }
 }
 
-namespace Block
+namespace BalloonNumber
 {
 	void createBalloonNumberBlock()
 	{
@@ -193,7 +193,7 @@ namespace Block
         //pBlkRef->setScaleFactors(AcGeScale3d(1.0)); // 缩放比例
 
         Annotative::applyCurrentAnnotativeScale(pBlkRef); // 应用当前注释性比例
-        Block::syncAttributesFromDefinition(pBlkRef, num);
+        BalloonNumber::syncAttributesFromDefinition(pBlkRef, num);
 
         // 块参照提交到模型空间
         AcDbBlockTable* pBT = nullptr;
@@ -220,13 +220,13 @@ namespace Block
         AcString asPrompt;
         while (true)
         {
-            Block::BalloonNumberJig jig(static_cast<unsigned int>(num));
+            BalloonNumber::BalloonNumberJig jig(static_cast<unsigned int>(num));
             asPrompt.format(L"\n指定序号 %d 的插入点[退出(Esc)]：\n", num);
             jig.setDispPrompt(asPrompt);
 
             if (jig.drag() == AcEdJig::kNormal)
             {
-                Block::insertBalloonNumber(jig.getPoint(), static_cast<unsigned int>(num));
+                BalloonNumber::insertBalloonNumber(jig.getPoint(), static_cast<unsigned int>(num));
                 ++num;
             }
             else

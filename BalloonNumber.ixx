@@ -1,11 +1,11 @@
 module;
 #include "StdAfx.h"
 
-export module Block;
+export module BalloonNumber;
 
 import Common;
 
-export namespace Block
+export namespace BalloonNumber
 {
 	/**
 	 * @brief 用于动态拖拽插入序号块，可以实时预览块
@@ -59,7 +59,7 @@ export namespace Block
 	};
 }
 
-export namespace Block
+export namespace BalloonNumber
 {
 	/**
 	 * @brief 创建序列号块
