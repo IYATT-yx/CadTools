@@ -78,7 +78,15 @@ export namespace BalloonNumber
 	 * @param newNum 新的序列号
 	 * @return true 表示更新成功; false 表示更新失败
 	 */
-	bool updateBalloonNumberBlock(AcDbObjectId blockRefId, unsigned int newNum);
+	bool updateBalloonNumberBlock(const AcDbObjectId& blockRefId, unsigned int newNum);
+
+	/**
+	 * @brief 获取指定块参照的气泡号属性内容
+	 * @param blockRefId 块参照的 ObjectId
+	 * @param outValue 输出参数，读取到的原始字符串内容
+	 * @return true 如果块名匹配且找到了对应的属性标签；false 否则
+	 */
+	bool getBalloonAttributeValue(const AcDbObjectId& blockRefId, AcString& outValue);
 }
 
 namespace BalloonNumber

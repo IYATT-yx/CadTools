@@ -236,7 +236,7 @@ namespace BalloonNumber
         }
     }
 
-    bool updateBalloonNumberBlock(AcDbObjectId blockRefId, unsigned int newNum)
+    bool updateBalloonNumberBlock(const AcDbObjectId& blockRefId, unsigned int newNum)
     {
         bool bChanged = false;
 
@@ -312,5 +312,61 @@ namespace BalloonNumber
             }
         }
         delete pIt;
+    }
+
+    bool getBalloonAttributeValue(const AcDbObjectId& blockRefId, AcString& outValue)
+    {
+        AcDbBlockReference* pBlkRef = Common::getObject<AcDbBlockReference>(blockRefId, AcDb::kForRead);
+        if (pBlkRef == nullptr)
+        {
+            return false;
+        }
+
+        bool bNameMatch = false;
+        AcDbObjectId btrId = pBlkRef->blockTableRecord();
+        AcDbBlockTableRecord* pBTR = Common::getObject<AcDbBlockTableRecord>(btrId, AcDb::kForRead);
+
+        if (pBTR != nullptr)
+        {
+            wchar_t* pBlockName = nullptr;
+            pBTR->getName(pBlockName);
+            if (AcString(pBlockName) == Common::BalloonNumberBlock::blockName)
+            {
+                bNameMatch = true;
+            }
+            acutDelString(pBlockName);
+            pBTR->close();
+        }
+
+        if (!bNameMatch)
+        {
+            pBlkRef->close();
+            return false;
+        }
+
+        bool bFound = false;
+        AcDbObjectIterator* pAttIt = pBlkRef->attributeIterator();
+        for (pAttIt->start(); !pAttIt->done(); pAttIt->step())
+        {
+            AcDbAttribute* pAtt = Common::getObject<AcDbAttribute>(pAttIt->objectId(), AcDb::kForRead);
+            if (pAtt != nullptr)
+            {
+                if (AcString(pAtt->tag()) == Common::BalloonNumberBlock::AttTag)
+                {
+                    outValue = pAtt->textString();
+                    bFound = true;
+                }
+                pAtt->close();
+            }
+
+            if (bFound)
+            {
+                break;
+            }
+        }
+
+        delete pAttIt;
+        pBlkRef->close();
+        return bFound;
     }
 }
