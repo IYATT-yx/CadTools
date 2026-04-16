@@ -43,7 +43,8 @@ void Interface::init()
         {L"yxUpdateBalloonNumberBlock", Common::loadString(IDS_yxUpdateBalloonNumberBlockCommandDescription), Commands::CommandFlags::Base, Interface::cmdUpdateBalloonNumberBlock},
         {L"yxImeAutoSwitch", Common::loadString(IDS_yxImeAutoSwitchCommandDescription), Commands::CommandFlags::Base, Interface::cmdImeAutoSwitch},
         {L"yxCloneText", Common::loadString(IDS_yxCloneTextCommandDescription), Commands::CommandFlags::Base, Interface::cmdCloneText},
-        {L"yxIntersect", Common::loadString(IDS_yxIntersect), Commands::CommandFlags::Base, Interface::cmdIntersect}
+        {L"yxIntersect", Common::loadString(IDS_yxIntersect), Commands::CommandFlags::Base, Interface::cmdIntersect},
+        {L"yxBalloonNumberOffset", Common::loadString(IDS_yxBalloonNumberOffsetCommandDescription), Commands::CommandFlags::Pick, Interface::cmdBalloonNumberOffset}
     };
 
     // ×¢²áÃüÁî
@@ -290,7 +291,7 @@ void Interface::cmdInsertBalloonNumberBlockWithStartNumber()
         AfxMessageBox(Common::loadString(IDS_Err_InvalidStartNumber), MB_OK | MB_ICONERROR);
         return;
     }
-    int startNum = _wtoi(edit1Result);
+    int startNum = std::stoi(edit1Result.GetString());
     BalloonNumber::createBalloonNumberBlock();
     BalloonNumber::insertBalloonNumberBlockWithStartNumber(startNum);
 }
@@ -450,7 +451,7 @@ void Interface::cmdUpdateBalloonNumberBlock()
         AfxMessageBox(Common::loadString(IDS_Err_InvalidStartNumber), MB_OK | MB_ICONERROR);
         return;
     }
-    int startNum = _wtoi(edit1Result);
+    int startNum = std::stoi(edit1Result.GetString());
 
     UniversalPicker::AcRxClassVector arcv = { AcDbBlockReference::desc() };
 
@@ -517,7 +518,7 @@ void Interface::cmdImeAutoSwitch()
     }
 
     bAutoStart = edit1Result == L"1";
-    nInterval = _wtoi(edit2Result);
+    nInterval = std::stoi(edit2Result.GetString());
 
     if (nInterval < ImeAutoSwitcher::defaultIntervalMs)
     {
@@ -568,4 +569,59 @@ void Interface::cmdIntersect()
     {
         acDocManager->sendStringToExecute(pDoc, strCmd.constPtr(), false, true, true);
     }
+}
+
+void Interface::cmdBalloonNumberOffset()
+{
+    CAcModuleResourceOverride resOverride;
+    CString title = Common::loadString(IDS_yxBalloonNumberOffsetCommandDescription);
+    GenericPairEditDlg dlg(title, Common::loadString(IDS_BalloonNumberOffsetLabel), Common::loadString(IDS_Prompt), false, true, true);
+    dlg.modifyEditControl(L"", Common::loadString(IDS_BalloonNumberOffsetPromptInfo));
+
+    CString edit1Result;
+    if (dlg.DoModal() == IDOK)
+    {
+        edit1Result = dlg.getEdit1Result();
+    }
+    else
+    {
+        acutPrintf(L"\n%s", Common::loadString(IDS_CancelOperation));
+        return;
+    }
+
+    if (edit1Result.IsEmpty())
+    {
+        acutPrintf(L"\n%s", Common::loadString(IDS_Err_EmptyBalloonNumberOffset));
+        return;
+    }
+
+    int offset = 0;
+    try
+    {
+        size_t pos = 0;
+        offset = std::stoi(edit1Result.GetString(), &pos);
+        if (pos != edit1Result.GetLength())
+        {
+            throw std::exception();
+        }
+    }
+    catch (...)
+    {
+        AfxMessageBox(Common::loadString(IDS_Err_InvalidInteger), MB_OK | MB_ICONERROR);
+        return;
+    }
+
+    UniversalPicker::AcRxClassVector arcv = { AcDbBlockReference::desc() };
+    UniversalPicker::run(
+        &arcv,
+        [&offset](const AcDbObjectId& id)
+        {
+            BalloonNumber::balloonNumberOffset(id, offset);
+        },
+        title,
+        UniversalPicker::SelectMode::Batch,
+        false,
+        UniversalPicker::SortMode::None,
+        true
+    );
 }

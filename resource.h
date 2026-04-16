@@ -70,6 +70,15 @@
 #define IDS_Msg_PasteDstTextPrompt      152
 #define IDS_Version                     153
 #define IDS_yxIntersect                 154
+#define IDS_yxBalloonNumberOffsetCommandDescription 155
+#define IDS_BalloonNumberOffsetLabel    156
+#define IDS_OffsetResultInfo_FMT        157
+#define IDS_OffsetLessZero              158
+#define IDS_OffsetTargetInfo_FMT        159
+#define IDS_Err_BalloonNumberOffsetFail 160
+#define IDS_Err_EmptyBalloonNumberOffset 161
+#define IDS_Err_InvalidInteger          162
+#define IDS_BalloonNumberOffsetPromptInfo 163
 
 // Next default values for new objects
 // 

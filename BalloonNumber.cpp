@@ -1,5 +1,6 @@
 module;
 #include "StdAfx.h"
+#include "resource.h"
 #include <stdexcept>
 
 module BalloonNumber;
@@ -368,5 +369,39 @@ namespace BalloonNumber
         delete pAttIt;
         pBlkRef->close();
         return bFound;
+    }
+
+    void balloonNumberOffset(const AcDbObjectId& id, int offset)
+    {
+        AcString currVal;
+        if (!BalloonNumber::getBalloonAttributeValue(id, currVal))
+        {
+            return;
+        }
+
+        acutPrintf(Common::loadString(IDS_OffsetResultInfo_FMT), currVal.constPtr());
+        try
+        {
+            std::wstring wstr(currVal.constPtr());
+            size_t pos = 0;
+            int val = std::stoi(wstr, &pos);
+            if (pos != wstr.length())
+            {
+                throw std::exception();
+            }
+
+            int newVal = val + offset;
+            if (newVal < 0)
+            {
+                newVal = 0;
+                acutPrintf(L"\n%s", Common::loadString(IDS_OffsetLessZero));
+            }
+            acutPrintf(Common::loadString(IDS_OffsetTargetInfo_FMT), newVal);
+            BalloonNumber::updateBalloonNumberBlock(id, newVal);
+        }
+        catch (...)
+        {
+            acutPrintf(L"\n%s", Common::loadString(IDS_Err_BalloonNumberOffsetFail));
+        }
     }
 }

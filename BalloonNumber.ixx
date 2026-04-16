@@ -87,6 +87,13 @@ export namespace BalloonNumber
 	 * @return true 如果块名匹配且找到了对应的属性标签；false 否则
 	 */
 	bool getBalloonAttributeValue(const AcDbObjectId& blockRefId, AcString& outValue);
+
+	/**
+	 * @brief 对气泡号的序号执行偏置处理
+	 * @param id 块参照 ID
+	 * @param offset 偏置值
+	 */
+	void balloonNumberOffset(const AcDbObjectId& id, int offset);
 }
 
 namespace BalloonNumber

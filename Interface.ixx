@@ -28,5 +28,6 @@ private:
 	static void cmdUnloadApp();
 	static void cmdCloneText();
 	static void cmdIntersect();
+	static void cmdBalloonNumberOffset();
 };
 
