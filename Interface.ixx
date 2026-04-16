@@ -27,5 +27,6 @@ private:
 	static void cmdImeAutoSwitch();
 	static void cmdUnloadApp();
 	static void cmdCloneText();
+	static void cmdIntersect();
 };
 

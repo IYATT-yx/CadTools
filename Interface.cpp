@@ -42,7 +42,8 @@ void Interface::init()
         {L"yxExtractAnnotations", Common::loadString(IDS_yxExtractAnnotationsCommandDescription), Commands::CommandFlags::Base, Interface::cmdExtractAnnotations},
         {L"yxUpdateBalloonNumberBlock", Common::loadString(IDS_yxUpdateBalloonNumberBlockCommandDescription), Commands::CommandFlags::Base, Interface::cmdUpdateBalloonNumberBlock},
         {L"yxImeAutoSwitch", Common::loadString(IDS_yxImeAutoSwitchCommandDescription), Commands::CommandFlags::Base, Interface::cmdImeAutoSwitch},
-        {L"yxCloneText", Common::loadString(IDS_yxCloneTextCommandDescription), Commands::CommandFlags::Base, Interface::cmdCloneText}
+        {L"yxCloneText", Common::loadString(IDS_yxCloneTextCommandDescription), Commands::CommandFlags::Base, Interface::cmdCloneText},
+        {L"yxIntersect", Common::loadString(IDS_yxIntersect), Commands::CommandFlags::Base, Interface::cmdIntersect}
     };
 
     // ×¢²áÃüÁî
@@ -553,4 +554,10 @@ void Interface::cmdCloneText()
         UniversalPicker::SortMode::None,
         true
     );
+}
+
+void Interface::cmdIntersect()
+{
+    AcString strCmd = L"._FILLET\nM\nR\n0\n";
+    acDocManager->sendStringToExecute(curDoc(), strCmd, false, true, true);
 }

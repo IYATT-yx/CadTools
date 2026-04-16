@@ -224,6 +224,7 @@ BEGIN
     IDS_Msg_CopySrcTextPrompt "请选择要复制的源文本对象"
     IDS_Msg_PasteDstTextPrompt "请选择要粘贴到的文本对象"
     IDS_Version             "版本"
+    IDS_yxIntersect         "将两条直线延伸或修剪至其交点"
 END
 
 #endif    // 中文(简体，中国) resources
