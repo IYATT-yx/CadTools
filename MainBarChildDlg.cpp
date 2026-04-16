@@ -27,6 +27,8 @@
 #include "resource.h"
 #include "MainBarChildDlg.hpp"
 
+import Commands;
+
 //-----------------------------------------------------------------------------
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -142,16 +144,10 @@ void MainBarChildDlg::OnNMDblclkList1(NMHDR* pNMHDR, LRESULT* pResult)
 	if (nIndex != -1)
 	{
 		CString strFullCmd = this->commandListControl.GetItemText(nIndex, 1);
-
 		if (!strFullCmd.IsEmpty())
 		{
-			AcString strCmd;
-			strCmd.format(L"._%s\n", (const wchar_t*)strFullCmd);
-			AcApDocument* pDoc = curDoc();
-			if (pDoc != nullptr)
-			{
-				acDocManager->sendStringToExecute(pDoc, strCmd.constPtr(), false, true, true);
-			}
+			Commands::CommandList pszCmdList = { strFullCmd.GetString() };
+			Commands::executeCommand(pszCmdList);
 		}
 	}
 	*pResult = 0;
