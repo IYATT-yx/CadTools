@@ -390,9 +390,9 @@ void Interface::cmdExtractAnnotations()
                         AcString primary = row.primary;
                         AcString secondary = row.secondary;
                         AcString tertiary = row.tertiary;
-                        AcString row = name + " " + value + " " + primary + " " + secondary + " " + tertiary;
-                        acutPrintf(L"\n%s£º%s", Common::loadString(IDS_GDT), row.constPtr());
-                        std::vector<AcString> asvRow = { row, name, value, primary, secondary, tertiary };
+                        AcString strRow = row.toString();
+                        acutPrintf(L"\n%s£º%s", Common::loadString(IDS_GDT), strRow.constPtr());
+                        std::vector<AcString> asvRow = { strRow, name, value, primary, secondary, tertiary };
                         csv.writeRow(asvRow);
                     }
                     else

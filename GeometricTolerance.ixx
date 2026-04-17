@@ -8,7 +8,7 @@ export namespace GeometricTolerance
 {
 	constexpr int GeometricToleranceDataLen = 3; // AutoCAD 最多允许3个
 
-	// 形位公差行数据
+	// 几何公差数据
 	struct GeometricToleranceRow
 	{
 		AcString name; // 名称
@@ -18,6 +18,21 @@ export namespace GeometricTolerance
         AcString primary; // 基准1
         AcString secondary; // 基准2
         AcString tertiary; // 基准3
+
+		AcString toString() const
+		{
+			AcString strTmp = this->name;
+			const AcString* strTmpList[] = {&this->value , &this->primary, &this->secondary, &this->tertiary};
+			for (const AcString* i : strTmpList)
+			{
+				if (!i->isEmpty())
+				{
+					strTmp.append(L"|");
+                    strTmp.append(*i);
+				}
+			}
+			return strTmp;
+		}
 	};
 
 	// 形位公差数据
@@ -31,7 +46,7 @@ export namespace GeometricTolerance
 		AcString handleAsString() const
 		{
 			AcString str;
-			str.format(L"%I64u", u64handle);
+			str.format(L"%I64u", this->u64handle);
 			return str;
 		}
 	};
