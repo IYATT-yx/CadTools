@@ -79,6 +79,15 @@
 #define IDS_Err_EmptyBalloonNumberOffset 161
 #define IDS_Err_InvalidInteger          162
 #define IDS_BalloonNumberOffsetPromptInfo 163
+#define IDS_yxBalloonNumberFilterCommandDescription 164
+#define IDS_BalloonNumberFilterPrompt   165
+#define IDS_BalloonNumberFilterCondition 166
+#define IDS_Err_BalloonNumberFilterEmptyCriteria 167
+#define IDS_Err_BalloonNumberFilterInvalidOperatorType 168
+#define IDS_Err_BalloonNumberFilterNeedInterger 169
+#define IDS_Msg_BalloonNumberFilterMatchCount_FMT 170
+#define IDS_Msg_NoMatch                 171
+#define IDS_Msg_BalloonNumberFilterNoMatch 171
 
 // Next default values for new objects
 // 

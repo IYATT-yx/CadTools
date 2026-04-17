@@ -238,6 +238,15 @@ BEGIN
     IDS_Err_EmptyBalloonNumberOffset "偏置值不可为空"
     IDS_Err_InvalidInteger  "偏置值必须为整数"
     IDS_BalloonNumberOffsetPromptInfo "新编号=旧编号+偏置值，若计算出新编号<0，则新编号=0"
+    IDS_yxBalloonNumberFilterCommandDescription "气泡号筛选"
+    IDS_BalloonNumberFilterPrompt 
+                            "格式：符号+值，如：>>10筛选大于10。大于：>>或》》，小于：<<或《《，等于：==，不等于：<>或《》，大于等于：>=或》=，小于等于：<=或《=。等于和不等于判断允许非整数。"
+    IDS_BalloonNumberFilterCondition "筛选条件"
+    IDS_Err_BalloonNumberFilterEmptyCriteria "筛选条件不能为空。"
+    IDS_Err_BalloonNumberFilterInvalidOperatorType "输入的符号不合法。"
+    IDS_Err_BalloonNumberFilterNeedInterger "非等于或不等于判定时，判定值必须为整数。"
+    IDS_Msg_BalloonNumberFilterMatchCount_FMT "\n筛选完成：%d 个匹配项。"
+    IDS_Msg_BalloonNumberFilterNoMatch "\n未发现符合条件的气泡号。"
 END
 
 #endif    // 中文(简体，中国) resources

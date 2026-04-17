@@ -94,6 +94,14 @@ export namespace BalloonNumber
 	 * @param offset 偏置值
 	 */
 	void balloonNumberOffset(const AcDbObjectId& id, int offset);
+
+	/**
+	 * @brief 判断气泡号编号是否匹配条件
+	 * @param attrValue 气泡号编号值
+	 * @param criteria 条件
+	 * @return true 表示匹配；false 表示不匹配
+	 */
+	bool meetCriteria(const AcString& attrValue, const AcString& criteria);
 }
 
 namespace BalloonNumber
@@ -111,4 +119,23 @@ namespace BalloonNumber
 	 * @param num 序号
 	 */
 	void syncAttributesFromDefinition(AcDbBlockReference* pBlkRef, unsigned int num);
+}
+
+export namespace BalloonNumber
+{
+	// 过滤器筛选操作类型
+	namespace OperatorType
+	{
+		constexpr const wchar_t* equal = L"==";
+		constexpr const wchar_t* notEqual1 = L"<>";
+		constexpr const wchar_t* notEqual2 = L"《》";
+        constexpr const wchar_t* greater1 = L">>";
+		constexpr const wchar_t* greater2 = L"》》";
+        constexpr const wchar_t* less1 = L"<<";
+        constexpr const wchar_t* less2 = L"《《";
+		constexpr const wchar_t* greaterEqual1 = L">=";
+		constexpr const wchar_t* greaterEqual2 = L"》=";
+		constexpr const wchar_t* lessEqual1 = L"<=";
+        constexpr const wchar_t* lessEqual2 = L"《=";
+	};
 }

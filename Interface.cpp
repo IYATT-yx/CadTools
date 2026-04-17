@@ -28,15 +28,15 @@ void Interface::init()
         {L"yx", Common::loadString(IDS_yxCommandDescription), Commands::CommandFlags::Base, Interface::cmdHelp},
         {L"yxTest", Common::loadString(IDS_yxTestCommandDescription), Commands::CommandFlags::Base, Interface::test},
         {L"yxUnload", Common::loadString(IDS_yxUnloadCommandDescription), Commands::CommandFlags::Base, Interface::cmdUnloadApp},
-        {L"yxSetByLayer", Common::loadString(IDS_yxSetByLayerCommandDescription), Commands::CommandFlags::Pick, Interface::cmdSetByLayer},
-        {L"yxDimensionFix", Common::loadString(IDS_yxDimensionFixCommandDescription), Commands::CommandFlags::Pick, Interface::cmdDimensionFix},
-        {L"yxDimensionResume", Common::loadString(IDS_yxDimensionResumeCommandDescription), Commands::CommandFlags::Pick, Interface::cmdDimensionResume},
-        {L"yxAddSurroundingCharsForDimension", Common::loadString(IDS_yxAddSurroundingCharsForDimensionCommandDescription), Commands::CommandFlags::Pick, Interface::cmdAddSurroundingCharsForDimension},
-        {L"yxRemoveSurroundingCharsForDimension", Common::loadString(IDS_yxRemoveSurroundingCharsForDimensionCommandDescription), Commands::CommandFlags::Pick, Interface::cmdRemoveSurroundingCharsForDimension},
-        {L"yxSetBasicBox", Common::loadString(IDS_yxSetBasicBoxCommandDescription), Commands::CommandFlags::Pick, Interface::cmdSetBasicBox},
-        {L"yxUnsetBasicBox", Common::loadString(IDS_yxUnsetBasicBoxCommandDescription), Commands::CommandFlags::Pick, Interface::cmdUnsetBasicBox},
-        {L"yxSetRefDim", Common::loadString(IDS_yxSetRefDimCommandDescription), Commands::CommandFlags::Pick, Interface::cmdSetRefDim},
-        {L"yxUnsetRefDim", Common::loadString(IDS_yxUnsetRefDimCommandDescription), Commands::CommandFlags::Pick, Interface::cmdUnsetRefDim},
+        {L"yxSetByLayer", Common::loadString(IDS_yxSetByLayerCommandDescription), Commands::CommandFlags::PickRedraw, Interface::cmdSetByLayer},
+        {L"yxDimensionFix", Common::loadString(IDS_yxDimensionFixCommandDescription), Commands::CommandFlags::PickRedraw, Interface::cmdDimensionFix},
+        {L"yxDimensionResume", Common::loadString(IDS_yxDimensionResumeCommandDescription), Commands::CommandFlags::PickRedraw, Interface::cmdDimensionResume},
+        {L"yxAddSurroundingCharsForDimension", Common::loadString(IDS_yxAddSurroundingCharsForDimensionCommandDescription), Commands::CommandFlags::PickRedraw, Interface::cmdAddSurroundingCharsForDimension},
+        {L"yxRemoveSurroundingCharsForDimension", Common::loadString(IDS_yxRemoveSurroundingCharsForDimensionCommandDescription), Commands::CommandFlags::PickRedraw, Interface::cmdRemoveSurroundingCharsForDimension},
+        {L"yxSetBasicBox", Common::loadString(IDS_yxSetBasicBoxCommandDescription), Commands::CommandFlags::PickRedraw, Interface::cmdSetBasicBox},
+        {L"yxUnsetBasicBox", Common::loadString(IDS_yxUnsetBasicBoxCommandDescription), Commands::CommandFlags::PickRedraw, Interface::cmdUnsetBasicBox},
+        {L"yxSetRefDim", Common::loadString(IDS_yxSetRefDimCommandDescription), Commands::CommandFlags::PickRedraw, Interface::cmdSetRefDim},
+        {L"yxUnsetRefDim", Common::loadString(IDS_yxUnsetRefDimCommandDescription), Commands::CommandFlags::PickRedraw, Interface::cmdUnsetRefDim},
         {L"yxInsertBalloonNumberBlockWithStartNumber", Common::loadString(IDS_yxInsertBalloonNumberBlockWithStartNumberCommandDescription), Commands::CommandFlags::Base, Interface::cmdInsertBalloonNumberBlockWithStartNumber},
         {L"yxPrintClassHierarchy", Common::loadString(IDS_yxPrintClassHierarchyCommandDescription), Commands::CommandFlags::Base, Interface::cmdPrintClassHierarchy},
         {L"yxExtractAnnotations", Common::loadString(IDS_yxExtractAnnotationsCommandDescription), Commands::CommandFlags::Base, Interface::cmdExtractAnnotations},
@@ -44,7 +44,8 @@ void Interface::init()
         {L"yxImeAutoSwitch", Common::loadString(IDS_yxImeAutoSwitchCommandDescription), Commands::CommandFlags::Base, Interface::cmdImeAutoSwitch},
         {L"yxCloneText", Common::loadString(IDS_yxCloneTextCommandDescription), Commands::CommandFlags::Base, Interface::cmdCloneText},
         {L"yxIntersect", Common::loadString(IDS_yxIntersect), Commands::CommandFlags::Base, Interface::cmdIntersect},
-        {L"yxBalloonNumberOffset", Common::loadString(IDS_yxBalloonNumberOffsetCommandDescription), Commands::CommandFlags::Pick, Interface::cmdBalloonNumberOffset}
+        {L"yxBalloonNumberOffset", Common::loadString(IDS_yxBalloonNumberOffsetCommandDescription), Commands::CommandFlags::PickRedraw, Interface::cmdBalloonNumberOffset},
+        {L"yxBalloonNumberFilter", Common::loadString(IDS_yxBalloonNumberFilterCommandDescription), Commands::CommandFlags::PickRedraw, Interface::cmdBalloonNumberFilter}
     };
 
     // 注册命令
@@ -96,13 +97,13 @@ void Interface::unload()
 void Interface::cmdUnloadApp()
 {
     const wchar_t* appName = acedGetAppName();
-    AcString strCmd;
-    strCmd.format(L"._ARX\nU\n%s\n", appName);
-    AcApDocument* pDoc = curDoc();
-    if (pDoc != nullptr)
+    Commands::CommandList pszCmdList =
     {
-        acDocManager->sendStringToExecute(pDoc, strCmd.constPtr(), false, true, true);
-    }
+        L"ARX",
+        L"U",
+        appName
+    };
+    Commands::executeCommand(pszCmdList);
 }
 
 void Interface::cmdHelp()
@@ -563,12 +564,14 @@ void Interface::cmdCloneText()
 
 void Interface::cmdIntersect()
 {
-    static const AcString strCmd = L"._FILLET\nM\nR\n0\n";
-    AcApDocument* pDoc = curDoc();
-    if (pDoc != nullptr)
+    Commands::CommandList pszCmdList =
     {
-        acDocManager->sendStringToExecute(pDoc, strCmd.constPtr(), false, true, true);
-    }
+        L"FILLET",
+        L"M",
+        L"R",
+        L"0"
+    };
+    Commands::executeCommand(pszCmdList);
 }
 
 void Interface::cmdBalloonNumberOffset()
@@ -624,4 +627,104 @@ void Interface::cmdBalloonNumberOffset()
         UniversalPicker::SortMode::None,
         true
     );
+}
+
+void Interface::cmdBalloonNumberFilter()
+{
+    CAcModuleResourceOverride resOverride;
+    CString title = Common::loadString(IDS_yxBalloonNumberFilterCommandDescription);
+    GenericPairEditDlg dlg(title, Common::loadString(IDS_BalloonNumberFilterCondition), Common::loadString(IDS_Prompt), false, true, false);
+    dlg.modifyEditControl(L"", Common::loadString(IDS_BalloonNumberFilterPrompt));
+
+    CString edit1Result;
+    if (dlg.DoModal() == IDOK)
+    {
+         edit1Result = dlg.getEdit1Result();
+    }
+    else
+    {
+        acutPrintf(L"\n%s", Common::loadString(IDS_CancelOperation));
+        return;
+    }
+
+    if (edit1Result.GetLength() < 3)
+    {
+        AfxMessageBox(Common::loadString(IDS_Err_BalloonNumberFilterEmptyCriteria), MB_OK | MB_ICONERROR);
+        return;
+    }
+
+    // 验证输入合法性
+    /////////////////////
+    // 无限制判定值的符号列表
+    std::vector<CString> opNoLimit = { BalloonNumber::OperatorType::equal, BalloonNumber::OperatorType::notEqual1, BalloonNumber::OperatorType::notEqual2 };
+    // 限制判定值为数字的列表
+    std::vector<CString> opNeedNumeric =
+    {
+        BalloonNumber::OperatorType::greater1, BalloonNumber::OperatorType::greater2,
+        BalloonNumber::OperatorType::less1, BalloonNumber::OperatorType::less2,
+        BalloonNumber::OperatorType::greaterEqual1, BalloonNumber::OperatorType::greaterEqual2,
+        BalloonNumber::OperatorType::lessEqual1, BalloonNumber::OperatorType::lessEqual2
+    };
+
+    CString strInputOpType = edit1Result.Left(2);
+    CString strInputOpValue = edit1Result.Mid(2);
+    auto it = std::find(opNoLimit.begin(), opNoLimit.end(), strInputOpType);
+    if (it == opNoLimit.end()) // 不在无限制判定值的符号列表中，则要求判定值必须为证书
+    {
+        // 进一步判断是否输入了非法符号
+        it = std::find(opNeedNumeric.begin(), opNeedNumeric.end(), strInputOpType);
+        if (it == opNeedNumeric.end())
+        {
+            AfxMessageBox(Common::loadString(IDS_Err_BalloonNumberFilterInvalidOperatorType), MB_OK | MB_ICONERROR);
+            return;
+        }
+
+        try
+        {
+            size_t pos = 0;
+            int iInputOpValue = std::stoi(strInputOpValue.GetString(), &pos);
+            if (pos != strInputOpValue.GetLength())
+            {
+                throw std::exception();
+            }
+        }
+        catch (...)
+        {
+            AfxMessageBox(Common::loadString(IDS_Err_BalloonNumberFilterNeedInterger), MB_OK | MB_ICONERROR);
+            return;
+        }
+    }
+
+    AcDbObjectIdArray matchedIds;
+    UniversalPicker::AcRxClassVector arcv = { AcDbBlockReference::desc() };
+
+    UniversalPicker::run(
+        &arcv,
+        [&](const AcDbObjectId& id)
+        {
+            AcString attrValue;
+            if (BalloonNumber::getBalloonAttributeValue(id, attrValue))
+            {
+                if (BalloonNumber::meetCriteria(attrValue, edit1Result.GetString()))
+                {
+                    matchedIds.append(id);
+                }
+            }
+        },
+        title,
+        UniversalPicker::SelectMode::Batch,
+        true,
+        UniversalPicker::SortMode::None,
+        true
+    );
+
+    if (matchedIds.length() > 0)
+    {
+        UniversalPicker::setSelection(matchedIds);
+        acutPrintf(Common::loadString(IDS_Msg_BalloonNumberFilterMatchCount_FMT), matchedIds.length());
+    }
+    else
+    {
+        acutPrintf(Common::loadString(IDS_Msg_BalloonNumberFilterNoMatch));
+    }
 }

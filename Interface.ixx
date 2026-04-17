@@ -29,5 +29,6 @@ private:
 	static void cmdCloneText();
 	static void cmdIntersect();
 	static void cmdBalloonNumberOffset();
+	static void cmdBalloonNumberFilter();
 };
 

@@ -115,5 +115,11 @@ public:
 	 * @return 实体 ID，返回 AcDbObjectId::kNull 时失败或取消选择。
 	 */
 	static AcDbObjectId getSelectedSingleEntityId(UniversalPicker::AcRxClassVectorPtr arcv);
+
+	/**
+	 * @brief 设置指定 ID 列表中的实体为选中状态
+	 * @param ids ID 列表
+	 */
+	static void setSelection(const AcDbObjectIdArray& ids);
 };
 

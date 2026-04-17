@@ -404,4 +404,65 @@ namespace BalloonNumber
             acutPrintf(L"\n%s", Common::loadString(IDS_Err_BalloonNumberOffsetFail));
         }
     }
+
+    bool meetCriteria(const AcString& attrValue, const AcString& criteria)
+    {
+        if (criteria.length() < 3)
+        {
+            return false;
+        }
+
+        AcString strOp = criteria.left(2);
+        AcString strTarget = criteria.mid(2);
+
+        // 等于和不等于判断允许非数字
+        if (strOp == BalloonNumber::OperatorType::equal)
+        {
+            if (attrValue == strTarget)
+            {
+                return true;
+            }
+            return false;
+        }
+        if (strOp == BalloonNumber::OperatorType::notEqual1 || strOp == BalloonNumber::OperatorType::notEqual2)
+        {
+            if (attrValue != strTarget)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        std::wstring wstrAttrValue(attrValue.constPtr());
+        std::wstring wstrTarget(strTarget.constPtr());
+
+        // 大小比较判断必须为数字
+        size_t pos = 0;
+        try
+        {
+            int iAttrValue = std::stoi(wstrAttrValue, &pos);
+            int iTarget = std::stoi(wstrTarget, &pos);
+            if (strOp == BalloonNumber::OperatorType::less1 || strOp == BalloonNumber::OperatorType::less2)
+            {
+                return iAttrValue < iTarget;
+            }
+            if (strOp == BalloonNumber::OperatorType::greater1 || strOp == BalloonNumber::OperatorType::greater2)
+            {
+                return iAttrValue > iTarget;
+            }
+            if (strOp == BalloonNumber::OperatorType::lessEqual1 || strOp == BalloonNumber::OperatorType::lessEqual2)
+            {
+                return iAttrValue <= iTarget;
+            }
+            if (strOp == BalloonNumber::OperatorType::greaterEqual1 || strOp == BalloonNumber::OperatorType::greaterEqual2)
+            {
+                return iAttrValue >= iTarget;
+            }
+        }
+        catch (...)
+        {
+            return false;
+        }
+        return false;
+    }
 }

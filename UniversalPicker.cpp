@@ -1,7 +1,6 @@
 module;
 #include "stdafx.h"
 #include "dbtrans.h"
-
 #include <unordered_set>
 
 namespace std
@@ -18,6 +17,7 @@ namespace std
 }
 
 module UniversalPicker;
+import Commands;
 
 resbuf* UniversalPicker::buildFilter(UniversalPicker::AcRxClassVectorPtr arcv)
 {
@@ -550,4 +550,35 @@ const wchar_t* UniversalPicker::SortModeToString(UniversalPicker::SortMode mode)
             return L"None";
         }
     }
+}
+
+void UniversalPicker::setSelection(const AcDbObjectIdArray& idArray)
+{
+    if (idArray.isEmpty())
+    {
+        acedSSSetFirst(NULL, NULL);
+        return;
+    }
+
+    ads_name ss;
+    if (acedSSAdd(NULL, NULL, ss) != RTNORM)
+    {
+        return;
+    }
+
+    for (int i = 0; i < idArray.length(); i++)
+    {
+        ads_name entName;
+        if (acdbGetAdsName(entName, idArray[i]) == Acad::eOk)
+        {
+            acedSSAdd(entName, ss, ss);
+        }
+    }
+
+    int result = acedSSSetFirst(ss, ss);
+
+    acedSSFree(ss);
+
+    Commands::CommandList pszCmdList = { L"SELECT" };
+    Commands::executeCommand(pszCmdList);
 }
