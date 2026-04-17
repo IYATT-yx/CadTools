@@ -247,6 +247,8 @@ BEGIN
     IDS_Err_BalloonNumberFilterNeedInterger "非等于或不等于判定时，判定值必须为整数。"
     IDS_Msg_BalloonNumberFilterMatchCount_FMT "\n筛选完成：%d 个匹配项。"
     IDS_Msg_BalloonNumberFilterNoMatch "\n未发现符合条件的气泡号。"
+    IDS_Err_GetCurrentScaleValue_FMT "\n获取注释比例缩放系数失败，已重置为：%g"
+    IDS_Err_LineSpacingFactorOutOfRange "行距比例不可小于0.25，且不可大于4.0。"
 END
 
 #endif    // 中文(简体，中国) resources

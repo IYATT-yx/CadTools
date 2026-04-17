@@ -88,6 +88,8 @@
 #define IDS_Msg_BalloonNumberFilterMatchCount_FMT 170
 #define IDS_Msg_NoMatch                 171
 #define IDS_Msg_BalloonNumberFilterNoMatch 171
+#define IDS_Err_GetCurrentScaleValue_FMT 172
+#define IDS_Err_LineSpacingFactorOutOfRange 173
 
 // Next default values for new objects
 // 

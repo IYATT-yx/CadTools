@@ -1,10 +1,12 @@
 module;
 #include "StdAfx.h"
+#include "resource.h"
 #include <regex>
 
 module TextUtil;
 import Common;
 import UniversalPicker;
+import Annotative;
 
 namespace TextUtil
 {
@@ -114,6 +116,76 @@ namespace TextUtil
 		{
             pDText->setTextString(content);
             return;
+		}
+	}
+
+	void createMTextMatrix(double colWidth, double colSpacing, double rowSpacing, const std::vector<std::vector<AcString>>& matrixData, AcGePoint3d topLeftPt, double dLineSpacingFactor)
+	{
+		if (dLineSpacingFactor < 0.25 || dLineSpacingFactor > 4.0)
+		{
+			AfxMessageBox(Common::loadString(IDS_Err_LineSpacingFactorOutOfRange),MB_OK | MB_ICONERROR);
+			return;
+		}
+
+		AcDbDatabase* pDb = acdbHostApplicationServices()->workingDatabase();
+		if (!pDb)
+		{
+			return;
+		}
+
+		double s = Annotative::getCurrentScaleValue();
+		if (s < 0)
+		{
+			s = 1.0;
+			acutPrintf(Common::loadString(IDS_Err_GetCurrentScaleValue_FMT), s);
+		}
+
+		static const double dRowHeight = 3.5;
+		double finalColStep = (colWidth + colSpacing) * s;
+		double finalRowStep = (dRowHeight + rowSpacing) * s;
+
+		for (size_t row = 0; row < matrixData.size(); ++row)
+		{
+			for (size_t col = 0; col < matrixData[row].size(); ++col)
+			{
+				const AcString& cellText = matrixData[row][col];
+				if (cellText.isEmpty())
+				{
+					continue;
+				}
+
+				AcDbMText* pMText = new AcDbMText();
+				if (pMText)
+				{
+					pMText->setDatabaseDefaults(pDb);
+					pMText->setContents(cellText);
+					pMText->setAttachment(AcDbMText::kTopLeft);
+					pMText->setWidth(colWidth * s);
+					pMText->setTextHeight(dRowHeight * s);
+					pMText->setLineSpacingFactor(dLineSpacingFactor);
+
+					AcGePoint3d currentPt;
+					currentPt.x = topLeftPt.x + (col * finalColStep);
+					currentPt.y = topLeftPt.y - (row * finalRowStep);
+					currentPt.z = topLeftPt.z;
+					pMText->setLocation(currentPt);
+
+					AcDbBlockTableRecord* pBTR = Common::getObject<AcDbBlockTableRecord>(pDb->currentSpaceId(), AcDb::kForWrite);
+					if (pBTR != nullptr)
+					{
+						if (pBTR->appendAcDbEntity(pMText) == Acad::eOk)
+						{
+							Annotative::setObjAnnotative(pMText, true);
+							Annotative::applyCurrentAnnotativeScale(pMText);
+							pMText->close();
+						}
+					}
+					else
+					{
+						delete pMText;
+					}
+				}
+			}
 		}
 	}
 }

@@ -61,4 +61,15 @@ export namespace TextUtil
 	 * @param content 文本内容
 	 */
 	void updateTextEntityContent(const AcDbObjectId& id, const AcString& content);
+
+	/**
+	 * @brief 创建注释性多行文本矩阵（表格排布）
+	 * @param colWidth     图纸上的逻辑列宽（纸面高度为2.5时的视觉宽度）
+	 * @param colSpacing   图纸上的逻辑列间距
+	 * @param rowSpacing   图纸上的逻辑行间距
+	 * @param matrixData   矩阵文本数据 (vector<vector<AcString>>)
+	 * @param topLeftPt    左上角起始基准点
+	 * @param dLineSpacingFactor 行距比例。默认值 1，不可小于 0.25，不可大于 4.0。实际行间距 = 文字高度 x 1.6667 x 行距比例。
+	 */
+	void createMTextMatrix(double colWidth, double colSpacing, double rowSpacing, const std::vector<std::vector<AcString>>& matrixData, AcGePoint3d topLeftPt, double dLineSpacingFactor = 1.0);
 }
