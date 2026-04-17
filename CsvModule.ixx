@@ -2,7 +2,7 @@ module;
 #include "StdAfx.h"
 #include <fstream>
 
-export module CsvWriter;
+export module CsvModule;
 
 /**
  * @brief CSV 文件写入类
@@ -83,4 +83,18 @@ private:
      * @return 转换后的宽字符串
      */
     std::wstring toWString(const AcString& s) const;
+};
+
+export namespace CsvModule
+{
+    /**
+     * @brief 从 CSV 文件读取数据并解析为 AcString 矩阵。
+     * * @details 该函数支持 UTF-8 编码（含/不含 BOM），并能处理 CSV 标准中的双引号转义逻辑。
+     * 解析后的字符串会自动从 UTF-8 转换为 AutoCAD 内部使用的 Unicode 编码。
+     * * @param strFilePath 输入参数，使用 CString 存储的文件完整路径。
+     * @param matrixData 输出参数，存储解析后结果的二维 AcString 容器。
+     * @param delimiter 输入参数，指定 CSV 的字段分隔符，默认为英文逗号。
+     * @return 如果文件成功打开并解析则返回 true，否则返回 false。
+     */
+    bool readCsvToAcStringMatrix(const CString& strFilePath, std::vector<std::vector<AcString>>& matrixData, char delimiter = ',');
 };

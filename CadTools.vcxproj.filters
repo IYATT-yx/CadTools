@@ -84,10 +84,10 @@
     <ClCompile Include="TextUtil.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="CsvWriter.cpp">
+    <ClCompile Include="CsvModule.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="CsvWriter.ixx">
+    <ClCompile Include="CsvModule.ixx">
       <Filter>头文件</Filter>
     </ClCompile>
     <ClCompile Include="Annotative.cpp">
