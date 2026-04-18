@@ -140,10 +140,6 @@ namespace TextUtil
 			acutPrintf(Common::loadString(IDS_Err_GetCurrentScaleValue_FMT), s);
 		}
 
-		static const double dRowHeight = 3.5;
-		double finalColStep = (colWidth + colSpacing) * s;
-		double finalRowStep = (dRowHeight + rowSpacing) * s;
-
 		for (size_t row = 0; row < matrixData.size(); ++row)
 		{
 			for (size_t col = 0; col < matrixData[row].size(); ++col)
@@ -161,12 +157,12 @@ namespace TextUtil
 					pMText->setContents(cellText);
 					pMText->setAttachment(AcDbMText::kTopLeft);
 					pMText->setWidth(colWidth * s);
-					pMText->setTextHeight(dRowHeight * s);
+					pMText->setTextHeight(Common::defaultTextHeight * s);
 					pMText->setLineSpacingFactor(dLineSpacingFactor);
 
 					AcGePoint3d currentPt;
-					currentPt.x = topLeftPt.x + (col * finalColStep);
-					currentPt.y = topLeftPt.y - (row * finalRowStep);
+					currentPt.x = topLeftPt.x + (col * colSpacing);
+					currentPt.y = topLeftPt.y - (row * rowSpacing);
 					currentPt.z = topLeftPt.z;
 					pMText->setLocation(currentPt);
 
