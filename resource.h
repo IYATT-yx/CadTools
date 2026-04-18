@@ -90,6 +90,15 @@
 #define IDS_Msg_BalloonNumberFilterNoMatch 171
 #define IDS_Err_GetCurrentScaleValue_FMT 172
 #define IDS_Err_LineSpacingFactorOutOfRange 173
+#define IDS_CsvFiles                    174
+#define IDS_AllFiles                    175
+#define IDS_DefaultSaveDataCsvFilename  176
+#define IDS_yxImportCsvToMTextMatrixCommandDescription 177
+#define IDS_ImportCsvTitle              178
+#define IDS_LBL_Parameter               179
+#define IDS_MTextMatrixParameterPrompt  180
+#define IDS_Err_EmptyMTextMatrixParameter 181
+#define IDS_Msg_GetPoint                182
 
 // Next default values for new objects
 // 

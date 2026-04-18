@@ -249,6 +249,19 @@ BEGIN
     IDS_Msg_BalloonNumberFilterNoMatch "\n未发现符合条件的气泡号。"
     IDS_Err_GetCurrentScaleValue_FMT "\n获取注释比例缩放系数失败，已重置为：%g"
     IDS_Err_LineSpacingFactorOutOfRange "行距比例不可小于0.25，且不可大于4.0。"
+    IDS_CsvFiles            "CSV 文件"
+    IDS_AllFiles            "所有文件"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_DefaultSaveDataCsvFilename "数据文件.csv"
+    IDS_yxImportCsvToMTextMatrixCommandDescription "从 CSV 文件导入数据生成多行文本矩阵"
+    IDS_ImportCsvTitle      "选择要导入的文件"
+    IDS_LBL_Parameter       "参数"
+    IDS_MTextMatrixParameterPrompt "输入3个不小于0的浮点数参数，使用空格分隔，分别为：列宽、列步长、行步长。"
+    IDS_Err_EmptyMTextMatrixParameter "多行文本矩阵参数不能为空"
+    IDS_Msg_GetPoint        "请选择位置"
 END
 
 #endif    // 中文(简体，中国) resources

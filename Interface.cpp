@@ -3,6 +3,7 @@ module;
 #include "GenericPairEditDlg.hpp"
 #include "MainBar.hpp"
 #include "resource.h"
+#include <sstream>
 
 module Interface;
 
@@ -45,7 +46,8 @@ void Interface::init()
         {L"yxCloneText", Common::loadString(IDS_yxCloneTextCommandDescription), Commands::CommandFlags::Base, Interface::cmdCloneText},
         {L"yxIntersect", Common::loadString(IDS_yxIntersect), Commands::CommandFlags::Base, Interface::cmdIntersect},
         {L"yxBalloonNumberOffset", Common::loadString(IDS_yxBalloonNumberOffsetCommandDescription), Commands::CommandFlags::PickRedraw, Interface::cmdBalloonNumberOffset},
-        {L"yxBalloonNumberFilter", Common::loadString(IDS_yxBalloonNumberFilterCommandDescription), Commands::CommandFlags::PickRedraw, Interface::cmdBalloonNumberFilter}
+        {L"yxBalloonNumberFilter", Common::loadString(IDS_yxBalloonNumberFilterCommandDescription), Commands::CommandFlags::PickRedraw, Interface::cmdBalloonNumberFilter},
+        {L"yxImportCsvToMTextMatrix", Common::loadString(IDS_yxImportCsvToMTextMatrixCommandDescription), Commands::CommandFlags::PickRedraw, Interface::cmdImportCsvToMTextMatrix}
     };
 
     // ×¢²áÃüÁî
@@ -137,6 +139,7 @@ void Interface::cmdAddSurroundingCharsForDimension()
     }
     else
     {
+        acutPrintf(L"\n%s", Common::loadString(IDS_CancelOperation));
         return;
     }
 
@@ -716,4 +719,85 @@ void Interface::cmdBalloonNumberFilter()
     {
         acutPrintf(Common::loadString(IDS_Msg_BalloonNumberFilterNoMatch));
     }
+}
+
+void Interface::cmdImportCsvToMTextMatrix()
+{
+    CAcModuleResourceOverride resOverride;
+    FileDialog::FileDialogFilterBuilder fileFilterBuilter;
+    CString strFileFilter = fileFilterBuilter.addFilter(Common::loadString(IDS_CsvFiles), { L"*.csv" }).build();
+    CString strFilePath = FileDialog::ShowOpenFileDialog(Common::loadString(IDS_ImportCsvTitle), L"csv", strFileFilter);
+    if (strFilePath.IsEmpty())
+    {
+        acutPrintf(L"\n%s", Common::loadString(IDS_CancelOperation));
+        return;
+    }
+
+    CsvModule::AcStringMatrix matrixData;
+    CsvModule::readCsvToAcStringMatrix(strFilePath, matrixData);
+
+    GenericPairEditDlg dlg(Common::loadString(IDS_yxImportCsvToMTextMatrixCommandDescription), Common::loadString(IDS_LBL_Parameter), Common::loadString(IDS_Prompt), false, true, true);
+    dlg.modifyEditControl(L"", Common::loadString(IDS_MTextMatrixParameterPrompt));
+
+    CString edit1Result;
+    if (dlg.DoModal() == IDOK)
+    {
+        edit1Result = dlg.getEdit1Result();
+    }
+    else
+    {
+        acutPrintf(L"\n%s", Common::loadString(IDS_CancelOperation));
+        return;
+    }
+
+    if (edit1Result.IsEmpty())
+    {
+        AfxMessageBox(Common::loadString(IDS_Err_EmptyMTextMatrixParameter), MB_OK | MB_ICONERROR);
+        return;
+    }
+
+    // ½âÎö²ÎÊý
+    ///////////////////
+    std::wstring wsInput = edit1Result.GetString();
+    std::wstringstream wss(wsInput);
+    std::vector<double> params;
+    double dTmp;
+
+    while (wss >> dTmp)
+    {
+        if (dTmp <= 0)
+        {
+            AfxMessageBox(Common::loadString(IDS_MTextMatrixParameterPrompt), MB_OK | MB_ICONERROR);
+            return;
+        }
+        params.push_back(dTmp);
+    }
+
+    //bool bValid = true;
+    CString strMsg;
+
+    if (!wss.eof() && wss.fail())
+    {
+        AfxMessageBox(Common::loadString(IDS_MTextMatrixParameterPrompt), MB_OK | MB_ICONERROR);
+        return;
+    }
+
+    if (params.size() != 3)
+    {
+        AfxMessageBox(Common::loadString(IDS_MTextMatrixParameterPrompt), MB_OK | MB_ICONERROR);
+        return;
+    }
+
+    double colWidth = params[0];
+    double colStep = params[1];
+    double rowStep = params[2];
+
+    ads_point pt{};
+    if (acedGetPoint(nullptr, Common::loadString(IDS_Msg_GetPoint), pt) != RTNORM)
+    {
+        acutPrintf(L"\n%s", Common::loadString(IDS_CancelOperation));
+        return;
+    }
+
+    TextUtil::createMTextMatrix(colWidth, colStep, rowStep, matrixData, asPnt3d(pt));
 }

@@ -30,5 +30,6 @@ private:
 	static void cmdIntersect();
 	static void cmdBalloonNumberOffset();
 	static void cmdBalloonNumberFilter();
+	static void cmdImportCsvToMTextMatrix();
 };
 
