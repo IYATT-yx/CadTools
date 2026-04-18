@@ -12,12 +12,11 @@ import UniversalPicker;
 import Dimension;
 import Common;
 import BalloonNumber;
-import CsvWriter;
+import CsvModule;
 import GeometricTolerance;
 import TextUtil;
 import ImeAutoSwitcher;
 import Commands;
-
 
 void Interface::init()
 {
@@ -40,7 +39,7 @@ void Interface::init()
         {L"yxInsertBalloonNumberBlockWithStartNumber", Common::loadString(IDS_yxInsertBalloonNumberBlockWithStartNumberCommandDescription), Commands::CommandFlags::Base, Interface::cmdInsertBalloonNumberBlockWithStartNumber},
         {L"yxPrintClassHierarchy", Common::loadString(IDS_yxPrintClassHierarchyCommandDescription), Commands::CommandFlags::Base, Interface::cmdPrintClassHierarchy},
         {L"yxExtractAnnotations", Common::loadString(IDS_yxExtractAnnotationsCommandDescription), Commands::CommandFlags::Base, Interface::cmdExtractAnnotations},
-        {L"yxUpdateBalloonNumberBlock", Common::loadString(IDS_yxUpdateBalloonNumberBlockCommandDescription), Commands::CommandFlags::Base, Interface::cmdUpdateBalloonNumberBlock},
+        {L"yxUpdateBalloonNumberBlock", Common::loadString(IDS_yxUpdateBalloonNumberBlockCommandDescription), Commands::CommandFlags::PickRedraw, Interface::cmdUpdateBalloonNumberBlock},
         {L"yxImeAutoSwitch", Common::loadString(IDS_yxImeAutoSwitchCommandDescription), Commands::CommandFlags::Base, Interface::cmdImeAutoSwitch},
         {L"yxCloneText", Common::loadString(IDS_yxCloneTextCommandDescription), Commands::CommandFlags::Base, Interface::cmdCloneText},
         {L"yxIntersect", Common::loadString(IDS_yxIntersect), Commands::CommandFlags::Base, Interface::cmdIntersect},
@@ -66,18 +65,6 @@ void Interface::init()
 // 测试使用
 void Interface::test()
 {
-    UniversalPicker::run(
-        nullptr,
-        [](const AcDbObjectId& id)
-        {
-            AcString strTmp;
-            BalloonNumber::getBalloonAttributeValue(id, strTmp);
-            acutPrintf(L"\n读取到：%s", strTmp.constPtr());
-        },
-        L"测试",
-        UniversalPicker::SelectMode::Immediate,
-        true
-    );
 }
 
 void Interface::unload()
@@ -357,7 +344,7 @@ void Interface::cmdExtractAnnotations()
                     if (abs(dimData.tolUpper + dimData.tolLower) < 1e-6) // 等双向公差
                     {
                         double dAbsTol = abs(dimData.tolUpper);
-                        asTol.format(L"%s%.*g", Common::Symbols::PlusMinus, dimData.tolPrecision, dAbsTol);
+                        asTol.format(L"%s%.*g", Common::SymbolCodes::PlusMinus, dimData.tolPrecision, dAbsTol);
                         asTolUpper.format(L"%.*g", dimData.tolPrecision, dAbsTol);
                         asTolLower.format(L"-%.*g", dimData.tolPrecision, dAbsTol);
                     }
@@ -371,9 +358,8 @@ void Interface::cmdExtractAnnotations()
                         asTolLower.format(L"%.*g", dimData.tolPrecision, dimData.tolLower);
                     }
                 }
-                AcString asPrefix = Common::getSymbol(dimData.prefix);
-                AcString asSuffix = Common::getSymbol(dimData.suffix);
-                AcString asDimText = asPrefix + asMeasuredValue + asTol + asSuffix;
+
+                AcString asDimText = dimData.prefix + asMeasuredValue + asTol + dimData.suffix;
                 acutPrintf(L"\n%s：%s", Common::loadString(IDS_Dimension), asDimText.constPtr());
                 std::vector<AcString> row = { asDimText, asMeasuredValue, asTolUpper, asTolLower }; // 完整尺寸文本、名义值、上极限偏差、下极限偏差
                 csv.writeRow(row);

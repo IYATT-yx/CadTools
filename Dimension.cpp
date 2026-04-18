@@ -217,6 +217,7 @@ namespace Dimension
 			data.measuredValuePrecision = pDim->dimadec();
 			data.isAngle = true;
 			data.suffix = Common::SymbolCodes::Degree;
+            TextUtil::resolveControlCodes(data.suffix);
 		}
 		else // 线性精度
 		{
@@ -230,6 +231,7 @@ namespace Dimension
 			{
 				data.prefix = Common::SymbolCodes::Radius;
 			}
+			TextUtil::resolveControlCodes(data.prefix);
 		}
 		data.tolPrecision = pDim->dimtdec(); // 极限偏差精度
 		data.status = true;

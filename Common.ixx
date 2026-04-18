@@ -100,35 +100,6 @@ export namespace Common
 		constexpr const wchar_t* Radius = L"R";
 	}
 
-	// 符号
-	namespace Symbols
-	{
-		constexpr const wchar_t* Diameter = L"⌀";
-		constexpr const wchar_t* PlusMinus = L"±";
-		constexpr const wchar_t* Degree = L"°";
-		constexpr const wchar_t* Radius = L"R";
-	}
-
-	// 控制代码
-	const std::unordered_map<AcString, AcString> ControlCodeToSymbol =
-	{
-		{ L"%%c", L"⌀" }, { L"%%C", L"⌀" },  // Diameter
-		{ L"%%p", L"±" }, { L"%%P", L"±" },  // PlusMinus
-		{ L"%%d", L"°" }, { L"%%D", L"°" },  // Degree
-		{ L"R",    L"R" },                     // Radius（通常只有一个大小写）
-	};
-	AcString getSymbol(const AcString& code)
-	{
-		auto it = ControlCodeToSymbol.find(code);
-		if (it != ControlCodeToSymbol.end())
-		{
-			return it->second;
-		}
-
-		// 如果找不到（比如前缀是 "M"），则返回原始字符串
-		return code;
-	}
-
 	// 单位模式
 	enum UnitMode
 	{
