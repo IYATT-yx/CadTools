@@ -3,6 +3,7 @@ module;
 
 export module TextUtil;
 import UniversalPicker;
+import CsvModule;
 
 export namespace TextUtil
 {
@@ -12,6 +13,14 @@ export namespace TextUtil
 		AcDbMText::desc(),
 		AcDbText::desc()
 	};
+
+	struct TextEntityData
+	{
+		AcDbObjectId id;
+		AcGePoint3d pos;
+		AcString text;
+	};
+	using TextEntityDataList = std::vector<TextEntityData>;
 };
 
 export namespace TextUtil
@@ -29,18 +38,20 @@ export namespace TextUtil
 	 * @param id 对象 ID
 	 * @param text 内容文本
 	 * @param isRawContent true 获取带控制字符的原始内容；false 获取纯文本内容
+	 * @param pPos 坐标传出参数，默认为 nullptr
 	 * @return true 成功；false 失败
 	 */
-	bool readMText(const AcDbObjectId& id, AcString& text, bool isRawContent = false);
+	bool readMText(const AcDbObjectId& id, AcString& text, bool isRawContent = false, AcGePoint3d* pPos = nullptr);
 
 	/**
 	 * @brief 从标注中读取DText内容
 	 * @param id 对象 ID
 	 * @param text 内容文本
 	 * @param isRawContent true 获取带控制字符的原始内容；false 获取纯文本内容
+	 * @param pPos 坐标传出参数，默认为 nullptr
 	 * @return true 成功；false 失败
 	 */
-	bool readDText(const AcDbObjectId& id, AcString& text, bool isRawContent = false);
+	bool readDText(const AcDbObjectId& id, AcString& text, bool isRawContent = false, AcGePoint3d* pPos = nullptr);
 
 	/**
 	 * @brief 解析控制字符得到纯文本
@@ -67,9 +78,22 @@ export namespace TextUtil
 	 * @param colWidth     矩阵列宽，即单个多行文本的长度。实际显示长度= 列宽 * 注释比例缩放值
 	 * @param colStep	   列步长（小于“矩阵列宽 * 注释比例缩放值”时会重叠）
 	 * @param rowStep      行步长（小于 “3.5 * 注释比例缩放值”时会重叠）
-	 * @param matrixData   矩阵文本数据 (vector<vector<AcString>>)
+	 * @param matrixData   矩阵文本数据
 	 * @param topLeftPt    左上角起始基准点
 	 * @param dLineSpacingFactor 行距比例。默认值 1，不可小于 0.25，不可大于 4.0。实际行间距 = 文字高度 x 1.6667 x 行距比例。
 	 */
-	void createMTextMatrix(double colWidth, double colStep, double rowStep, const std::vector<std::vector<AcString>>& matrixData, AcGePoint3d topLeftPt, double dLineSpacingFactor = 1.0);
+	void createMTextMatrix(double colWidth, double colStep, double rowStep, const CsvModule::AcStringMatrix& matrixData, AcGePoint3d topLeftPt, double dLineSpacingFactor = 1.0);
+
+	/**
+	 * @brief 将零散的文本数据根据空间坐标转换为结构化的 AcString 二维矩阵
+	 * * @details 算法逻辑：
+	 * 1. 纵向分组：根据 Y 坐标和 yTol 将实体划分为不同的行。
+	 * 2. 提取基准：分析所有行中出现的 X 坐标，利用 xTol 合并相近的 X 轴基准线以确定总列数。
+	 * 3. 矩阵填充：将实体填入对应的行与列索引中，缺失位置保留为空字符串，确保导出 CSV 时行列对齐。
+	 * * @param elements [in]  预先采集的文本实体数据集合（包含 ID、位置及内容）
+	 * @param xTol     [in]  列判定容差。用于处理对齐偏差，建议设为文字平均高度的 1.0~1.5 倍
+	 * @param yTol     [in]  行判定容差。建议设为文字平均高度的 0.6 倍
+	 * @param matrix   [out] 输出的二维矩阵引用。内部使用 std::move 优化以减少拷贝开销
+	 */
+	void structureTextToAcStringMatrix(const TextUtil::TextEntityDataList& elements, double xTol, double yTol, CsvModule::AcStringMatrix& matrix);
 }

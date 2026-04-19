@@ -1,12 +1,13 @@
 module;
 #include "StdAfx.h"
 #include "resource.h"
-#include <regex>
 
 module TextUtil;
 import Common;
 import UniversalPicker;
 import Annotative;
+import CsvModule;
+import std;
 
 namespace TextUtil
 {
@@ -44,7 +45,7 @@ namespace TextUtil
 		}
 	}
 
-	bool readMText(const AcDbObjectId& id, AcString& text, bool isRawContents)
+	bool readMText(const AcDbObjectId& id, AcString& text, bool isRawContents, AcGePoint3d* pPos)
 	{
 		AcDbMText* pMText = Common::getObject<AcDbMText>(id, AcDb::kForRead);
 		if (pMText == nullptr)
@@ -60,12 +61,18 @@ namespace TextUtil
 		{
 			pMText->text(text);
 		}
+
+		if (pPos != nullptr)
+		{
+			Common::getEntityCenter(pMText, pPos);
+		}
+
 		return true;
 	}
 
-	bool readDText(const AcDbObjectId& id, AcString& text, bool isRawContents)
+	bool readDText(const AcDbObjectId& id, AcString& text, bool isRawContents, AcGePoint3d* pPos)
 	{
-        AcDbText* pText = Common::getObject<AcDbText>(id, AcDb::kForRead);
+		AcDbText* pText = Common::getObject<AcDbText>(id, AcDb::kForRead);
 		if (pText == nullptr)
 		{
 			return false;
@@ -76,7 +83,13 @@ namespace TextUtil
 		{
 			TextUtil::resolveControlCodes(text);
 		}
-        return true;
+
+		if (pPos != nullptr)
+		{
+			Common::getEntityCenter(pText, pPos);
+		}
+
+		return true;
 	}
 
 	void resolveControlCodes(AcString& text)
@@ -119,7 +132,7 @@ namespace TextUtil
 		}
 	}
 
-	void createMTextMatrix(double colWidth, double colStep, double rowStep, const std::vector<std::vector<AcString>>& matrixData, AcGePoint3d topLeftPt, double dLineSpacingFactor)
+	void createMTextMatrix(double colWidth, double colStep, double rowStep, const CsvModule::AcStringMatrix& matrixData, AcGePoint3d topLeftPt, double dLineSpacingFactor)
 	{
 		if (dLineSpacingFactor < 0.25 || dLineSpacingFactor > 4.0)
 		{
@@ -180,6 +193,112 @@ namespace TextUtil
 					{
 						delete pMText;
 					}
+				}
+			}
+		}
+	}
+
+	void structureTextToAcStringMatrix(const TextUtil::TextEntityDataList& elements, double xTol, double yTol, CsvModule::AcStringMatrix& matrix)
+	{
+		matrix.clear();
+		if (elements.empty())
+		{
+			return;
+		}
+
+		// --- 1. 纵向聚类（行识别） ---
+		// 先按 Y 坐标降序排序，确保从上往下扫描
+		std::vector<TextEntityData> sortedY = elements;
+		std::sort(sortedY.begin(), sortedY.end(), [](const TextEntityData& a, const TextEntityData& b)
+			{
+				return a.pos.y > b.pos.y;
+			});
+
+		std::vector<std::vector<TextEntityData>> rows;
+		for (const auto& el : sortedY)
+		{
+			bool found = false;
+			for (auto& row : rows)
+			{
+				if (std::fabs(row[0].pos.y - el.pos.y) <= yTol)
+				{
+					row.push_back(el);
+					found = true;
+					break;
+				}
+			}
+			if (!found)
+			{
+				rows.push_back({ el });
+			}
+		}
+
+		// --- 2. 识别全局列基准（参考点） ---
+		// 依然提取全局 X 分布，但我们需要确保列的数量是稳定的
+		std::vector<double> allX;
+		for (const auto& el : elements)
+		{
+			allX.push_back(el.pos.x);
+		}
+		std::sort(allX.begin(), allX.end());
+
+		std::vector<double> colAnchors;
+		if (!allX.empty())
+		{
+			double clusterSum = allX[0];
+			int clusterCount = 1;
+			for (size_t i = 1; i < allX.size(); ++i)
+			{
+				if (allX[i] - allX[i - 1] <= xTol)
+				{
+					clusterSum += allX[i];
+					clusterCount++;
+				}
+				else
+				{
+					colAnchors.push_back(clusterSum / clusterCount);
+					clusterSum = allX[i];
+					clusterCount = 1;
+				}
+			}
+			colAnchors.push_back(clusterSum / clusterCount);
+		}
+
+		// --- 3. 映射到矩阵 ---
+		matrix.resize(rows.size());
+		for (size_t i = 0; i < rows.size(); ++i)
+		{
+			matrix[i].assign(colAnchors.size(), L"");
+
+			// 关键修正：在每一行内部，也将元素按 X 坐标从小到大排序
+			// 这样可以确保在该行内，元素在物理上的先后顺序是确定的
+			std::sort(rows[i].begin(), rows[i].end(), [](const TextEntityData& a, const TextEntityData& b)
+				{
+					return a.pos.x < b.pos.x;
+				});
+
+			for (const auto& el : rows[i])
+			{
+				// 寻找最匹配的全局列索引
+				size_t bestCol = 0;
+				double minDiff = (std::numeric_limits<double>::max)();
+				for (size_t c = 0; c < colAnchors.size(); ++c)
+				{
+					double diff = std::fabs(el.pos.x - colAnchors[c]);
+					if (diff < minDiff)
+					{
+						minDiff = diff;
+						bestCol = c;
+					}
+				}
+
+				if (matrix[i][bestCol].isEmpty())
+				{
+					matrix[i][bestCol] = el.text;
+				}
+				else
+				{
+					matrix[i][bestCol] += L" " + el.text;
 				}
 			}
 		}
