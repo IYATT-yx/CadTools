@@ -32,6 +32,19 @@ export namespace Common
 	 * @return 角度值
 	 */
 	constexpr double rad2deg(double radians);
+
+	/**
+	 * @brief 解析 CString 字符串并执行自定义校验逻辑
+	 * @tparam T 目标数值类型
+	 * @tparam Validator 校验器类型（通常为 Lambda 表达式）
+	 * @param strInput 输入的 MFC CString 字符串
+	 * @param expectedSize 期望解析到的有效数值数量
+	 * @param validator 用于校验每个数值的 Lambda 或函数对象
+	 * @param outResults 存储最终解析结果的容器引用
+	 * @return 解析成功且通过所有校验返回 true，否则返回 false
+	 */
+	template <typename T, typename Validator>
+	bool parse(const CString& strInput, size_t expectedSize, Validator validator, std::vector<T>& outResults);
 }
 
 // 定义在 Common.cpp

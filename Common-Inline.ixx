@@ -1,8 +1,8 @@
 module;
 #include "StdAfx.h"
-#include <cmath>
 
 export module Common:Inline;
+export import std;
 
 export namespace Common
 {
@@ -31,6 +31,30 @@ export namespace Common
 	constexpr double rad2deg(double radians)
 	{
 		return radians * 180.0 / M_PI;
+	}
+
+	template <typename T, typename Validator>
+	bool parse(const CString& strInput, size_t expectedSize, Validator validator, std::vector<T>& outResults)
+	{
+		outResults.clear();
+		std::wstringstream wss((LPCTSTR)strInput);
+		T dTmp;
+
+		while (wss >> dTmp)
+		{
+			if (!validator(dTmp))
+			{
+				return false;
+			}
+			outResults.push_back(dTmp);
+		}
+
+		if (!wss.eof() && wss.fail())
+		{
+			return false;
+		}
+
+		return outResults.size() == expectedSize;
 	}
 }
 
