@@ -88,6 +88,18 @@ export namespace Common
 	 * @return 字符串
 	 */
 	CString loadString(UINT nID);
+
+	/**
+	 * @brief 获取实体的几何中心点
+	 * @param pEnt 指向 AutoCAD 实体的指针
+	 * @param pCenter [out] 用于接收几何中心点的指针（WCS 坐标）
+	 * @return true 成功获取坐标；false 获取失败，pCenter 不被修改
+	 *
+	 * @details 该方法通过获取实体的最小包围框（Geometric Extents）来计算中心。
+	 * 相比于文字的插入点，几何中心点更能反映物体在空间中的视觉核心位置，
+	 * 且不受文字对齐方式（Alignment）或块基点偏移的影响。
+	 */
+	bool getEntityCenter(AcDbEntity* pEnt, AcGePoint3d* pCenter);
 }
 
 // 常量

@@ -161,4 +161,28 @@ namespace Common
 		tmp.LoadStringW(nID);
 		return tmp;
 	}
+
+	bool getEntityCenter(AcDbEntity* pEnt, AcGePoint3d* pCenter)
+	{
+		if (pEnt == nullptr || pCenter == nullptr)
+		{
+			return false;
+		}
+
+		AcDbExtents extents;
+		if (pEnt->getGeomExtents(extents) == Acad::eOk)
+		{
+			AcGePoint3d minPt = extents.minPoint();
+			AcGePoint3d maxPt = extents.maxPoint();
+
+			pCenter->set(
+				(minPt.x + maxPt.x) * 0.5,
+				(minPt.y + maxPt.y) * 0.5,
+				(minPt.z + maxPt.z) * 0.5
+			);
+			return true;
+		}
+
+		return false;
+	}
 }
