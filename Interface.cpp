@@ -3,7 +3,6 @@ module;
 #include "GenericPairEditDlg.hpp"
 #include "MainBar.hpp"
 #include "resource.h"
-#include <sstream>
 
 module Interface;
 
@@ -19,6 +18,7 @@ import TextUtil;
 import ImeAutoSwitcher;
 import Commands;
 import FileDialog;
+import Annotative;
 
 void Interface::init()
 {
@@ -47,7 +47,8 @@ void Interface::init()
         {L"yxIntersect", Common::loadString(IDS_yxIntersect), Commands::CommandFlags::Base, Interface::cmdIntersect},
         {L"yxBalloonNumberOffset", Common::loadString(IDS_yxBalloonNumberOffsetCommandDescription), Commands::CommandFlags::PickRedraw, Interface::cmdBalloonNumberOffset},
         {L"yxBalloonNumberFilter", Common::loadString(IDS_yxBalloonNumberFilterCommandDescription), Commands::CommandFlags::PickRedraw, Interface::cmdBalloonNumberFilter},
-        {L"yxImportCsvToMTextMatrix", Common::loadString(IDS_yxImportCsvToMTextMatrixCommandDescription), Commands::CommandFlags::PickRedraw, Interface::cmdImportCsvToMTextMatrix}
+        {L"yxImportCsvToMTextMatrix", Common::loadString(IDS_yxImportCsvToMTextMatrixCommandDescription), Commands::CommandFlags::PickRedraw, Interface::cmdImportCsvToMTextMatrix},
+        {L"yxSpatialTableExplorer", Common::loadString(IDS_yxSpatialTableExplorerCommandDescription), Commands::CommandFlags::PickRedraw, Interface::cmdSpatialTableExplorer}
     };
 
     // 注册命令
@@ -395,13 +396,13 @@ void Interface::cmdExtractAnnotations()
             }
             else if (TextUtil::readMText(objId, asMText))
             {
-                acutPrintf(L"\n%s：%s", Common::loadString(IDS_MText), asMText.constPtr());
+                acutPrintf(Common::loadString(IDS_MText_FMT), asMText.constPtr());
                 std::vector<AcString> rows = { asMText };
                 csv.writeRow(rows);
             }
             else if (TextUtil::readDText(objId, asDText))
             {
-                acutPrintf(L"\n%s：%s", Common::loadString(IDS_DText), asDText.constPtr());
+                acutPrintf(Common::loadString(IDS_DText_FMT), asDText.constPtr());
                 std::vector<AcString> rows = { asDText };
                 csv.writeRow(rows);
             }
@@ -750,47 +751,13 @@ void Interface::cmdImportCsvToMTextMatrix()
         return;
     }
 
-    if (edit1Result.IsEmpty())
-    {
-        AfxMessageBox(Common::loadString(IDS_Err_EmptyMTextMatrixParameter), MB_OK | MB_ICONERROR);
-        return;
-    }
-
-    // 解析参数
-    ///////////////////
-    std::wstring wsInput = edit1Result.GetString();
-    std::wstringstream wss(wsInput);
     std::vector<double> params;
-    double dTmp;
-
-    while (wss >> dTmp)
-    {
-        if (dTmp <= 0)
-        {
-            AfxMessageBox(Common::loadString(IDS_MTextMatrixParameterPrompt), MB_OK | MB_ICONERROR);
-            return;
-        }
-        params.push_back(dTmp);
-    }
-
-    //bool bValid = true;
-    CString strMsg;
-
-    if (!wss.eof() && wss.fail())
+    const int paramsNumber = 3;
+    if (!Common::parse(edit1Result, paramsNumber, [](double v) { return v > 0; }, params))
     {
         AfxMessageBox(Common::loadString(IDS_MTextMatrixParameterPrompt), MB_OK | MB_ICONERROR);
         return;
-    }
-
-    if (params.size() != 3)
-    {
-        AfxMessageBox(Common::loadString(IDS_MTextMatrixParameterPrompt), MB_OK | MB_ICONERROR);
-        return;
-    }
-
-    double colWidth = params[0];
-    double colStep = params[1];
-    double rowStep = params[2];
+     }
 
     ads_point pt{};
     if (acedGetPoint(nullptr, Common::loadString(IDS_Msg_GetPoint), pt) != RTNORM)
@@ -799,5 +766,93 @@ void Interface::cmdImportCsvToMTextMatrix()
         return;
     }
 
-    TextUtil::createMTextMatrix(colWidth, colStep, rowStep, matrixData, asPnt3d(pt));
+    TextUtil::createMTextMatrix(params[0], params[1], params[2], matrixData, asPnt3d(pt));
+}
+
+void Interface::cmdSpatialTableExplorer()
+{
+    CAcModuleResourceOverride resOverride;
+    CString title = Common::loadString(IDS_yxSpatialTableExplorerCommandDescription);
+    GenericPairEditDlg dlg(title, Common::loadString(IDS_LBL_Parameter), Common::loadString(IDS_Prompt), false, true, true);
+
+    // 默认列容差和行容差
+    // 字高默认 3.5，列容差默认按字高的 3 倍，行容差默认按字高的 1 倍（考虑注释比例缩放值）
+    CString strInitParameter;
+    double scale = Annotative::getCurrentScaleValue();
+    strInitParameter.Format(L"%g %g", Common::defaultTextHeight * scale * 3, Common::defaultTextHeight * scale * 1);
+    dlg.modifyEditControl(strInitParameter, Common::loadString(IDS_SpatialTableExplorerParameterPrompt));
+
+    CString edit1Result;
+    if (dlg.DoModal() == IDOK)
+    {
+        edit1Result = dlg.getEdit1Result();
+    }
+    else
+    {
+        acutPrintf(L"\n%s", Common::loadString(IDS_CancelOperation));
+        return;
+    }
+
+    std::vector<double> params;
+    const int paramsNumber = 2;
+    if (!Common::parse(edit1Result, paramsNumber, [](double v) { return v > 0; }, params))
+    {
+        AfxMessageBox(Common::loadString(IDS_SpatialTableExplorerParameterPrompt), MB_OK | MB_ICONERROR);
+        return;
+    }
+
+    FileDialog::FileDialogFilterBuilder fileFilterBuilter;
+    CString strFileFilter = fileFilterBuilter.addFilter(Common::loadString(IDS_CsvFiles), { L"*.csv" }).build();
+    CString strFilePath = FileDialog::ShowSaveFileDialog(Common::loadString(IDS_SaveCsvTitle), Common::loadString(IDS_DefaultSaveDataCsvFilename), L"csv", strFileFilter);
+    if (strFilePath.IsEmpty())
+    {
+        acutPrintf(L"\n%s", Common::loadString(IDS_CancelOperation));
+        return;
+    }
+    CsvWriter writer(strFilePath);
+    if (!writer.isValid())
+    {
+        AfxMessageBox(Common::loadString(IDS_Err_FileOpenFailed), MB_OK | MB_ICONERROR);
+        return;
+    }
+
+    TextUtil::TextEntityDataList elements;
+    UniversalPicker::run(
+        &TextUtil::textClassList,
+        [&](const AcDbObjectId& id)
+        {
+            TextUtil::TextEntityData data;
+            data.id = id;
+            if (TextUtil::readMText(id, data.text, false, &data.pos))
+            {
+                acutPrintf(Common::loadString(IDS_MTextPos_FMT), data.pos.x, data.pos.y, data.pos.z, data.text.constPtr());
+            }
+            else if (TextUtil::readDText(id, data.text, false, &data.pos))
+            {
+                acutPrintf(Common::loadString(IDS_DTextPos_FMT), data.text.constPtr());
+            }
+            elements.push_back(data);
+        },
+        title,
+        UniversalPicker::SelectMode::Batch,
+        false,
+        UniversalPicker::SortMode::None,
+        true
+    );
+
+    CsvModule::AcStringMatrix matrixData;
+    TextUtil::structureTextToAcStringMatrix(elements, params[0], params[1], matrixData);
+    
+
+    for (const auto& row : matrixData)
+    {
+        writer.writeRow(row);
+        acutPrintf(L"\n");
+        for (const auto& field : row)
+        {
+            acutPrintf(L"%s\t", field.constPtr());
+        }
+    }
+
+    acutPrintf(Common::loadString(IDS_IDS_FileLocation_FMT), strFilePath);
 }

@@ -48,7 +48,9 @@
 #define IDS_Err_FileOpenFailed          133
 #define IDS_GDT                         134
 #define IDS_MText                       135
+#define IDS_MText_FMT                   135
 #define IDS_DText                       136
+#define IDS_DText_FMT                   136
 #define IDS_BalloonNumberHeight         137
 #define IDS_Dimension                   138
 #define IDS_BalloonNextNumber_FMT       139
@@ -99,6 +101,12 @@
 #define IDS_MTextMatrixParameterPrompt  180
 #define IDS_Err_EmptyMTextMatrixParameter 181
 #define IDS_Msg_GetPoint                182
+#define IDS_yxSpatialTableExplorerCommandDescription 183
+#define IDS_yxSpatialTableExplorerParameterPrompt 184
+#define IDS_SpatialTableExplorerParameterPrompt 184
+#define IDS_IDS_FileLocation_FMT        185
+#define IDS_MTextPos_FMT                186
+#define IDS_DTextPos_FMT                187
 
 // Next default values for new objects
 // 

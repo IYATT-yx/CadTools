@@ -198,11 +198,11 @@ BEGIN
     IDS_Msg_BalloonTips_FMT "默认序号字体高度（圆圈半径）：%g，气泡缩放比例由注释性比例控制"
     IDS_Err_EmptyStartNumber "必须输入开始序号"
     IDS_Err_InvalidStartNumber "开始序号必须为非 0 整数"
-    IDS_SaveCsvTitle        "将提取的标注内容保存到"
+    IDS_SaveCsvTitle        "保存 CSV 文件到"
     IDS_Err_FileOpenFailed  "文件路径打开失败，请检查是否被占用或路径无效"
     IDS_GDT                 "几何公差"
-    IDS_MText               "多行文本"
-    IDS_DText               "单行文本"
+    IDS_MText_FMT           "\n多行文本：%s"
+    IDS_DText_FMT           "\n单行文本：%s"
     IDS_BalloonNumberHeight "气泡序号字高"
     IDS_Dimension           "尺寸"
     IDS_BalloonNextNumber_FMT "\n选中的气泡号将被设置为：%d"
@@ -259,9 +259,15 @@ BEGIN
     IDS_yxImportCsvToMTextMatrixCommandDescription "从 CSV 文件导入数据生成多行文本矩阵"
     IDS_ImportCsvTitle      "选择要导入的文件"
     IDS_LBL_Parameter       "参数"
-    IDS_MTextMatrixParameterPrompt "输入3个不小于0的浮点数参数，使用空格分隔，分别为：列宽、列步长、行步长。"
+    IDS_MTextMatrixParameterPrompt "输入3个不小于0的数，使用空格分隔，分别为：列宽、列步长、行步长。"
     IDS_Err_EmptyMTextMatrixParameter "多行文本矩阵参数不能为空"
     IDS_Msg_GetPoint        "请选择位置"
+    IDS_yxSpatialTableExplorerCommandDescription "将多行/单行文本按空间位置表格化导出到 CSV 文件"
+    IDS_SpatialTableExplorerParameterPrompt 
+                            "输入2个不小于0的数，使用空格分隔，分别为：列容差、行容差。文本距离超过容差视为不同列或行。"
+    IDS_IDS_FileLocation_FMT "\n文件位置：%s"
+    IDS_MTextPos_FMT        "\n(%g,%g,%g)多行文本：%s"
+    IDS_DTextPos_FMT        "\n(%g,%g,%g)单行文本：%s"
 END
 
 #endif    // 中文(简体，中国) resources

@@ -31,5 +31,6 @@ private:
 	static void cmdBalloonNumberOffset();
 	static void cmdBalloonNumberFilter();
 	static void cmdImportCsvToMTextMatrix();
+	static void cmdSpatialTableExplorer();
 };
 
