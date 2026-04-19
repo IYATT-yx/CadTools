@@ -2,7 +2,6 @@ module;
 #include "StdAfx.h"
 
 export module BalloonNumber;
-
 import Common;
 
 export namespace BalloonNumber

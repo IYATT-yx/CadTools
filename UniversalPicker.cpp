@@ -1,20 +1,6 @@
 module;
 #include "stdafx.h"
 #include "dbtrans.h"
-#include <unordered_set>
-
-namespace std
-{
-    template <>
-    struct hash<AcDbObjectId>
-    {
-        size_t operator()(const AcDbObjectId& id) const
-        {
-            // 使用 asOldId() 将其转换为内部的整数 ID 作为哈希基础
-            return std::hash<INT_PTR>{}((INT_PTR)id.asOldId());
-        }
-    };
-}
 
 module UniversalPicker;
 import Commands;

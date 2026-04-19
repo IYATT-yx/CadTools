@@ -1,8 +1,8 @@
 module;
 #include "StdAfx.h"
-#include <map>
 
 export module GeometricTolerance;
+import std;
 
 export namespace GeometricTolerance
 {

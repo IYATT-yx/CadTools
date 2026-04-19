@@ -1,8 +1,8 @@
 module;
 #include "stdafx.h"
-#include <fstream>
 
 module CsvModule;
+import std;
 
 CsvWriter::CsvWriter(const CString& filePath, wchar_t delimiter)
     : mDelimiter(delimiter)

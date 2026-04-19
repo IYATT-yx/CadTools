@@ -1,8 +1,8 @@
 module;
 #include "StdAfx.h"
-#include <fstream>
 
 export module CsvModule;
+import std;
 
 /**
  * @brief CSV 文件写入类

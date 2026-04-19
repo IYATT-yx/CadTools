@@ -1,9 +1,9 @@
 module;
 #include "StdAfx.h"
 #include "resource.h"
-#include <stdexcept>
 
 module BalloonNumber;
+import std;
 import Common;
 import Annotative;
 
