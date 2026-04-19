@@ -35,7 +35,7 @@ SDK：
 * AutoCAD Mechanical SDK 2026  
 
 编译标准：  
-* C++20  
+* C++23  
 
 ObjectARX 环境配置参考：https://blog.iyatt.com/?p=21187  
 AutoCAD Mechanical SDK 环境配置参考：https://blog.iyatt.com/?p=23776  
