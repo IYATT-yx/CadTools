@@ -27,6 +27,7 @@
 //-----------------------------------------------------------------------------
 #include "acui.h"
 #include "resource.h"
+import std;
 
 //-----------------------------------------------------------------------------
 class GenericPairEditDlg : public CAcUiDialog {
@@ -66,17 +67,21 @@ private:
 	bool GdtCheckedStatus[2] = { false }; // GDT 复选框状态
 
 public:
+	using Validator = std::function < CString(const CString&, const CString&)>; // 验证函数类型
+	static const CString ValidatorOk;
+private:
+	GenericPairEditDlg::Validator  validator = nullptr;
+
+public:
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedCancel();
-	CString getEdit1Result();
-	CString getEdit2Result();
 	afx_msg void OnBnClickedButton1();
 	afx_msg void OnBnClickedCheck1();
 	afx_msg void OnBnClickedCheck2();
+
 	/**
-	 * @brief 拦截 Tab 键消息，使焦点在编辑框之间切换
-	 * @param pMsg 消息指针
-	 * @return true 告诉系统我已处理消息；false 告诉系统我未处理消息
+	 * @brief 读取编辑框1中的空格间隔的浮点数值列表
+	 * @return 浮点数值列表。建议使用引用的方式取值，如 std::vector<double>& values = <ObjectName>.getEditResult();
 	 */
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	/**
@@ -84,11 +89,17 @@ public:
 	 * @param idx 0 为第 1 行复选框；1 为第 2 行复选框
 	 * @return true 选中；false 未选中
 	 */
-	bool getGdtCheckStatus(int idx);
+	bool getGdtCheckStatus(const int& idx);
 	/**
 	 * @brief 修改编辑框的值
 	 * @param edit1Value 编辑框1的值
 	 * @param edit2Value 编辑框2的值
 	 */
-	void modifyEditControl(CString edit1Value = L"", CString edit2Value = L"");
+	void modifyEditControl(const CString& edit1Value = L"", const CString& edit2Value = L"");
+
+	/**
+	 * @brief 设置验证函数，同时传出结果
+	 * @param validator 验证函数
+	 */
+	void setValidatorAndParser(GenericPairEditDlg::Validator validator);
 } ;

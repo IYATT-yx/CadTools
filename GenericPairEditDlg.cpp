@@ -27,6 +27,8 @@
 
 import Common;
 
+const CString GenericPairEditDlg::ValidatorOk = L""; // 验证通过的标志
+
 //-----------------------------------------------------------------------------
 IMPLEMENT_DYNAMIC (GenericPairEditDlg, CAcUiDialog)
 
@@ -156,6 +158,16 @@ void GenericPairEditDlg::OnBnClickedOk()
 		}
 	}
 
+	if (this->validator != nullptr)
+	{
+		CString errorMessage = this->validator(this->edit1Result, this->edit2Result);
+		if (errorMessage != GenericPairEditDlg::ValidatorOk)
+		{
+			AfxMessageBox(errorMessage, MB_OK | MB_ICONWARNING);
+			return;
+		}
+	}
+
 	this->GdtCheckedStatus[0] = IsDlgButtonChecked(IDC_CHECK1);
     this->GdtCheckedStatus[1] = IsDlgButtonChecked(IDC_CHECK2);
 
@@ -167,16 +179,6 @@ void GenericPairEditDlg::OnBnClickedCancel()
 	edit1Result = L"";
     edit2Result = L"";
 	CAcUiDialog::OnCancel();
-}
-
-CString GenericPairEditDlg::getEdit1Result()
-{
-	return this->edit1Result;
-}
-
-CString GenericPairEditDlg::getEdit2Result()
-{
-	return this->edit2Result;
 }
 
 void GenericPairEditDlg::OnBnClickedButton1()
@@ -213,7 +215,7 @@ void GenericPairEditDlg::OnBnClickedCheck2()
 	this->editControl1.Invalidate();
 }
 
-bool GenericPairEditDlg::getGdtCheckStatus(int idx)
+bool GenericPairEditDlg::getGdtCheckStatus(const int& idx)
 {
 	if (idx < 0 || idx > 1)
 	{
@@ -259,8 +261,13 @@ BOOL GenericPairEditDlg::PreTranslateMessage(MSG* pMsg)
 
 	return CAcUiDialog::PreTranslateMessage(pMsg);
 }
-void GenericPairEditDlg::modifyEditControl(CString edit1Value, CString edit2Value)
+void GenericPairEditDlg::modifyEditControl(const CString& edit1Value, const CString& edit2Value)
 {
 	this->csEdit1Input = edit1Value;
     this->csEdit2Input = edit2Value;
+}
+
+void GenericPairEditDlg::setValidatorAndParser(GenericPairEditDlg::Validator validator)
+{
+	this->validator = std::move(validator);
 }
