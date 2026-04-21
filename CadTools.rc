@@ -196,8 +196,7 @@ STRINGTABLE
 BEGIN
     IDS_Prompt              "提示"
     IDS_Msg_BalloonTips_FMT "默认序号字体高度（圆圈半径）：%g，气泡缩放比例由注释性比例控制"
-    IDS_Err_EmptyStartNumber "必须输入开始序号"
-    IDS_Err_InvalidStartNumber "开始序号必须为非 0 整数"
+    IDS_Err_InvalidStartNumber "开始序号必须为不小于 0 的整数"
     IDS_SaveCsvTitle        "保存 CSV 文件到"
     IDS_Err_FileOpenFailed  "文件路径打开失败，请检查是否被占用或路径无效"
     IDS_GDT                 "几何公差"
