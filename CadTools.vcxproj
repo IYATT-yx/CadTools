@@ -16,7 +16,9 @@
     <ClCompile Include="Annotative.ixx" />
     <ClCompile Include="BalloonNumber.cpp" />
     <ClCompile Include="BalloonNumber.ixx" />
-    <ClCompile Include="BuildingTime.ixx" />
+    <ClCompile Include="BuildingTime.ixx">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="CadTools.cpp" />
     <ClCompile Include="Commands.cpp" />
     <ClCompile Include="Commands.ixx" />
@@ -43,7 +45,9 @@
     <ClCompile Include="ImeAutoSwitcher.cpp" />
     <ClCompile Include="ImeAutoSwitcher.ixx" />
     <ClCompile Include="Interface.cpp" />
-    <ClCompile Include="Interface.ixx" />
+    <ClCompile Include="Interface.ixx">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="MainBar.cpp" />
     <ClCompile Include="MainBarChildDlg.cpp" />
     <ClCompile Include="TextUtil.cpp" />

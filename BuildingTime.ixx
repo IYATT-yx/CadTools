@@ -1,6 +1,3 @@
-module;
-#include "StdAfx.h"
-
 export module BuildingTime;
 
 #define MONTH_TO_NUM(mmm) \

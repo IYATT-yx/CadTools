@@ -1,6 +1,3 @@
-module;
-#include "StdAfx.h"
-
 export module Interface;
 
 export class Interface
