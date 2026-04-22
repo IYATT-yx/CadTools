@@ -1,5 +1,6 @@
 module;
 #include "StdAfx.h"
+#include "resource.h"
 
 export module Dimension;
 import Common;
@@ -32,7 +33,7 @@ export namespace Dimension
 			}
 			else
 			{
-				AfxMessageBox(L"该标注不是角度，无法获取角度值。", MB_OK | MB_ICONWARNING);
+				AfxMessageBox(Common::loadString(IDS_ERR_NotAngle), MB_OK | MB_ICONWARNING);
 				return -1;
 			}
 		}
