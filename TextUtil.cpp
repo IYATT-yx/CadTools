@@ -136,7 +136,7 @@ namespace TextUtil
 	{
 		if (dLineSpacingFactor < 0.25 || dLineSpacingFactor > 4.0)
 		{
-			AfxMessageBox(Common::loadString(IDS_Err_LineSpacingFactorOutOfRange),MB_OK | MB_ICONERROR);
+			AfxMessageBox(Common::loadString(IDS_ERR_LineSpacingFactorOutOfRange),MB_OK | MB_ICONERROR);
 			return;
 		}
 
@@ -150,7 +150,7 @@ namespace TextUtil
 		if (s < 0)
 		{
 			s = 1.0;
-			acutPrintf(Common::loadString(IDS_Err_GetCurrentScaleValue_FMT), s);
+			acutPrintf(Common::loadString(IDS_ERR_GetCurrentScaleValue_FMT), s);
 		}
 
 		for (size_t row = 0; row < matrixData.size(); ++row)

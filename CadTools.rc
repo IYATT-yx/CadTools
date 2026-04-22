@@ -197,9 +197,9 @@ BEGIN
     IDS_TIP_yxInsertBalloonNumberBlockWithStartNumber_FMT 
                             "气泡号文字高度：%g，当前注释比例缩放值：%g，实际大小 = 文字高度 × 注释比例缩放值"
     IDS_VAL_LICENSE         "开源协议：MIT"
-    IDS_Err_InvalidStartNumber "开始序号必须为不小于 0 的整数"
+    IDS_ERR_InvalidStartNumber "开始序号必须为不小于 0 的整数"
     IDS_TITLE_SaveCsv       "保存 CSV 文件到"
-    IDS_Err_FileOpenFailed  "文件路径打开失败，请检查是否被占用或路径无效"
+    IDS_ERR_FileOpenFailed  "文件路径打开失败，请检查是否被占用或路径无效"
     IDS_MSG_GDT             "\n几何公差：%s"
     IDS_MSG_MText_FMT       "\n多行文本：%s"
     IDS_MSG_DText_FMT       "\n单行文本：%s"
@@ -208,13 +208,13 @@ BEGIN
     IDS_MSG_BalloonNextNumber_FMT "\n选中的气泡号将被设置为：%d"
     IDS_LBL_AutoStart       "自启动(1/0)"
     IDS_LBL_Interval        "间隔(ms)"
-    IDS_Err_ImeAutoSwitchEmptySetting "必须输入自启动状态和切换间隔时间"
-    IDS_Err_InvalidAutoStart "自启动状态必须为 0 或 1，1表示自启动，0 表示不自启动"
+    IDS_ERR_ImeAutoSwitchEmptySetting "必须输入自启动状态和切换间隔时间"
+    IDS_ERR_InvalidAutoStart "自启动状态必须为 0 或 1，1表示自启动，0 表示不自启动"
 END
 
 STRINGTABLE
 BEGIN
-    IDS_Err_InvalidInterval_FMT "切换间隔必须为不小于 %d 的整数"
+    IDS_ERR_InvalidInterval_FMT "切换间隔必须为不小于 %d 的整数"
     IDS_ImeAutoSwitchPrompt "已自动切换输入法"
     IDS_ImeAutoSwitchStartPrompt_FMT "\n启动输入法自动切换，切换间隔：%dms\n"
     IDS_ImeAutoSwitchStopPrompt "\n停止输入法自动切换\n"
@@ -234,21 +234,21 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_Err_BalloonNumberOffsetFail "偏置气泡号失败，气泡号值可能不是数字"
-    IDS_Err_EmptyBalloonNumberOffset "偏置值不可为空"
-    IDS_Err_InvalidInteger  "偏置值必须为整数"
+    IDS_ERR_BalloonNumberOffsetFail "偏置气泡号失败，气泡号值可能不是数字"
+    IDS_ERR_EmptyBalloonNumberOffset "偏置值不可为空"
+    IDS_ERR_InvalidInteger  "偏置值必须为整数"
     IDS_TIP_BalloonNumberOffset "新编号=旧编号+偏置值，若计算出新编号<0，则新编号=0"
     IDS_CMD_yxBalloonNumberFilter "气泡号筛选"
     IDS_TIP_BalloonNumberFilter 
                             "格式：符号+值，如：>>10筛选大于10。大于：>>或》》，小于：<<或《《，等于：==，不等于：<>或《》，大于等于：>=或》=，小于等于：<=或《=。等于和不等于判断允许非整数。"
     IDS_LBL_BalloonNumberFilterCondition "筛选条件"
-    IDS_Err_BalloonNumberFilterEmptyCriteria "筛选条件不能为空。"
-    IDS_Err_BalloonNumberFilterInvalidOperatorType "输入的符号不合法。"
-    IDS_Err_BalloonNumberFilterNeedInterger "非等于或不等于判定时，判定值必须为整数。"
+    IDS_ERR_BalloonNumberFilterEmptyCriteria "筛选条件不能为空。"
+    IDS_ERR_BalloonNumberFilterInvalidOperatorType "输入的符号不合法。"
+    IDS_ERR_BalloonNumberFilterNeedInterger "非等于或不等于判定时，判定值必须为整数。"
     IDS_Msg_BalloonNumberFilterMatchCount_FMT "\n筛选完成：%d 个匹配项。"
     IDS_Msg_BalloonNumberFilterNoMatch "\n未发现符合条件的气泡号。"
-    IDS_Err_GetCurrentScaleValue_FMT "\n获取注释比例缩放系数失败，已重置为：%g"
-    IDS_Err_LineSpacingFactorOutOfRange "行距比例不可小于0.25，且不可大于4.0。"
+    IDS_ERR_GetCurrentScaleValue_FMT "\n获取注释比例缩放系数失败，已重置为：%g"
+    IDS_ERR_LineSpacingFactorOutOfRange "行距比例不可小于0.25，且不可大于4.0。"
     IDS_FILTER_CsvFiles     "CSV 文件"
     IDS_FILTER_AllFiles     "所有文件"
 END
@@ -260,7 +260,7 @@ BEGIN
     IDS_TITLE_ImportCsv     "选择要导入的文件"
     IDS_LBL_Parameter       "参数"
     IDS_TIP_MTextMatrixParameter "输入3个不小于0的数，使用空格分隔，分别为：列宽、列步长、行步长。"
-    IDS_Err_EmptyMTextMatrixParameter "多行文本矩阵参数不能为空"
+    IDS_ERR_EmptyMTextMatrixParameter "多行文本矩阵参数不能为空"
     IDS_PROMPT_GetPoint     "请选择位置"
     IDS_CMD_yxSpatialTableExplorer "将多行/单行文本按空间位置表格化导出到 CSV 文件"
     IDS_TIP_SpatialTableExplorerParameter 

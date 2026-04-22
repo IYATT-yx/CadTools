@@ -285,7 +285,7 @@ void Interface::cmdInsertBalloonNumberBlockWithStartNumber()
             }
             catch (...)
             {
-                return Common::loadString(IDS_Err_InvalidStartNumber);
+                return Common::loadString(IDS_ERR_InvalidStartNumber);
             }
             return GenericPairEditDlg::ValidatorOk;
         });
@@ -321,7 +321,7 @@ void Interface::cmdExtractAnnotations()
     CsvWriter csv(filePath);
     if (!csv.isValid())
     {
-        AfxMessageBox(Common::loadString(IDS_Err_FileOpenFailed), MB_OK | MB_ICONERROR);
+        AfxMessageBox(Common::loadString(IDS_ERR_FileOpenFailed), MB_OK | MB_ICONERROR);
         return;
     }
 
@@ -452,7 +452,7 @@ void Interface::cmdUpdateBalloonNumberBlock()
             }
             catch (...)
             {
-                return Common::loadString(IDS_Err_InvalidStartNumber);
+                return Common::loadString(IDS_ERR_InvalidStartNumber);
             }
             return GenericPairEditDlg::ValidatorOk;
     });
@@ -502,11 +502,11 @@ void Interface::cmdImeAutoSwitch()
         {
             if (value1.IsEmpty() || value2.IsEmpty())
             {
-                return Common::loadString(IDS_Err_ImeAutoSwitchEmptySetting);
+                return Common::loadString(IDS_ERR_ImeAutoSwitchEmptySetting);
             }
             if (value1.SpanIncluding(L"01") != value1)
             {
-                return Common::loadString(IDS_Err_InvalidAutoStart);
+                return Common::loadString(IDS_ERR_InvalidAutoStart);
             }
             try
             {
@@ -524,7 +524,7 @@ void Interface::cmdImeAutoSwitch()
             catch (...)
             {
                 CString csInvalidInterval;
-                csInvalidInterval.Format(Common::loadString(IDS_Err_InvalidInterval_FMT), ImeAutoSwitcher::defaultIntervalMs);
+                csInvalidInterval.Format(Common::loadString(IDS_ERR_InvalidInterval_FMT), ImeAutoSwitcher::defaultIntervalMs);
                 return csInvalidInterval;
             }
 
@@ -598,7 +598,7 @@ void Interface::cmdBalloonNumberOffset()
         {
             if (strValue.IsEmpty())
             {
-                return Common::loadString(IDS_Err_EmptyBalloonNumberOffset);
+                return Common::loadString(IDS_ERR_EmptyBalloonNumberOffset);
             }
             try
             {
@@ -611,7 +611,7 @@ void Interface::cmdBalloonNumberOffset()
             }
             catch (...)
             {
-                return Common::loadString(IDS_Err_InvalidInteger);
+                return Common::loadString(IDS_ERR_InvalidInteger);
             }
             return GenericPairEditDlg::ValidatorOk;
         });
@@ -649,7 +649,7 @@ void Interface::cmdBalloonNumberFilter()
         {
             if (strValue.GetLength() < 3)
             {
-                return Common::loadString(IDS_Err_BalloonNumberFilterEmptyCriteria);
+                return Common::loadString(IDS_ERR_BalloonNumberFilterEmptyCriteria);
             }
 
             // 验证输入合法性
@@ -674,7 +674,7 @@ void Interface::cmdBalloonNumberFilter()
                 it = std::find(opNeedNumeric.begin(), opNeedNumeric.end(), strInputOpType);
                 if (it == opNeedNumeric.end())
                 {
-                    return Common::loadString(IDS_Err_BalloonNumberFilterInvalidOperatorType);
+                    return Common::loadString(IDS_ERR_BalloonNumberFilterInvalidOperatorType);
                 }
 
                 try
@@ -688,7 +688,7 @@ void Interface::cmdBalloonNumberFilter()
                 }
                 catch (...)
                 {
-                    return Common::loadString(IDS_Err_BalloonNumberFilterNeedInterger);
+                    return Common::loadString(IDS_ERR_BalloonNumberFilterNeedInterger);
                 }
             }
             edit1Result = strValue;
@@ -822,7 +822,7 @@ void Interface::cmdImportCsvToMTextMatrix()
         CsvWriter writer(strFilePath);
         if (!writer.isValid())
         {
-            AfxMessageBox(Common::loadString(IDS_Err_FileOpenFailed), MB_OK | MB_ICONERROR);
+            AfxMessageBox(Common::loadString(IDS_ERR_FileOpenFailed), MB_OK | MB_ICONERROR);
             return;
         }
 

@@ -401,7 +401,7 @@ namespace BalloonNumber
         }
         catch (...)
         {
-            acutPrintf(L"\n%s", Common::loadString(IDS_Err_BalloonNumberOffsetFail));
+            acutPrintf(L"\n%s", Common::loadString(IDS_ERR_BalloonNumberOffsetFail));
         }
     }
 
