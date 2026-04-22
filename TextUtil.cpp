@@ -170,7 +170,7 @@ namespace TextUtil
 					pMText->setContents(cellText);
 					pMText->setAttachment(AcDbMText::kTopLeft);
 					pMText->setWidth(colWidth * s);
-					pMText->setTextHeight(Common::defaultTextHeight * s);
+					pMText->setTextHeight(Common::getTEXTSIZE() * s);
 					pMText->setLineSpacingFactor(dLineSpacingFactor);
 
 					AcGePoint3d currentPt;

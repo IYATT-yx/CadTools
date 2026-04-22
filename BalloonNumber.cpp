@@ -144,7 +144,7 @@ namespace BalloonNumber
             }
 
 			// ´´½¨Ô²
-			AcDbCircle* pCircle = new AcDbCircle(AcGePoint3d::kOrigin, AcGeVector3d::kZAxis, Common::BalloonNumberBlock::defaultCircleRadius);
+			AcDbCircle* pCircle = new AcDbCircle(AcGePoint3d::kOrigin, AcGeVector3d::kZAxis, Common::getTEXTSIZE());
 			pNewBTR->appendAcDbEntity(pCircle);
             pCircle->setColorIndex(3);
 			pCircle->close();
@@ -153,7 +153,7 @@ namespace BalloonNumber
 			AcDbAttributeDefinition* pAttDef = new AcDbAttributeDefinition();
 			pAttDef->setTag(Common::BalloonNumberBlock::AttTag);
 			pAttDef->setPrompt(Common::BalloonNumberBlock::AttPrompt);
-			pAttDef->setHeight(Common::BalloonNumberBlock::defaultTextHeight);
+			pAttDef->setHeight(Common::getTEXTSIZE());
 			pAttDef->setHorizontalMode(AcDb::kTextCenter);
 			pAttDef->setVerticalMode(AcDb::kTextVertMid);
 			pAttDef->setAlignmentPoint(AcGePoint3d::kOrigin);

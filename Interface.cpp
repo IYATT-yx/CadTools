@@ -264,7 +264,9 @@ void Interface::cmdInsertBalloonNumberBlockWithStartNumber()
     GenericPairEditDlg dlg(title, Common::loadString(IDS_LBL_StartNumber), Common::loadString(IDS_LBL_Tip), false, true, true);
     // 设置默认字高
     CString csTips;
-    csTips.Format(Common::loadString(IDS_TIP_yxInsertBalloonNumberBlockWithStartNumber_FMT), Common::BalloonNumberBlock::defaultTextHeight, Annotative::getCurrentScaleValue());
+    double textsize = Common::getTEXTSIZE();
+    double scale = Annotative::getCurrentScaleValue();
+    csTips.Format(Common::loadString(IDS_TIP_yxInsertBalloonNumberBlockWithStartNumber_FMT), textsize, scale, textsize * scale);
     dlg.modifyEditControl(L"", csTips);
 
     int startNumber;
@@ -751,7 +753,11 @@ void Interface::cmdImportCsvToMTextMatrix()
     CsvModule::readCsvToAcStringMatrix(strFilePath, matrixData);
 
     GenericPairEditDlg dlg(Common::loadString(IDS_CMD_yxImportCsvToMTextMatrix), Common::loadString(IDS_LBL_Parameter), Common::loadString(IDS_LBL_Tip), false, true, true);
-    dlg.modifyEditControl(L"", Common::loadString(IDS_TIP_MTextMatrixParameter));
+    CString strTipMTextMatrixParameter;
+    double textsize = Common::getTEXTSIZE();
+    double scale = Annotative::getCurrentScaleValue();
+    strTipMTextMatrixParameter.Format(Common::loadString(IDS_TIP_MTextMatrixParameter), textsize, scale, textsize * scale);
+    dlg.modifyEditControl(L"", strTipMTextMatrixParameter);
 
     std::vector<double> params;
     dlg.setValidatorAndParser([&](const CString& edit1, const CString& _) -> CString
@@ -759,7 +765,7 @@ void Interface::cmdImportCsvToMTextMatrix()
             const int paramsNumber = 3;
             if (!Common::parse(edit1, paramsNumber, [](double v) { return v > 0; }, params))
             {
-                return Common::loadString(IDS_TIP_MTextMatrixParameter);
+                return strTipMTextMatrixParameter;
             }
             return GenericPairEditDlg::ValidatorOk;
         });
@@ -787,10 +793,10 @@ void Interface::cmdImportCsvToMTextMatrix()
         GenericPairEditDlg dlg(title, Common::loadString(IDS_LBL_Parameter), Common::loadString(IDS_LBL_Tip), false, true, true);
 
         // 默认列容差和行容差
-        // 字高默认 3.5，列容差默认按字高的 3 倍，行容差默认按字高的 1 倍（考虑注释比例缩放值）
+        // 字高默认使用 TEXTSIZE 变量值，列容差默认按字高的 3 倍，行容差默认按字高的 1 倍（考虑注释比例缩放值）
         CString strInitParameter;
         double scale = Annotative::getCurrentScaleValue();
-        strInitParameter.Format(L"%g %g", Common::defaultTextHeight * scale * 3, Common::defaultTextHeight * scale * 1);
+        strInitParameter.Format(L"%g %g", Common::getTEXTSIZE() * scale * 3, Common::getTEXTSIZE() * scale * 1);
         dlg.modifyEditControl(strInitParameter, Common::loadString(IDS_TIP_SpatialTableExplorerParameter));
 
         std::vector<double> params;

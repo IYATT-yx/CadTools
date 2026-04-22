@@ -195,7 +195,7 @@ STRINGTABLE
 BEGIN
     IDS_LBL_Tip             "使用提示"
     IDS_TIP_yxInsertBalloonNumberBlockWithStartNumber_FMT 
-                            "气泡号文字高度：%g，当前注释比例缩放值：%g，实际大小 = 文字高度 × 注释比例缩放值"
+                            "显示序号高度 = TEXTSIZE变量值%g × 注释比例缩放值%g = %g"
     IDS_VAL_LICENSE         "开源协议：MIT"
     IDS_ERR_InvalidStartNumber "开始序号必须为不小于 0 的整数"
     IDS_TITLE_SaveCsv       "保存 CSV 文件到"
@@ -259,7 +259,8 @@ BEGIN
     IDS_CMD_yxImportCsvToMTextMatrix "从 CSV 文件导入数据生成多行文本矩阵"
     IDS_TITLE_ImportCsv     "选择要导入的文件"
     IDS_LBL_Parameter       "参数"
-    IDS_TIP_MTextMatrixParameter "输入3个不小于0的数，使用空格分隔，分别为：列宽、列步长、行步长。"
+    IDS_TIP_MTextMatrixParameter 
+                            "输入3个不小于0的数，使用空格分隔，分别为：列宽、列步长、行步长。显示文字高度 = TEXTSIZE变量值%g × 注释比例缩放值%g = %g"
     IDS_ERR_EmptyMTextMatrixParameter "多行文本矩阵参数不能为空"
     IDS_PROMPT_GetPoint     "请选择位置"
     IDS_CMD_yxSpatialTableExplorer "将多行/单行文本按空间位置表格化导出到 CSV 文件"

@@ -100,13 +100,17 @@ export namespace Common
 	 * 且不受文字对齐方式（Alignment）或块基点偏移的影响。
 	 */
 	bool getEntityCenter(AcDbEntity* pEnt, AcGePoint3d* pCenter);
+
+	/**
+	 * @brief 获取 TEXTSIZE 变量值（默认文字高度）
+	 * @return TEXTSIZE 值，返回负数代表失败
+	 */
+	double getTEXTSIZE();
 }
 
 // 常量
 export namespace Common
 {
-	constexpr double defaultTextHeight = 3.5; // 全局默认文本高度
-
 	// 符号代码
 	namespace SymbolCodes
 	{
@@ -144,8 +148,6 @@ export namespace Common
 		constexpr const wchar_t* blockName = L"气泡号块";
 		constexpr const wchar_t* AttTag = L"序号";
 		constexpr const wchar_t* AttPrompt = L"输入序号：";
-		constexpr double defaultCircleRadius = Common::defaultTextHeight;
-		constexpr double defaultTextHeight = Common::defaultTextHeight;
 	}
 
 	// 标注类型的子类

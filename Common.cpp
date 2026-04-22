@@ -185,4 +185,14 @@ namespace Common
 
 		return false;
 	}
+
+	double getTEXTSIZE()
+	{
+		resbuf rb;
+		if (acedGetVar(L"TEXTSIZE", &rb) == RTNORM)
+		{
+			return rb.resval.rreal;
+		}
+		return -1;
+	}
 }
