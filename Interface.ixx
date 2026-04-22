@@ -10,7 +10,8 @@ public:
 	static void unload();
 private:
 	static void cmdSetByLayer();
-	static void cmdHelp();
+	static void cmdYx();
+	static void info();
 	static void cmdDimensionFix();
 	static void cmdDimensionResume();
 	static void cmdAddSurroundingCharsForDimension();

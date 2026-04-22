@@ -26,30 +26,32 @@ void Interface::init()
     // 命令列表
     Commands::commandInfoList =
     {
-        {L"yx", Common::loadString(IDS_yxCommandDescription), Commands::CommandFlags::Base, Interface::cmdHelp},
-        {L"yxTest", Common::loadString(IDS_yxTestCommandDescription), Commands::CommandFlags::Base, Interface::test},
-        {L"yxUnload", Common::loadString(IDS_yxUnloadCommandDescription), Commands::CommandFlags::Base, Interface::cmdUnloadApp},
-        {L"yxSetByLayer", Common::loadString(IDS_yxSetByLayerCommandDescription), Commands::CommandFlags::PickRedraw, Interface::cmdSetByLayer},
-        {L"yxDimensionFix", Common::loadString(IDS_yxDimensionFixCommandDescription), Commands::CommandFlags::PickRedraw, Interface::cmdDimensionFix},
-        {L"yxDimensionResume", Common::loadString(IDS_yxDimensionResumeCommandDescription), Commands::CommandFlags::PickRedraw, Interface::cmdDimensionResume},
-        {L"yxAddSurroundingCharsForDimension", Common::loadString(IDS_yxAddSurroundingCharsForDimensionCommandDescription), Commands::CommandFlags::PickRedraw, Interface::cmdAddSurroundingCharsForDimension},
-        {L"yxRemoveSurroundingCharsForDimension", Common::loadString(IDS_yxRemoveSurroundingCharsForDimensionCommandDescription), Commands::CommandFlags::PickRedraw, Interface::cmdRemoveSurroundingCharsForDimension},
-        {L"yxSetBasicBox", Common::loadString(IDS_yxSetBasicBoxCommandDescription), Commands::CommandFlags::PickRedraw, Interface::cmdSetBasicBox},
-        {L"yxUnsetBasicBox", Common::loadString(IDS_yxUnsetBasicBoxCommandDescription), Commands::CommandFlags::PickRedraw, Interface::cmdUnsetBasicBox},
-        {L"yxSetRefDim", Common::loadString(IDS_yxSetRefDimCommandDescription), Commands::CommandFlags::PickRedraw, Interface::cmdSetRefDim},
-        {L"yxUnsetRefDim", Common::loadString(IDS_yxUnsetRefDimCommandDescription), Commands::CommandFlags::PickRedraw, Interface::cmdUnsetRefDim},
-        {L"yxInsertBalloonNumberBlockWithStartNumber", Common::loadString(IDS_yxInsertBalloonNumberBlockWithStartNumberCommandDescription), Commands::CommandFlags::Base, Interface::cmdInsertBalloonNumberBlockWithStartNumber},
-        {L"yxPrintClassHierarchy", Common::loadString(IDS_yxPrintClassHierarchyCommandDescription), Commands::CommandFlags::Base, Interface::cmdPrintClassHierarchy},
-        {L"yxExtractAnnotations", Common::loadString(IDS_yxExtractAnnotationsCommandDescription), Commands::CommandFlags::Base, Interface::cmdExtractAnnotations},
-        {L"yxUpdateBalloonNumberBlock", Common::loadString(IDS_yxUpdateBalloonNumberBlockCommandDescription), Commands::CommandFlags::PickRedraw, Interface::cmdUpdateBalloonNumberBlock},
-        {L"yxImeAutoSwitch", Common::loadString(IDS_yxImeAutoSwitchCommandDescription), Commands::CommandFlags::Base, Interface::cmdImeAutoSwitch},
-        {L"yxCloneText", Common::loadString(IDS_yxCloneTextCommandDescription), Commands::CommandFlags::Base, Interface::cmdCloneText},
-        {L"yxIntersect", Common::loadString(IDS_yxIntersect), Commands::CommandFlags::Base, Interface::cmdIntersect},
-        {L"yxBalloonNumberOffset", Common::loadString(IDS_yxBalloonNumberOffsetCommandDescription), Commands::CommandFlags::PickRedraw, Interface::cmdBalloonNumberOffset},
-        {L"yxBalloonNumberFilter", Common::loadString(IDS_yxBalloonNumberFilterCommandDescription), Commands::CommandFlags::PickRedraw, Interface::cmdBalloonNumberFilter},
-        {L"yxImportCsvToMTextMatrix", Common::loadString(IDS_yxImportCsvToMTextMatrixCommandDescription), Commands::CommandFlags::PickRedraw, Interface::cmdImportCsvToMTextMatrix},
-        {L"yxSpatialTableExplorer", Common::loadString(IDS_yxSpatialTableExplorerCommandDescription), Commands::CommandFlags::PickRedraw, Interface::cmdSpatialTableExplorer}
+        {L"yx", Common::loadString(IDS_CMD_yx), Commands::CommandFlags::Base, Interface::cmdYx},
+        {L"yxTest", Common::loadString(IDS_CMD_yxTest), Commands::CommandFlags::Base, Interface::test},
+        {L"yxUnload", Common::loadString(IDS_CMD_yxUnload), Commands::CommandFlags::Base, Interface::cmdUnloadApp},
+        {L"yxSetByLayer", Common::loadString(IDS_CMD_yxSetByLayer), Commands::CommandFlags::PickRedraw, Interface::cmdSetByLayer},
+        {L"yxDimensionFix", Common::loadString(IDS_CMD_yxDimensionFix), Commands::CommandFlags::PickRedraw, Interface::cmdDimensionFix},
+        {L"yxDimensionResume", Common::loadString(IDS_CMD_yxDimensionResume), Commands::CommandFlags::PickRedraw, Interface::cmdDimensionResume},
+        {L"yxAddSurroundingCharsForDimension", Common::loadString(IDS_CMD_yxAddSurroundingCharsForDimension), Commands::CommandFlags::PickRedraw, Interface::cmdAddSurroundingCharsForDimension},
+        {L"yxRemoveSurroundingCharsForDimension", Common::loadString(IDS_CMD_yxRemoveSurroundingCharsForDimension), Commands::CommandFlags::PickRedraw, Interface::cmdRemoveSurroundingCharsForDimension},
+        {L"yxSetBasicBox", Common::loadString(IDS_CMD_yxSetBasicBox), Commands::CommandFlags::PickRedraw, Interface::cmdSetBasicBox},
+        {L"yxUnsetBasicBox", Common::loadString(IDS_CMD_yxUnsetBasicBox), Commands::CommandFlags::PickRedraw, Interface::cmdUnsetBasicBox},
+        {L"yxSetRefDim", Common::loadString(IDS_CMD_yxSetRefDim), Commands::CommandFlags::PickRedraw, Interface::cmdSetRefDim},
+        {L"yxUnsetRefDim", Common::loadString(IDS_CMD_yxUnsetRefDim), Commands::CommandFlags::PickRedraw, Interface::cmdUnsetRefDim},
+        {L"yxInsertBalloonNumberBlockWithStartNumber", Common::loadString(IDS_CMD_yxInsertBalloonNumberBlockWithStartNumber), Commands::CommandFlags::Base, Interface::cmdInsertBalloonNumberBlockWithStartNumber},
+        {L"yxPrintClassHierarchy", Common::loadString(IDS_CMD_yxPrintClassHierarchy), Commands::CommandFlags::Base, Interface::cmdPrintClassHierarchy},
+        {L"yxExtractAnnotations", Common::loadString(IDS_CMD_yxExtractAnnotations), Commands::CommandFlags::Base, Interface::cmdExtractAnnotations},
+        {L"yxUpdateBalloonNumberBlock", Common::loadString(IDS_CMD_yxUpdateBalloonNumberBlock), Commands::CommandFlags::PickRedraw, Interface::cmdUpdateBalloonNumberBlock},
+        {L"yxImeAutoSwitch", Common::loadString(IDS_CMD_yxImeAutoSwitch), Commands::CommandFlags::Base, Interface::cmdImeAutoSwitch},
+        {L"yxCloneText", Common::loadString(IDS_CMD_yxCloneText), Commands::CommandFlags::Base, Interface::cmdCloneText},
+        {L"yxIntersect", Common::loadString(IDS_CMD_yxIntersect), Commands::CommandFlags::Base, Interface::cmdIntersect},
+        {L"yxBalloonNumberOffset", Common::loadString(IDS_CMD_yxBalloonNumberOffset), Commands::CommandFlags::PickRedraw, Interface::cmdBalloonNumberOffset},
+        {L"yxBalloonNumberFilter", Common::loadString(IDS_CMD_yxBalloonNumberFilter), Commands::CommandFlags::PickRedraw, Interface::cmdBalloonNumberFilter},
+        {L"yxImportCsvToMTextMatrix", Common::loadString(IDS_CMD_yxImportCsvToMTextMatrix), Commands::CommandFlags::PickRedraw, Interface::cmdImportCsvToMTextMatrix},
+        {L"yxSpatialTableExplorer", Common::loadString(IDS_CMD_yxSpatialTableExplorer), Commands::CommandFlags::PickRedraw, Interface::cmdSpatialTableExplorer}
     };
+
+    Interface::info();
 
     // 注册命令
     Commands::registerYxCmds(Commands::commandInfoList);
@@ -82,7 +84,7 @@ void Interface::unload()
     CString cmdGroup;
     cmdGroup.LoadStringW(IDS_CommandGroup);
 	acedRegCmds->removeGroup(cmdGroup);
-    acutPrintf(Common::loadString(IDS_Msg_Unload_FMT), Common::loadString(IDS_LocaleProjectName));
+    acutPrintf(Common::loadString(IDS_Msg_Unload_FMT), Common::loadString(IDS_VAL_LocaleProjectName));
 }
 
 void Interface::cmdUnloadApp()
@@ -97,39 +99,47 @@ void Interface::cmdUnloadApp()
     Commands::executeCommand(pszCmdList);
 }
 
-void Interface::cmdHelp()
+void Interface::info()
 {
     CAcModuleResourceOverride resOverride;
-    acutPrintf(L"\n%s\n", Common::loadString(IDS_LocaleProjectName));
-    acutPrintf(L"%s：%s_%s\n", Common::loadString(IDS_Version), BuildingTime::WDATE, BuildingTime::WTIME);
-    acutPrintf(L"%s：IYATT-yx\n", Common::loadString(IDS_Author));
-    acutPrintf(L"%s：https://github.com/IYATT-yx/IYATTyxCadTools\n", Common::loadString(IDS_ProjectUrl));
+    acutPrintf(L"\n%s %s_%s | %s | %s | %s\n",
+        Common::loadString(IDS_VAL_LocaleProjectName),
+        BuildingTime::WDATE, BuildingTime::WTIME,
+        Common::loadString(IDS_VAL_Author),
+        Common::loadString(IDS_VAL_LICENSE),
+        Common::loadString(IDS_VAL_ProjectUrl)
+        );
+}
+
+void Interface::cmdYx()
+{
+    Interface::info();
     MainBar::showBar(Commands::commandInfoList);
 }
 
 void Interface::cmdSetByLayer()
 {
     CAcModuleResourceOverride resOverride;
-    UniversalPicker::run(nullptr, EntityStyle::setByLayer, Common::loadString(IDS_yxSetByLayerCommandDescription));
+    UniversalPicker::run(nullptr, EntityStyle::setByLayer, Common::loadString(IDS_CMD_yxSetByLayer));
 }
 
 void Interface::cmdDimensionFix()
 {
     CAcModuleResourceOverride resOverride;
-    UniversalPicker::run(&Common::DimensionSubClasses, Dimension::dimensionFix, Common::loadString(IDS_yxDimensionFixCommandDescription));
+    UniversalPicker::run(&Common::DimensionSubClasses, Dimension::dimensionFix, Common::loadString(IDS_CMD_yxDimensionFix));
 }
 
 void Interface::cmdDimensionResume()
 {
     CAcModuleResourceOverride resOverride;
-    UniversalPicker::run(&Common::DimensionSubClasses, Dimension::dimensionResume, Common::loadString(IDS_yxDimensionResumeCommandDescription));
+    UniversalPicker::run(&Common::DimensionSubClasses, Dimension::dimensionResume, Common::loadString(IDS_CMD_yxDimensionResume));
 }
 
 void Interface::cmdAddSurroundingCharsForDimension()
 {
     CAcModuleResourceOverride resOverride;
-    CString title = Common::loadString(IDS_yxAddSurroundingCharsForDimensionCommandDescription);
-    GenericPairEditDlg dlg(title, Common::loadString(IDS_PrefixSymbol), Common::loadString(IDS_SuffixSymbol));
+    CString title = Common::loadString(IDS_CMD_yxAddSurroundingCharsForDimension);
+    GenericPairEditDlg dlg(title, Common::loadString(IDS_LBL_PrefixSymbol), Common::loadString(IDS_LBL_SuffixSymbol));
 
     CString left, right;
     dlg.setValidatorAndParser([&](const CString& value1, const CString& value2) -> CString
@@ -140,7 +150,7 @@ void Interface::cmdAddSurroundingCharsForDimension()
         });
     if (dlg.DoModal() != IDOK)
     {
-        acutPrintf(L"\n%s", Common::loadString(IDS_CancelOperation));
+        acutPrintf(L"\n%s", Common::loadString(IDS_MSG_CancelOperation));
         return;
     }
 
@@ -160,8 +170,8 @@ void Interface::cmdAddSurroundingCharsForDimension()
 void Interface::cmdRemoveSurroundingCharsForDimension()
 {
     CAcModuleResourceOverride resOverride;
-    CString title = Common::loadString(IDS_yxRemoveSurroundingCharsForDimensionCommandDescription);
-    GenericPairEditDlg dlg(title, Common::loadString(IDS_PrefixSymbol), Common::loadString(IDS_SuffixSymbol));
+    CString title = Common::loadString(IDS_CMD_yxRemoveSurroundingCharsForDimension);
+    GenericPairEditDlg dlg(title, Common::loadString(IDS_LBL_PrefixSymbol), Common::loadString(IDS_LBL_SuffixSymbol));
 
     CString left, right;
     dlg.setValidatorAndParser([&](const CString& value1, const CString& value2) -> CString
@@ -172,7 +182,7 @@ void Interface::cmdRemoveSurroundingCharsForDimension()
         });
     if (dlg.DoModal() != IDOK)
     {
-        acutPrintf(L"\n%s", Common::loadString(IDS_CancelOperation));
+        acutPrintf(L"\n%s", Common::loadString(IDS_MSG_CancelOperation));
         return;
     }
 
@@ -198,7 +208,7 @@ void Interface::cmdSetBasicBox()
         {
             Dimension::setAndUnsetBasicBox(objId, true);
         },
-        Common::loadString(IDS_yxSetBasicBoxCommandDescription),
+        Common::loadString(IDS_CMD_yxSetBasicBox),
         UniversalPicker::SelectMode::Immediate
     );
 }
@@ -212,7 +222,7 @@ void Interface::cmdUnsetBasicBox()
         {
             Dimension::setAndUnsetBasicBox(objId, false);
         },
-        Common::loadString(IDS_yxUnsetBasicBoxCommandDescription),
+        Common::loadString(IDS_CMD_yxUnsetBasicBox),
         UniversalPicker::SelectMode::Immediate
     );
 }
@@ -226,7 +236,7 @@ void Interface::cmdSetRefDim()
         {
             Dimension::setAndUnsetRefDim(objId, true);
         },
-        Common::loadString(IDS_yxSetRefDimCommandDescription),
+        Common::loadString(IDS_CMD_yxSetRefDim),
         UniversalPicker::SelectMode::Immediate
     );
 }
@@ -240,7 +250,7 @@ void Interface::cmdUnsetRefDim()
         {
             Dimension::setAndUnsetRefDim(objId, false);
         },
-        Common::loadString(IDS_yxUnsetRefDimCommandDescription),
+        Common::loadString(IDS_CMD_yxUnsetRefDim),
         UniversalPicker::SelectMode::Immediate
     );
 }
@@ -248,13 +258,13 @@ void Interface::cmdUnsetRefDim()
 void Interface::cmdInsertBalloonNumberBlockWithStartNumber()
 {
     CAcModuleResourceOverride resOverride;
-    CString title = Common::loadString(IDS_yxInsertBalloonNumberBlockWithStartNumberCommandDescription);
+    CString title = Common::loadString(IDS_CMD_yxInsertBalloonNumberBlockWithStartNumber);
     acutPrintf(L"\n%s\n", title);
 
-    GenericPairEditDlg dlg(title, Common::loadString(IDS_StartNumber), Common::loadString(IDS_Prompt), false, true, true);
+    GenericPairEditDlg dlg(title, Common::loadString(IDS_LBL_StartNumber), Common::loadString(IDS_LBL_Tip), false, true, true);
     // 设置默认字高
     CString csTips;
-    csTips.Format(Common::loadString(IDS_Msg_BalloonTips_FMT), Common::BalloonNumberBlock::defaultTextHeight);
+    csTips.Format(Common::loadString(IDS_TIP_yxInsertBalloonNumberBlockWithStartNumber_FMT), Common::BalloonNumberBlock::defaultTextHeight, Annotative::getCurrentScaleValue());
     dlg.modifyEditControl(L"", csTips);
 
     int startNumber;
@@ -282,7 +292,7 @@ void Interface::cmdInsertBalloonNumberBlockWithStartNumber()
 
     if (dlg.DoModal() != IDOK)
     {
-        acutPrintf(L"\n%s", Common::loadString(IDS_CancelOperation));
+        acutPrintf(L"\n%s", Common::loadString(IDS_MSG_CancelOperation));
         return;
     }
 
@@ -293,18 +303,18 @@ void Interface::cmdInsertBalloonNumberBlockWithStartNumber()
 void Interface::cmdPrintClassHierarchy()
 {
     CAcModuleResourceOverride resOverride;
-    UniversalPicker::run(nullptr, Common::printClassHierarchy, Common::loadString(IDS_yxPrintClassHierarchyCommandDescription), UniversalPicker::SelectMode::Immediate, true);
+    UniversalPicker::run(nullptr, Common::printClassHierarchy, Common::loadString(IDS_CMD_yxPrintClassHierarchy), UniversalPicker::SelectMode::Immediate, true);
 }
 
 void Interface::cmdExtractAnnotations()
 {
     CAcModuleResourceOverride resOverride;
     FileDialog::FileDialogFilterBuilder fileFilterBuilder;
-    CString strFileFilter = fileFilterBuilder.addFilter(Common::loadString(IDS_CsvFiles), { L"*.csv" }).build();
-    CString filePath = FileDialog::ShowSaveFileDialog(Common::loadString(IDS_SaveCsvTitle), Common::loadString(IDS_DefaultSaveDataCsvFilename), L"csv", strFileFilter);
+    CString strFileFilter = fileFilterBuilder.addFilter(Common::loadString(IDS_FILTER_CsvFiles), { L"*.csv" }).build();
+    CString filePath = FileDialog::ShowSaveFileDialog(Common::loadString(IDS_TITLE_SaveCsv), Common::loadString(IDS_FILE_DefaultSaveDataCsv), L"csv", strFileFilter);
     if (filePath.IsEmpty())
     {
-        acutPrintf(L"\n%s", Common::loadString(IDS_CancelOperation));
+        acutPrintf(L"\n%s", Common::loadString(IDS_MSG_CancelOperation));
         return;
     }
 
@@ -368,11 +378,11 @@ void Interface::cmdExtractAnnotations()
                 }
 
                 AcString asDimText = dimData.prefix + asMeasuredValue + asTol + dimData.suffix;
-                acutPrintf(L"\n%s：%s", Common::loadString(IDS_Dimension), asDimText.constPtr());
+                acutPrintf(Common::loadString(IDS_MSG_Dimension_FMT), asDimText.constPtr());
                 std::vector<AcString> row = { asDimText, asMeasuredValue, asTolUpper, asTolLower }; // 完整尺寸文本、名义值、上极限偏差、下极限偏差
                 csv.writeRow(row);
             }
-            else if (gtData.status) // 形位公差
+            else if (gtData.status) // 几何公差
             {
                 for (int i = 0; i < GeometricTolerance::GeometricToleranceDataLen; ++i)
                 {
@@ -385,7 +395,7 @@ void Interface::cmdExtractAnnotations()
                         AcString secondary = row.secondary;
                         AcString tertiary = row.tertiary;
                         AcString strRow = row.toString();
-                        acutPrintf(L"\n%s：%s", Common::loadString(IDS_GDT), strRow.constPtr());
+                        acutPrintf(Common::loadString(IDS_MSG_GDT), strRow.constPtr());
                         std::vector<AcString> asvRow = { strRow, name, value, primary, secondary, tertiary };
                         csv.writeRow(asvRow);
                     }
@@ -397,18 +407,18 @@ void Interface::cmdExtractAnnotations()
             }
             else if (TextUtil::readMText(objId, asMText))
             {
-                acutPrintf(Common::loadString(IDS_MText_FMT), asMText.constPtr());
+                acutPrintf(Common::loadString(IDS_MSG_MText_FMT), asMText.constPtr());
                 std::vector<AcString> rows = { asMText };
                 csv.writeRow(rows);
             }
             else if (TextUtil::readDText(objId, asDText))
             {
-                acutPrintf(Common::loadString(IDS_DText_FMT), asDText.constPtr());
+                acutPrintf(Common::loadString(IDS_MSG_DText_FMT), asDText.constPtr());
                 std::vector<AcString> rows = { asDText };
                 csv.writeRow(rows);
             }
         },
-        Common::loadString(IDS_yxExtractAnnotationsCommandDescription),
+        Common::loadString(IDS_CMD_yxExtractAnnotations),
         UniversalPicker::SelectMode::Immediate,
         false,
         UniversalPicker::SortMode::RD,
@@ -419,10 +429,10 @@ void Interface::cmdExtractAnnotations()
 void Interface::cmdUpdateBalloonNumberBlock()
 {
     CAcModuleResourceOverride resOverride;
-    CString title = Common::loadString(IDS_yxUpdateBalloonNumberBlockCommandDescription);
+    CString title = Common::loadString(IDS_CMD_yxUpdateBalloonNumberBlock);
     acutPrintf(L"\n%s\n", title);
 
-    GenericPairEditDlg dlg(title, Common::loadString(IDS_StartNumber), Common::loadString(IDS_BalloonNumberHeight), true, true, true);
+    GenericPairEditDlg dlg(title, Common::loadString(IDS_LBL_StartNumber), Common::loadString(IDS_LBL_BalloonNumberHeight), true, true, true);
 
     int startNumber;
     dlg.setValidatorAndParser([&](const CString& strValue, const CString& _) -> CString
@@ -449,13 +459,13 @@ void Interface::cmdUpdateBalloonNumberBlock()
 
     if (dlg.DoModal() != IDOK)
     {
-        acutPrintf(L"\n%s", Common::loadString(IDS_CancelOperation));
+        acutPrintf(L"\n%s", Common::loadString(IDS_MSG_CancelOperation));
         return;
     }
 
     UniversalPicker::AcRxClassVector arcv = { AcDbBlockReference::desc() };
 
-    acutPrintf(Common::loadString(IDS_BalloonNextNumber_FMT), startNumber);
+    acutPrintf(Common::loadString(IDS_MSG_BalloonNextNumber_FMT), startNumber);
     UniversalPicker::run(
         &arcv,
         [&](const AcDbObjectId& id)
@@ -463,7 +473,7 @@ void Interface::cmdUpdateBalloonNumberBlock()
             if (BalloonNumber::updateBalloonNumberBlock(id, startNumber))
             {
                 ++startNumber;
-                acutPrintf(Common::loadString(IDS_BalloonNextNumber_FMT), startNumber);
+                acutPrintf(Common::loadString(IDS_MSG_BalloonNextNumber_FMT), startNumber);
             }
         },
         nullptr,
@@ -477,18 +487,16 @@ void Interface::cmdUpdateBalloonNumberBlock()
 void Interface::cmdImeAutoSwitch()
 {
     CAcModuleResourceOverride resOverride;
-    CString title = Common::loadString(IDS_yxImeAutoSwitchCommandDescription);
-    GenericPairEditDlg dlg(title, Common::loadString(IDS_AutoStart), Common::loadString(IDS_Interval), false, true, true);
+    CString title = Common::loadString(IDS_CMD_yxImeAutoSwitch);
+    GenericPairEditDlg dlg(title, Common::loadString(IDS_LBL_AutoStart), Common::loadString(IDS_LBL_Interval), false, true, true);
 
-    CString edit1Result, edit2Result, csInvalidInterval;
+    CString edit1Result, edit2Result;
     bool bAutoStart;
     int nInterval;
     ImeAutoSwitcher::loadSettings(bAutoStart, nInterval);
     edit1Result.Format(L"%d", bAutoStart);
     edit2Result.Format(L"%d", nInterval);
     dlg.modifyEditControl(edit1Result, edit2Result);
-
-    csInvalidInterval.Format(Common::loadString(IDS_Err_InvalidInterval_FMT), ImeAutoSwitcher::defaultIntervalMs);
 
     dlg.setValidatorAndParser([&](const CString& value1, const CString& value2) -> CString
         {
@@ -515,6 +523,8 @@ void Interface::cmdImeAutoSwitch()
             }
             catch (...)
             {
+                CString csInvalidInterval;
+                csInvalidInterval.Format(Common::loadString(IDS_Err_InvalidInterval_FMT), ImeAutoSwitcher::defaultIntervalMs);
                 return csInvalidInterval;
             }
 
@@ -524,7 +534,7 @@ void Interface::cmdImeAutoSwitch()
 
     if (dlg.DoModal() != IDOK)
     {
-        acutPrintf(L"\n%s", Common::loadString(IDS_CancelOperation));
+        acutPrintf(L"\n%s", Common::loadString(IDS_MSG_CancelOperation));
         return;
     }
 
@@ -541,22 +551,22 @@ void Interface::cmdCloneText()
 {
     CAcModuleResourceOverride resOverride;
     AcString asSrcTextContent;
-    acutPrintf(L"\n%s", Common::loadString(IDS_Msg_CopySrcTextPrompt));
+    acutPrintf(L"\n%s", Common::loadString(IDS_PROMPT_CopySrcText));
     if (!TextUtil::getSelectedTextRawContent(asSrcTextContent) || asSrcTextContent.isEmpty())
     {
-        acutPrintf(L"\n%s", Common::loadString(IDS_CancelOperation));
+        acutPrintf(L"\n%s", Common::loadString(IDS_MSG_CancelOperation));
         return;
     }
     acutPrintf(L"\n读取到：%s\n", asSrcTextContent.constPtr());
 
-    acutPrintf(L"\n%s", Common::loadString(IDS_Msg_PasteDstTextPrompt));
+    acutPrintf(L"\n%s", Common::loadString(IDS_PROMPT_PasteDstText));
     UniversalPicker::run(
         &TextUtil::textClassList,
         [&asSrcTextContent](const AcDbObjectId& id)
         {
             TextUtil::updateTextEntityContent(id, asSrcTextContent);
         },
-        Common::loadString(IDS_yxCloneTextCommandDescription),
+        Common::loadString(IDS_CMD_yxCloneText),
         UniversalPicker::SelectMode::Immediate,
         false,
         UniversalPicker::SortMode::None,
@@ -579,9 +589,9 @@ void Interface::cmdIntersect()
 void Interface::cmdBalloonNumberOffset()
 {
     CAcModuleResourceOverride resOverride;
-    CString title = Common::loadString(IDS_yxBalloonNumberOffsetCommandDescription);
-    GenericPairEditDlg dlg(title, Common::loadString(IDS_BalloonNumberOffsetLabel), Common::loadString(IDS_Prompt), false, true, true);
-    dlg.modifyEditControl(L"", Common::loadString(IDS_BalloonNumberOffsetPromptInfo));
+    CString title = Common::loadString(IDS_CMD_yxBalloonNumberOffset);
+    GenericPairEditDlg dlg(title, Common::loadString(IDS_LBL_BalloonNumberOffset), Common::loadString(IDS_LBL_Tip), false, true, true);
+    dlg.modifyEditControl(L"", Common::loadString(IDS_TIP_BalloonNumberOffset));
 
     int offset;
     dlg.setValidatorAndParser([&](const CString& strValue, const CString& _) -> CString
@@ -608,7 +618,7 @@ void Interface::cmdBalloonNumberOffset()
 
     if (dlg.DoModal() != IDOK)
     {
-        acutPrintf(L"\n%s", Common::loadString(IDS_CancelOperation));
+        acutPrintf(L"\n%s", Common::loadString(IDS_MSG_CancelOperation));
         return;
     }
 
@@ -630,9 +640,9 @@ void Interface::cmdBalloonNumberOffset()
 void Interface::cmdBalloonNumberFilter()
 {
     CAcModuleResourceOverride resOverride;
-    CString title = Common::loadString(IDS_yxBalloonNumberFilterCommandDescription);
-    GenericPairEditDlg dlg(title, Common::loadString(IDS_BalloonNumberFilterCondition), Common::loadString(IDS_Prompt), false, true, false);
-    dlg.modifyEditControl(L"", Common::loadString(IDS_BalloonNumberFilterPrompt));
+    CString title = Common::loadString(IDS_CMD_yxBalloonNumberFilter);
+    GenericPairEditDlg dlg(title, Common::loadString(IDS_LBL_BalloonNumberFilterCondition), Common::loadString(IDS_LBL_Tip), false, true, false);
+    dlg.modifyEditControl(L"", Common::loadString(IDS_TIP_BalloonNumberFilter));
 
     CString edit1Result;
     dlg.setValidatorAndParser([&](const CString& strValue, const CString& _) -> CString
@@ -687,7 +697,7 @@ void Interface::cmdBalloonNumberFilter()
 
     if (dlg.DoModal() != IDOK)
     {
-        acutPrintf(L"\n%s", Common::loadString(IDS_CancelOperation));
+        acutPrintf(L"\n%s", Common::loadString(IDS_MSG_CancelOperation));
         return;
     }
 
@@ -729,19 +739,19 @@ void Interface::cmdImportCsvToMTextMatrix()
 {
     CAcModuleResourceOverride resOverride;
     FileDialog::FileDialogFilterBuilder fileFilterBuilter;
-    CString strFileFilter = fileFilterBuilter.addFilter(Common::loadString(IDS_CsvFiles), { L"*.csv" }).build();
-    CString strFilePath = FileDialog::ShowOpenFileDialog(Common::loadString(IDS_ImportCsvTitle), L"csv", strFileFilter);
+    CString strFileFilter = fileFilterBuilter.addFilter(Common::loadString(IDS_FILTER_CsvFiles), { L"*.csv" }).build();
+    CString strFilePath = FileDialog::ShowOpenFileDialog(Common::loadString(IDS_TITLE_ImportCsv), L"csv", strFileFilter);
     if (strFilePath.IsEmpty())
     {
-        acutPrintf(L"\n%s", Common::loadString(IDS_CancelOperation));
+        acutPrintf(L"\n%s", Common::loadString(IDS_MSG_CancelOperation));
         return;
     }
 
     CsvModule::AcStringMatrix matrixData;
     CsvModule::readCsvToAcStringMatrix(strFilePath, matrixData);
 
-    GenericPairEditDlg dlg(Common::loadString(IDS_yxImportCsvToMTextMatrixCommandDescription), Common::loadString(IDS_LBL_Parameter), Common::loadString(IDS_Prompt), false, true, true);
-    dlg.modifyEditControl(L"", Common::loadString(IDS_MTextMatrixParameterPrompt));
+    GenericPairEditDlg dlg(Common::loadString(IDS_CMD_yxImportCsvToMTextMatrix), Common::loadString(IDS_LBL_Parameter), Common::loadString(IDS_LBL_Tip), false, true, true);
+    dlg.modifyEditControl(L"", Common::loadString(IDS_TIP_MTextMatrixParameter));
 
     std::vector<double> params;
     dlg.setValidatorAndParser([&](const CString& edit1, const CString& _) -> CString
@@ -749,21 +759,21 @@ void Interface::cmdImportCsvToMTextMatrix()
             const int paramsNumber = 3;
             if (!Common::parse(edit1, paramsNumber, [](double v) { return v > 0; }, params))
             {
-                return Common::loadString(IDS_MTextMatrixParameterPrompt);
+                return Common::loadString(IDS_TIP_MTextMatrixParameter);
             }
             return GenericPairEditDlg::ValidatorOk;
         });
 
     if (dlg.DoModal() != IDOK)
     {
-        acutPrintf(L"\n%s", Common::loadString(IDS_CancelOperation));
+        acutPrintf(L"\n%s", Common::loadString(IDS_MSG_CancelOperation));
         return;
     }
 
     ads_point pt{};
-    if (acedGetPoint(nullptr, Common::loadString(IDS_Msg_GetPoint), pt) != RTNORM)
+    if (acedGetPoint(nullptr, Common::loadString(IDS_PROMPT_GetPoint), pt) != RTNORM)
     {
-        acutPrintf(L"\n%s", Common::loadString(IDS_CancelOperation));
+        acutPrintf(L"\n%s", Common::loadString(IDS_MSG_CancelOperation));
         return;
     }
 
@@ -773,15 +783,15 @@ void Interface::cmdImportCsvToMTextMatrix()
     void Interface::cmdSpatialTableExplorer()
     {
         CAcModuleResourceOverride resOverride;
-        CString title = Common::loadString(IDS_yxSpatialTableExplorerCommandDescription);
-        GenericPairEditDlg dlg(title, Common::loadString(IDS_LBL_Parameter), Common::loadString(IDS_Prompt), false, true, true);
+        CString title = Common::loadString(IDS_CMD_yxSpatialTableExplorer);
+        GenericPairEditDlg dlg(title, Common::loadString(IDS_LBL_Parameter), Common::loadString(IDS_LBL_Tip), false, true, true);
 
         // 默认列容差和行容差
         // 字高默认 3.5，列容差默认按字高的 3 倍，行容差默认按字高的 1 倍（考虑注释比例缩放值）
         CString strInitParameter;
         double scale = Annotative::getCurrentScaleValue();
         strInitParameter.Format(L"%g %g", Common::defaultTextHeight * scale * 3, Common::defaultTextHeight * scale * 1);
-        dlg.modifyEditControl(strInitParameter, Common::loadString(IDS_SpatialTableExplorerParameterPrompt));
+        dlg.modifyEditControl(strInitParameter, Common::loadString(IDS_TIP_SpatialTableExplorerParameter));
 
         std::vector<double> params;
         dlg.setValidatorAndParser([&](const CString& edit1, const CString& _) -> CString
@@ -789,7 +799,7 @@ void Interface::cmdImportCsvToMTextMatrix()
                 const int paramsNumber = 2;
                 if (!Common::parse(edit1, paramsNumber, [](double v) { return v > 0; }, params))
                 {
-                    return Common::loadString(IDS_SpatialTableExplorerParameterPrompt);
+                    return Common::loadString(IDS_TIP_SpatialTableExplorerParameter);
                 }
                 return GenericPairEditDlg::ValidatorOk;
             });
@@ -797,16 +807,16 @@ void Interface::cmdImportCsvToMTextMatrix()
     
         if (dlg.DoModal() != IDOK)
         {
-            acutPrintf(L"\n%s", Common::loadString(IDS_CancelOperation));
+            acutPrintf(L"\n%s", Common::loadString(IDS_MSG_CancelOperation));
             return;
         }
 
         FileDialog::FileDialogFilterBuilder fileFilterBuilter;
-        CString strFileFilter = fileFilterBuilter.addFilter(Common::loadString(IDS_CsvFiles), { L"*.csv" }).build();
-        CString strFilePath = FileDialog::ShowSaveFileDialog(Common::loadString(IDS_SaveCsvTitle), Common::loadString(IDS_DefaultSaveDataCsvFilename), L"csv", strFileFilter);
+        CString strFileFilter = fileFilterBuilter.addFilter(Common::loadString(IDS_FILTER_CsvFiles), { L"*.csv" }).build();
+        CString strFilePath = FileDialog::ShowSaveFileDialog(Common::loadString(IDS_TITLE_SaveCsv), Common::loadString(IDS_FILE_DefaultSaveDataCsv), L"csv", strFileFilter);
         if (strFilePath.IsEmpty())
         {
-            acutPrintf(L"\n%s", Common::loadString(IDS_CancelOperation));
+            acutPrintf(L"\n%s", Common::loadString(IDS_MSG_CancelOperation));
             return;
         }
         CsvWriter writer(strFilePath);
@@ -825,11 +835,11 @@ void Interface::cmdImportCsvToMTextMatrix()
                 data.id = id;
                 if (TextUtil::readMText(id, data.text, false, &data.pos))
                 {
-                    acutPrintf(Common::loadString(IDS_MTextPos_FMT), data.pos.x, data.pos.y, data.pos.z, data.text.constPtr());
+                    acutPrintf(Common::loadString(IDS_MSG_MTextPos_FMT), data.pos.x, data.pos.y, data.pos.z, data.text.constPtr());
                 }
                 else if (TextUtil::readDText(id, data.text, false, &data.pos))
                 {
-                    acutPrintf(Common::loadString(IDS_DTextPos_FMT), data.text.constPtr());
+                    acutPrintf(Common::loadString(IDS_MSG_DTextPos_FMT), data.text.constPtr());
                 }
                 elements.push_back(data);
             },
@@ -854,5 +864,5 @@ void Interface::cmdImportCsvToMTextMatrix()
             }
         }
 
-        acutPrintf(Common::loadString(IDS_IDS_FileLocation_FMT), strFilePath);
+        acutPrintf(Common::loadString(IDS_MSG_FileLocation_FMT), strFilePath);
     }
