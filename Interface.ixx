@@ -30,5 +30,6 @@ private:
 	static void cmdBalloonNumberFilter();
 	static void cmdImportCsvToMTextMatrix();
 	static void cmdSpatialTableExplorer();
+	static void cmdCheckBalloonNumberMaxMin();
 };
 

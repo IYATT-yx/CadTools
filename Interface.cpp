@@ -26,9 +26,6 @@ void Interface::init()
     // ÃüÁîÁÐ±í
     Commands::commandInfoList =
     {
-        {L"yx", Common::loadString(IDS_CMD_yx), Commands::CommandFlags::Base, Interface::cmdYx},
-        {L"yxTest", Common::loadString(IDS_CMD_yxTest), Commands::CommandFlags::Base, Interface::test},
-        {L"yxUnload", Common::loadString(IDS_CMD_yxUnload), Commands::CommandFlags::Base, Interface::cmdUnloadApp},
         {L"yxSetByLayer", Common::loadString(IDS_CMD_yxSetByLayer), Commands::CommandFlags::PickRedraw, Interface::cmdSetByLayer},
         {L"yxDimensionFix", Common::loadString(IDS_CMD_yxDimensionFix), Commands::CommandFlags::PickRedraw, Interface::cmdDimensionFix},
         {L"yxDimensionResume", Common::loadString(IDS_CMD_yxDimensionResume), Commands::CommandFlags::PickRedraw, Interface::cmdDimensionResume},
@@ -39,16 +36,20 @@ void Interface::init()
         {L"yxSetRefDim", Common::loadString(IDS_CMD_yxSetRefDim), Commands::CommandFlags::PickRedraw, Interface::cmdSetRefDim},
         {L"yxUnsetRefDim", Common::loadString(IDS_CMD_yxUnsetRefDim), Commands::CommandFlags::PickRedraw, Interface::cmdUnsetRefDim},
         {L"yxInsertBalloonNumberBlockWithStartNumber", Common::loadString(IDS_CMD_yxInsertBalloonNumberBlockWithStartNumber), Commands::CommandFlags::Base, Interface::cmdInsertBalloonNumberBlockWithStartNumber},
-        {L"yxPrintClassHierarchy", Common::loadString(IDS_CMD_yxPrintClassHierarchy), Commands::CommandFlags::Base, Interface::cmdPrintClassHierarchy},
-        {L"yxExtractAnnotations", Common::loadString(IDS_CMD_yxExtractAnnotations), Commands::CommandFlags::Base, Interface::cmdExtractAnnotations},
         {L"yxUpdateBalloonNumberBlock", Common::loadString(IDS_CMD_yxUpdateBalloonNumberBlock), Commands::CommandFlags::PickRedraw, Interface::cmdUpdateBalloonNumberBlock},
-        {L"yxImeAutoSwitch", Common::loadString(IDS_CMD_yxImeAutoSwitch), Commands::CommandFlags::Base, Interface::cmdImeAutoSwitch},
-        {L"yxCloneText", Common::loadString(IDS_CMD_yxCloneText), Commands::CommandFlags::Base, Interface::cmdCloneText},
-        {L"yxIntersect", Common::loadString(IDS_CMD_yxIntersect), Commands::CommandFlags::Base, Interface::cmdIntersect},
         {L"yxBalloonNumberOffset", Common::loadString(IDS_CMD_yxBalloonNumberOffset), Commands::CommandFlags::PickRedraw, Interface::cmdBalloonNumberOffset},
         {L"yxBalloonNumberFilter", Common::loadString(IDS_CMD_yxBalloonNumberFilter), Commands::CommandFlags::PickRedraw, Interface::cmdBalloonNumberFilter},
+        {L"yxCheckBalloonNumberMaxMin", Common::loadString(IDS_CMD_yxCheckBalloonNumberMaxMin), Commands::CommandFlags::PickRedraw, cmdCheckBalloonNumberMaxMin},
+        {L"yxExtractAnnotations", Common::loadString(IDS_CMD_yxExtractAnnotations), Commands::CommandFlags::Base, Interface::cmdExtractAnnotations},
+        {L"yxCloneText", Common::loadString(IDS_CMD_yxCloneText), Commands::CommandFlags::Base, Interface::cmdCloneText},
+        {L"yxIntersect", Common::loadString(IDS_CMD_yxIntersect), Commands::CommandFlags::Base, Interface::cmdIntersect},
         {L"yxImportCsvToMTextMatrix", Common::loadString(IDS_CMD_yxImportCsvToMTextMatrix), Commands::CommandFlags::PickRedraw, Interface::cmdImportCsvToMTextMatrix},
-        {L"yxSpatialTableExplorer", Common::loadString(IDS_CMD_yxSpatialTableExplorer), Commands::CommandFlags::PickRedraw, Interface::cmdSpatialTableExplorer}
+        {L"yxSpatialTableExplorer", Common::loadString(IDS_CMD_yxSpatialTableExplorer), Commands::CommandFlags::PickRedraw, Interface::cmdSpatialTableExplorer},
+        {L"yxImeAutoSwitch", Common::loadString(IDS_CMD_yxImeAutoSwitch), Commands::CommandFlags::Base, Interface::cmdImeAutoSwitch},
+        {L"yx", Common::loadString(IDS_CMD_yx), Commands::CommandFlags::Base, Interface::cmdYx},
+        {L"yxTest", Common::loadString(IDS_CMD_yxTest), Commands::CommandFlags::Base, Interface::test},
+        {L"yxUnload", Common::loadString(IDS_CMD_yxUnload), Commands::CommandFlags::Base, Interface::cmdUnloadApp},
+        {L"yxPrintClassHierarchy", Common::loadString(IDS_CMD_yxPrintClassHierarchy), Commands::CommandFlags::Base, Interface::cmdPrintClassHierarchy},
     };
 
     Interface::info();
@@ -871,4 +872,73 @@ void Interface::cmdImportCsvToMTextMatrix()
         }
 
         acutPrintf(Common::loadString(IDS_MSG_FileLocation_FMT), strFilePath);
+    }
+
+    void Interface::cmdCheckBalloonNumberMaxMin()
+    {
+        UniversalPicker::AcRxClassVector arcv = { AcDbBlockReference::desc() };
+        AcString strValue;
+        int max = INT_MIN;
+        int min = INT_MAX;
+        AcDbObjectId maxId = AcDbObjectId::kNull;
+        AcDbObjectId minId = AcDbObjectId::kNull;
+        AcDbObjectIdArray matchedIds;
+        UniversalPicker::run(
+            &arcv,
+            [&](const AcDbObjectId& id)
+            {
+                if (BalloonNumber::getBalloonAttributeValue(id, strValue))
+                {
+                    try
+                    {
+                        size_t pos;
+                        int number = std::stoi(strValue.constPtr(), &pos);
+                        if (pos != strValue.length())
+                        {
+                            throw std::exception();
+                        }
+                        if (number > max)
+                        {
+                            max = number;
+                            maxId = id;
+                        }
+                        if (number < min)
+                        {
+                            min = number;
+                            minId = id;
+                        }
+
+                    }
+                    catch (...)
+                    {
+
+                    }
+                }
+
+            },
+            Common::loadString(IDS_CMD_yxCheckBalloonNumberMaxMin),
+            UniversalPicker::SelectMode::Batch,
+            true,
+            UniversalPicker::SortMode::None,
+            true
+        );
+
+        AcDbObjectIdArray resultIds;
+        if (maxId != AcDbObjectId::kNull)
+        {
+            resultIds.append(maxId);
+        }
+        if (minId != AcDbObjectId::kNull)
+        {
+            resultIds.append(minId);
+        }
+        if (resultIds.length() > 0)
+        {
+            UniversalPicker::setSelection(resultIds);
+            acutPrintf(Common::loadString(IDS_MSG_PrintBalloonNumberMaxAndMin_FMT), max, min);
+        }
+        else
+        {
+            acutPrintf(Common::loadString(IDS_MSG_EmptyBalloonNumber));
+        }
     }

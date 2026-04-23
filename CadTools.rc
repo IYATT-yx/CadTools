@@ -269,6 +269,9 @@ BEGIN
     IDS_MSG_FileLocation_FMT "\n文件位置：%s"
     IDS_MSG_MTextPos_FMT    "\n(%g,%g,%g)多行文本：%s"
     IDS_MSG_DTextPos_FMT    "\n(%g,%g,%g)单行文本：%s"
+    IDS_CMD_yxCheckBalloonNumberMaxMin "查找气泡号最大和最小序号"
+    IDS_MSG_PrintBalloonNumberMaxAndMin_FMT "\n最大气泡号：%d，最小气泡号：%d"
+    IDS_MSG_EmptyBalloonNumber "\n未发现有效数字格式的气泡号"
 END
 
 #endif    // 中文(简体，中国) resources

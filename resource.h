@@ -101,6 +101,10 @@
 #define IDS_MSG_FileLocation_FMT        185
 #define IDS_MSG_MTextPos_FMT            186
 #define IDS_MSG_DTextPos_FMT            187
+#define IDS_CMD_yxCheckBalloonNumberMaxMin 188
+#define IDS_MSG_PrintBalloonNumberMaxAndMin_FMT 189
+#define IDS_MSG_EmptyBalloonNumberMaxAndMin 190
+#define IDS_MSG_EmptyBalloonNumber      190
 
 // Next default values for new objects
 // 
