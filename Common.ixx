@@ -106,6 +106,19 @@ export namespace Common
 	 * @return TEXTSIZE 值，返回负数代表失败
 	 */
 	double getTEXTSIZE();
+
+	/**
+	 * @brief 获取当前图纸文件路径或目录
+	 * @param bDirectory [in] true 表示获取所在目录，false 表示获取完整路径文件名
+	 * @return 当前图纸文件路径或目录，失败返回空字符串
+	 */
+	CString getCurrPath(bool bDirectory = false);
+
+	/**
+	 * @brief 获取当前时间戳字符串
+	 * @return 当前时间戳字符串
+	 */
+	CString getTimestamp();
 }
 
 // 常量

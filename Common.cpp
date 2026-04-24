@@ -1,5 +1,6 @@
 module;
 #include "StdAfx.h"
+#include <iomanip>
 
 module Common;
 
@@ -194,5 +195,43 @@ namespace Common
 			return rb.resval.rreal;
 		}
 		return -1;
+	}
+
+	CString getCurrPath(bool bDirectory)
+	{
+		CString result = L"";
+		AcDbDatabase* pDb = acdbHostApplicationServices()->workingDatabase();
+		if (pDb == nullptr)
+		{
+			return result;
+		}
+
+		const wchar_t* pszPath = nullptr;
+		pDb->getFilename(pszPath);
+		if (pszPath == nullptr)
+		{
+			return result;
+		}
+
+		result = pszPath;
+		if (bDirectory)
+		{
+			int nIndex = result.ReverseFind(L'\\');
+			if (nIndex != -1)
+			{
+				result = result.Left(nIndex + 1);
+			}
+		}
+		return result;
+	}
+
+	CString getTimestamp()
+	{
+		auto now = std::chrono::system_clock::now();
+		std::time_t nowC = std::chrono::system_clock::to_time_t(now);
+		std::tm nowTm = *std::localtime(&nowC);
+		std::wostringstream woss;
+		woss << std::put_time(&nowTm, L"%Y%m%d_%H%M%S");
+		return woss.str().c_str();
 	}
 }
