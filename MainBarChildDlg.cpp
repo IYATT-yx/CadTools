@@ -1,4 +1,4 @@
-// (C) Copyright 2002-2007 by Autodesk, Inc. 
+ï»¿// (C) Copyright 2002-2007 by Autodesk, Inc. 
 //
 // Permission to use, copy, modify, and distribute this software in
 // object code form for any purpose and without fee is hereby granted, 
@@ -88,9 +88,9 @@ void MainBarChildDlg::OnSize (UINT nType, int cx, int cy)
 
 	if (this->commandListControl.GetSafeHwnd())
 	{
-		this->commandListControl.MoveWindow(0, 0, cx, cy); // ÌîÂú´°¿Ú
+		this->commandListControl.MoveWindow(0, 0, cx, cy); // å¡«æ»¡çª—å£
 
-		// ×îºóÒ»ÁÐ×Ô¶¯À­ÉìÌîÂú
+		// æœ€åŽä¸€åˆ—è‡ªåŠ¨æ‹‰ä¼¸å¡«æ»¡
 		CRect rect;
 		this->commandListControl.GetClientRect(&rect);
 		int width0 = this->commandListControl.GetColumnWidth(0);
@@ -117,7 +117,7 @@ BOOL MainBarChildDlg::OnInitDialog()
 	}
 
 	return TRUE;  // return TRUE unless you set the focus to a control
-	// Òì³£: OCX ÊôÐÔÒ³Ó¦·µ»Ø FALSE
+	// å¼‚å¸¸: OCX å±žæ€§é¡µåº”è¿”å›ž FALSE
 }
 
 void MainBarChildDlg::insertCommands(Commands::CommandInfoList& commandInfoList)

@@ -1,4 +1,4 @@
-module;
+ï»¿module;
 #include "stdafx.h"
 
 module EntityStyle;
@@ -15,15 +15,15 @@ namespace EntityStyle
 			return;
 		}
 
-		// ÑÕÉ«
+		// é¢œè‰²
 		AcCmColor color;
 		color.setByLayer();
 		pEntity->setColor(color);
 
 
-		// ÏßÐÍ
+		// çº¿åž‹
 		pEntity->setLinetype(L"ByLayer");
-		// Ïß¿í
+		// çº¿å®½
 		pEntity->setLineWeight(AcDb::kLnWtByLayer);
 	}
 }

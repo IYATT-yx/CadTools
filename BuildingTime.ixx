@@ -1,4 +1,4 @@
-export module BuildingTime;
+﻿export module BuildingTime;
 
 #define MONTH_TO_NUM(mmm) \
     ((mmm[0] == 'J' && mmm[1] == 'a') ? 1 : \

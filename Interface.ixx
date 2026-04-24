@@ -1,4 +1,4 @@
-export module Interface;
+﻿export module Interface;
 
 export class Interface
 {

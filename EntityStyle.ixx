@@ -1,4 +1,4 @@
-module;
+﻿module;
 #include "StdAfx.h"
 
 export module EntityStyle;

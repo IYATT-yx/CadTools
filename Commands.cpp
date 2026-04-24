@@ -1,4 +1,4 @@
-module;
+ï»¿module;
 #include "stdafx.h"
 #include "resource.h"
 
@@ -14,9 +14,9 @@ namespace Commands
 		cmdGroup.LoadStringW(IDS_CommandGroup);
 		for (Commands::CommandInfo commandInfo : cil)
 		{
-			// ×¢²áÃüÁîÈ«Ãû
+			// æ³¨å†Œå‘½ä»¤å…¨å
 			acedRegCmds->addCommand(cmdGroup, commandInfo.commandName.constPtr(), commandInfo.commandName.constPtr(), commandInfo.flags, commandInfo.proc);
-			// ×¢²áÃüÁî¼ò³Æ
+			// æ³¨å†Œå‘½ä»¤ç®€ç§°
 			AcString shortCommandName = commandInfo.getShortCommandName();
 			acedRegCmds->addCommand(cmdGroup, shortCommandName.constPtr(), shortCommandName.constPtr(), commandInfo.flags, commandInfo.proc);
 		}

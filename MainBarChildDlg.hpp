@@ -1,4 +1,4 @@
-// (C) Copyright 2002-2007 by Autodesk, Inc. 
+ï»¿// (C) Copyright 2002-2007 by Autodesk, Inc. 
 //
 // Permission to use, copy, modify, and distribute this software in
 // object code form for any purpose and without fee is hereby granted, 
@@ -54,13 +54,13 @@ private:
 public:
 	virtual BOOL OnInitDialog();
 	/**
-	 * @brief ÏòÃüÁî±¨±í²åÈëÃüÁî
-	 * @param commandInfoList ÃüÁîÁĞ±í
+	 * @brief å‘å‘½ä»¤æŠ¥è¡¨æ’å…¥å‘½ä»¤
+	 * @param commandInfoList å‘½ä»¤åˆ—è¡¨
 	 */
 	void insertCommands(Commands::CommandInfoList& commandInfoList);
 private:
 	/**
-	 * @brief ÃüÁî±¨±íË«»÷ÊÂ¼ş
+	 * @brief å‘½ä»¤æŠ¥è¡¨åŒå‡»äº‹ä»¶
 	 * @param pNMHDR
 	 * @param pResult 
 	 */

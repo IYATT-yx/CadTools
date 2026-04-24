@@ -1,4 +1,4 @@
-// (C) Copyright 2002-2007 by Autodesk, Inc. 
+ï»¿// (C) Copyright 2002-2007 by Autodesk, Inc. 
 //
 // Permission to use, copy, modify, and distribute this software in
 // object code form for any purpose and without fee is hereby granted, 
@@ -27,7 +27,7 @@
 
 import Common;
 
-const CString GenericPairEditDlg::ValidatorOk = L""; // ÑéÖ¤Í¨¹ıµÄ±êÖ¾
+const CString GenericPairEditDlg::ValidatorOk = L""; // éªŒè¯é€šè¿‡çš„æ ‡å¿—
 
 //-----------------------------------------------------------------------------
 IMPLEMENT_DYNAMIC (GenericPairEditDlg, CAcUiDialog)
@@ -68,13 +68,13 @@ BOOL GenericPairEditDlg::OnInitDialog()
 {
 	CAcUiDialog::OnInitDialog();
 
-	// »ñÈ¡µ±Ç°Ä¬ÈÏ×ÖÌåÎª³£¹æ×ÖÌå
+	// è·å–å½“å‰é»˜è®¤å­—ä½“ä¸ºå¸¸è§„å­—ä½“
 	CFont* pDefaultFont = GetFont();
 	LOGFONT lf;
 	if (pDefaultFont != nullptr)
 	{
 		pDefaultFont->GetLogFont(&lf);
-		// ÓĞ¾É×ÖÌåÔòÉ¾³ı
+		// æœ‰æ—§å­—ä½“åˆ™åˆ é™¤
 		if (this->fontNormal.GetSafeHandle() != nullptr)
 		{
             this->fontNormal.DeleteObject();
@@ -82,14 +82,14 @@ BOOL GenericPairEditDlg::OnInitDialog()
 		this->fontNormal.CreateFontIndirectW(&lf);
 	}
 
-	// ´´½¨ GDT ×ÖÌå
+	// åˆ›å»º GDT å­—ä½“
 	lf.lfCharSet = ANSI_CHARSET;
 	wcscpy(lf.lfFaceName, Common::CharMap::font);
 	lf.lfItalic = false;
 	lf.lfUnderline = false;
 	if (lf.lfHeight < 0)
 	{
-		lf.lfHeight -= 6; // ¸ºÖµÔ½Ğ¡£¬×ÖºÅÔ½´ó
+		lf.lfHeight -= 6; // è´Ÿå€¼è¶Šå°ï¼Œå­—å·è¶Šå¤§
 	}
 	else
 	{
@@ -101,14 +101,14 @@ BOOL GenericPairEditDlg::OnInitDialog()
 	}
 	this->fontGDT.CreateFontIndirectW(&lf);
 
-	// ³õÊ¼»¯¶Ô»°¿ò
+	// åˆå§‹åŒ–å¯¹è¯æ¡†
 	this->SetWindowTextW(title);
 	this->staticText1.SetWindowTextW(label1);
     this->staticText2.SetWindowTextW(label2);
 	this->editControl1.SetWindowTextW(L"");
 	this->editControl2.SetWindowTextW(L"");
 
-	// µ¥ÊäÈë¿òÄ£Ê½Òş²ØµÚ 2 ×é
+	// å•è¾“å…¥æ¡†æ¨¡å¼éšè—ç¬¬ 2 ç»„
 	if (this->singleMode)
 	{
 		this->staticText2.ShowWindow(SW_HIDE);
@@ -116,7 +116,7 @@ BOOL GenericPairEditDlg::OnInitDialog()
 		GetDlgItem(IDC_CHECK2)->ShowWindow(SW_HIDE);
 	}
 
-	// ½ûÓÃ GDT Ñ¡Ïî
+	// ç¦ç”¨ GDT é€‰é¡¹
 	if (this->disableGdt)
 	{
 		GetDlgItem(IDC_CHECK1)->ShowWindow(SW_HIDE);
@@ -124,16 +124,16 @@ BOOL GenericPairEditDlg::OnInitDialog()
 		GetDlgItem(IDC_BUTTON1)->ShowWindow(SW_HIDE);
 	}
 
-	// ÉèÖÃ±à¼­¿òÄ¬ÈÏÖµ
+	// è®¾ç½®ç¼–è¾‘æ¡†é»˜è®¤å€¼
 	this->editControl1.SetWindowTextW(this->csEdit1Input);
     this->editControl2.SetWindowTextW(this->csEdit2Input);
 
-	// µÚ 1 ¸ö±à¼­¿ò»ñÈ¡½¹µã
+	// ç¬¬ 1 ä¸ªç¼–è¾‘æ¡†è·å–ç„¦ç‚¹
 	this->editControl1.SetFocus();
 	this->editControl1.SetSel(0, -1);
 
 	return FALSE;  // return TRUE unless you set the focus to a control
-	// Òì³£: OCX ÊôĞÔÒ³Ó¦·µ»Ø FALSE
+	// å¼‚å¸¸: OCX å±æ€§é¡µåº”è¿”å› FALSE
 }
 
 void GenericPairEditDlg::OnBnClickedOk()
@@ -219,7 +219,7 @@ bool GenericPairEditDlg::getGdtCheckStatus(const int& idx)
 {
 	if (idx < 0 || idx > 1)
 	{
-		AfxMessageBox(L"»ñÈ¡ GDT ¸´Ñ¡¿ò×´Ì¬´íÎó£¬Ö¸¶¨ÏÂ±êµÄ¸´Ñ¡¿ò²»´æÔÚ", MB_OK | MB_ICONERROR); // Õë¶Ô¿ª·¢Õß²é´í
+		AfxMessageBox(L"è·å– GDT å¤é€‰æ¡†çŠ¶æ€é”™è¯¯ï¼ŒæŒ‡å®šä¸‹æ ‡çš„å¤é€‰æ¡†ä¸å­˜åœ¨", MB_OK | MB_ICONERROR); // é’ˆå¯¹å¼€å‘è€…æŸ¥é”™
 		return false;
 	}
 
@@ -228,29 +228,29 @@ bool GenericPairEditDlg::getGdtCheckStatus(const int& idx)
 
 BOOL GenericPairEditDlg::PreTranslateMessage(MSG* pMsg)
 {
-	// À¹½Ø Tab ¼ü°´ÏÂÏûÏ¢
+	// æ‹¦æˆª Tab é”®æŒ‰ä¸‹æ¶ˆæ¯
 	if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_TAB)
 	{
 		CWnd* pFocus = GetFocus();
 
-		// Èç¹ûµ±Ç°½¹µãÔÚµÚÒ»¸ö±à¼­¿ò
+		// å¦‚æœå½“å‰ç„¦ç‚¹åœ¨ç¬¬ä¸€ä¸ªç¼–è¾‘æ¡†
 		if (pFocus == &editControl1)
 		{
-			// Èç¹û²»ÊÇµ¥ÊäÈëÄ£Ê½£¬Ìøµ½µÚ¶ş¸ö±à¼­¿ò
+			// å¦‚æœä¸æ˜¯å•è¾“å…¥æ¨¡å¼ï¼Œè·³åˆ°ç¬¬äºŒä¸ªç¼–è¾‘æ¡†
 			if (!this->singleMode)
 			{
 				editControl2.SetFocus();
 				editControl2.SetSel(0, -1);
 			}
-			// Èç¹ûÊÇµ¥ÊäÈëÄ£Ê½£¬±£³ÖÔÚ editControl1£¨»òÌø»Ø×Ô¼º£©
+			// å¦‚æœæ˜¯å•è¾“å…¥æ¨¡å¼ï¼Œä¿æŒåœ¨ editControl1ï¼ˆæˆ–è·³å›è‡ªå·±ï¼‰
 			else
 			{
 				editControl1.SetFocus();
 				editControl1.SetSel(0, -1);
 			}
-			return TRUE; // ±íÊ¾ÏûÏ¢ÒÑ´¦Àí£¬²»ÔÙÏòÏÂ´«µİ
+			return TRUE; // è¡¨ç¤ºæ¶ˆæ¯å·²å¤„ç†ï¼Œä¸å†å‘ä¸‹ä¼ é€’
 		}
-		// Èç¹ûµ±Ç°½¹µãÔÚµÚ¶ş¸ö±à¼­¿ò
+		// å¦‚æœå½“å‰ç„¦ç‚¹åœ¨ç¬¬äºŒä¸ªç¼–è¾‘æ¡†
 		else if (pFocus == &editControl2)
 		{
 			editControl1.SetFocus();
