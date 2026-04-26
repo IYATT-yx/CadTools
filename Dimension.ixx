@@ -16,7 +16,8 @@ export namespace Dimension
 		AcString prefix = L""; // 前缀，如直径、半径等符号
         AcString suffix = L""; // 后缀，如角度符号
 		bool isAngle = false; // 是否为角度标注
-		AcString dimText= L""; // 标注文本
+		AcString dimText= L""; // 标注原始文本
+		AcString plainText = L""; // 在标注原始文本基础上替换数字添加符号后的字符串
 		double tolUpper = 0; // 上偏差极限
         double tolLower = 0; // 下偏差极限
 		int tolPrecision = 0; // 极限偏差精度

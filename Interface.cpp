@@ -383,8 +383,9 @@ void Interface::cmdExtractAnnotations()
                 }
 
                 AcString asDimText = dimData.prefix + asMeasuredValue + asTol + dimData.suffix;
+                TextUtil::resolveControlCodes(asDimText);
                 acutPrintf(Common::loadString(IDS_MSG_Dimension_FMT), asDimText.constPtr());
-                std::vector<AcString> row = { asDimText, asMeasuredValue, asTolUpper, asTolLower }; // 完整尺寸文本、名义值、上极限偏差、下极限偏差
+                std::vector<AcString> row = { dimData.plainText, asDimText, asMeasuredValue, asTolUpper, asTolLower }; // 完整尺寸内容、尺寸文本、名义值、上极限偏差、下极限偏差
                 csv.writeRow(row);
             }
             else if (gtData.status) // 几何公差

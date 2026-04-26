@@ -235,5 +235,25 @@ namespace Dimension
 		}
 		data.tolPrecision = pDim->dimtdec(); // 极限偏差精度
 		data.status = true;
+
+		// 纯文本标注内容
+		if (data.dimText.isEmpty())
+		{
+			data.plainText = Common::ACDB_DIM_TEXT_DEFAULT;
+		}
+		else
+		{
+			data.plainText = data.dimText;
+		}
+		AcString newValue, strMeasurement;
+		double measuredValue = data.measuredValue;
+		if (data.isAngle)
+		{
+			measuredValue = data.degreeValue();
+		}
+		Common::double2AcString(measuredValue, strMeasurement, data.measuredValuePrecision);
+		newValue.format(L"%s%s%s", data.prefix.constPtr(), strMeasurement.constPtr(), data.suffix.constPtr());
+        data.plainText.replace(Common::ACDB_DIM_TEXT_DEFAULT, newValue.constPtr());
+		TextUtil::resolveControlCodes(data.plainText);
 	}
 }
