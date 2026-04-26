@@ -2,5 +2,5 @@
   <Configurations>
     <Platform Name="x64" />
   </Configurations>
-  <Project Path="CadTools.vcxproj" />
+  <Project Path="CadTools.vcxproj" Id="f87873b0-2b5d-4d52-8fd5-be1cdc50b2e3" />
 </Solution>
