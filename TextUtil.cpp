@@ -53,9 +53,22 @@ namespace TextUtil
 			return false;
 		}
 
+		bool bFieldRead = false;
 		if (isRawContents)
 		{
-			pMText->contents(text);
+			// 尝试读取字段代码
+			AcDbField* pField = nullptr;
+			if (pMText->getField(L"TEXT", pField, AcDb::kForRead) == Acad::eOk)
+			{
+				pField->getFieldCode(text, AcDbField::kFieldCode);
+				pField->close();
+				bFieldRead = true;
+			}
+
+			if (!bFieldRead)
+			{
+				pMText->contents(text);
+			}
 		}
 		else
 		{
@@ -78,9 +91,40 @@ namespace TextUtil
 			return false;
 		}
 
-		pText->textString(text);
-		if (!isRawContents)
+		bool bFieldRead = false;
+		if (isRawContents)
 		{
+			// DText 通常需要通过字段字典来获取
+			AcDbObjectId dictId = pText->getFieldDictionary();
+			if (!dictId.isNull())
+			{
+				AcDbDictionary* pDict = nullptr;
+				if (acdbOpenObject(pDict, dictId, AcDb::kForRead) == Acad::eOk)
+				{
+					AcDbObjectId fieldId;
+					// DText 默认键名通常为 TEXTSTRING
+					if (pDict->getAt(L"TEXTSTRING", fieldId) == Acad::eOk)
+					{
+						AcDbField* pField = nullptr;
+						if (acdbOpenObject(pField, fieldId, AcDb::kForRead) == Acad::eOk)
+						{
+							pField->getFieldCode(text, AcDbField::kFieldCode);
+							pField->close();
+							bFieldRead = true;
+						}
+					}
+					pDict->close();
+				}
+			}
+
+			if (!bFieldRead)
+			{
+				pText->textString(text);
+			}
+		}
+		else
+		{
+			pText->textString(text);
 			TextUtil::resolveControlCodes(text);
 		}
 

@@ -34,22 +34,28 @@ export namespace TextUtil
 	void parseDimensionTolerance(const AcString& dimText, double& tolUpper, double& tolLower);
 
 	/**
-	 * @brief 从标注中读取MText内容
+	 * @brief 从多行文本(MText)中读取内容
+	 * @details
+	 * - 当 isRawContent 为 true 时，优先提取字段代码(Field Code)，若无字段则提取带控制符的 MText 内容(Contents)。
+	 * - 当 isRawContent 为 false 时，提取剥离了格式代码的纯文本(Plain Text)。
 	 * @param id 对象 ID
-	 * @param text 内容文本
-	 * @param isRawContent true 获取带控制字符的原始内容；false 获取纯文本内容
-	 * @param pPos 坐标传出参数，默认为 nullptr
-	 * @return true 成功；false 失败
+	 * @param text [传出] 读取到的内容字符串
+	 * @param isRawContent 是否获取原始内容（含字段代码及 MText 格式符），默认为 false
+	 * @param pPos [可选] 坐标传出参数，获取实体中心点，默认为 nullptr
+	 * @return true 成功；false 失败（对象不存在或类型不匹配）
 	 */
 	bool readMText(const AcDbObjectId& id, AcString& text, bool isRawContent = false, AcGePoint3d* pPos = nullptr);
 
 	/**
-	 * @brief 从标注中读取DText内容
+	 * @brief 从单行文本(DText/Text)中读取内容
+	 * @details
+	 * - 当 isRawContent 为 true 时，优先提取字段代码(Field Code)，若无字段则返回包含 %% 格式码的原始字符串。
+	 * - 当 isRawContent 为 false 时，将解析 %% 控制码（如解析 %%C 为直径符号）后返回。
 	 * @param id 对象 ID
-	 * @param text 内容文本
-	 * @param isRawContent true 获取带控制字符的原始内容；false 获取纯文本内容
-	 * @param pPos 坐标传出参数，默认为 nullptr
-	 * @return true 成功；false 失败
+	 * @param text [传出] 读取到的内容字符串
+	 * @param isRawContent 是否获取原始内容（含字段代码及原始格式码），默认为 false
+	 * @param pPos [可选] 坐标传出参数，获取实体中心点，默认为 nullptr
+	 * @return true 成功；false 失败（对象不存在或类型不匹配）
 	 */
 	bool readDText(const AcDbObjectId& id, AcString& text, bool isRawContent = false, AcGePoint3d* pPos = nullptr);
 
