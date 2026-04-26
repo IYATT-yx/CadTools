@@ -149,11 +149,11 @@ namespace TextUtil
 		resbuf* filterRb = UniversalPicker::buildFilter(&TextUtil::textClassList);
 
 		AcDbObjectId entId = UniversalPicker::getSelectedSingleEntityId(&TextUtil::textClassList);
-		if (TextUtil::readMText(entId, content, true))
+		if (TextUtil::readMText(entId, content, false)) // 暂改为读取纯文本
 		{
 			return true;
 		}
-		else if (TextUtil::readDText(entId, content, true))
+		else if (TextUtil::readDText(entId, content, false)) // 暂改为读取纯文本
 		{
             return true;
 		}
