@@ -5,9 +5,6 @@
 前年将 AutoCAD 用作工作时，我就简单研究了下 ObjectARX，本来想根据工作需要开发工具提升效率的，后面一直搁置了。最近几天又想起来，就开始动工了。  这个插件是为 AutoCAD Mechanical 版本开发的，其它版本的 AutoCAD 可能无法使用。  
 ![alt text](doc/image1.png)
 
-命令报表预览图  
-
-
 ## 使用方法
 
 AutoCAD 处于打开图纸状态下，执行`APPLOAD`命令。  
