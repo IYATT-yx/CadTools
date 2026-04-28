@@ -56,11 +56,10 @@ namespace TextUtil
 		bool bFieldRead = false;
 		if (isRawContents)
 		{
-			// 尝试读取字段代码
 			AcDbField* pField = nullptr;
 			if (pMText->getField(L"TEXT", pField, AcDb::kForRead) == Acad::eOk)
 			{
-				pField->getFieldCode(text, AcDbField::kFieldCode);
+				pField->getFieldCode(text, AcDbField::kAddMarkers);
 				pField->close();
 				bFieldRead = true;
 			}
@@ -94,26 +93,14 @@ namespace TextUtil
 		bool bFieldRead = false;
 		if (isRawContents)
 		{
-			// DText 通常需要通过字段字典来获取
-			AcDbObjectId dictId = pText->getFieldDictionary();
-			if (!dictId.isNull())
+			AcDbField* pField = nullptr;
+			if (pText->getField(L"TEXT", pField, AcDb::kForRead) == Acad::eOk)
 			{
-				AcDbDictionary* pDict = nullptr;
-				if (acdbOpenObject(pDict, dictId, AcDb::kForRead) == Acad::eOk)
+				if (pField != nullptr)
 				{
-					AcDbObjectId fieldId;
-					// DText 默认键名通常为 TEXTSTRING
-					if (pDict->getAt(L"TEXTSTRING", fieldId) == Acad::eOk)
-					{
-						AcDbField* pField = nullptr;
-						if (acdbOpenObject(pField, fieldId, AcDb::kForRead) == Acad::eOk)
-						{
-							pField->getFieldCode(text, AcDbField::kFieldCode);
-							pField->close();
-							bFieldRead = true;
-						}
-					}
-					pDict->close();
+					pField->getFieldCode(text, AcDbField::kAddMarkers);
+					pField->close();
+					bFieldRead = true;
 				}
 			}
 
@@ -149,11 +136,11 @@ namespace TextUtil
 		resbuf* filterRb = UniversalPicker::buildFilter(&TextUtil::textClassList);
 
 		AcDbObjectId entId = UniversalPicker::getSelectedSingleEntityId(&TextUtil::textClassList);
-		if (TextUtil::readMText(entId, content, false)) // 暂改为读取纯文本
+		if (TextUtil::readMText(entId, content, true))
 		{
 			return true;
 		}
-		else if (TextUtil::readDText(entId, content, false)) // 暂改为读取纯文本
+		else if (TextUtil::readDText(entId, content, true))
 		{
             return true;
 		}
@@ -162,17 +149,74 @@ namespace TextUtil
 
 	void updateTextEntityContent(const AcDbObjectId& id, const AcString& content)
 	{
-		AcDbMText* pText = Common::getObject<AcDbMText>(id, AcDb::kForWrite);
-		if (pText != nullptr)
+		AcDbMText* pMText = Common::getObject<AcDbMText>(id, AcDb::kForWrite);
+		if (pMText != nullptr)
 		{
-			pText->setContents(content);
+			if (content.find(L"AcObjProp") != -1 || content.find(L"AcVar") != -1)
+			{
+				AcDbField* pField = new AcDbField();
+				if (pField != nullptr)
+				{
+					AcDbField::FieldCodeFlag fFlag = static_cast<AcDbField::FieldCodeFlag>(static_cast<int>(AcDbField::kFieldCode) | static_cast<int>(AcDbField::kTextField));
+					pField->setFieldCode(content, fFlag);
+
+					AcDbField::EvalOption eOpt = static_cast<AcDbField::EvalOption>(static_cast<int>(AcDbField::kOnRegen) | static_cast<int>(AcDbField::kOnSave));
+					pField->setEvaluationOption(eOpt);
+
+					if (pField->evaluate(AcDbField::kDemand, pMText->database()) == Acad::eOk)
+					{
+						AcDbObjectId newFieldId;
+						pMText->setField(L"TEXT", pField, newFieldId);
+					}
+					else
+					{
+						pMText->setContents(content);
+					}
+					pField->close();
+				}
+			}
+			else
+			{
+				pMText->setContents(content);
+			}
+
+			pMText->recordGraphicsModified();
 			return;
 		}
+
 		AcDbText* pDText = Common::getObject<AcDbText>(id, AcDb::kForWrite);
 		if (pDText != nullptr)
 		{
-            pDText->setTextString(content);
-            return;
+			if (content.find(L"AcObjProp") != -1 || content.find(L"AcVar") != -1)
+			{
+				AcDbField* pField = new AcDbField();
+				if (pField != nullptr)
+				{
+					AcDbField::FieldCodeFlag fFlag = static_cast<AcDbField::FieldCodeFlag>(static_cast<int>(AcDbField::kFieldCode) | static_cast<int>(AcDbField::kTextField));
+					pField->setFieldCode(content, fFlag);
+
+					AcDbField::EvalOption eOpt = static_cast<AcDbField::EvalOption>(static_cast<int>(AcDbField::kOnRegen) | static_cast<int>(AcDbField::kOnSave));
+					pField->setEvaluationOption(eOpt);
+
+					if (pField->evaluate(AcDbField::kDemand, pDText->database()) == Acad::eOk)
+					{
+						AcDbObjectId newFieldId;
+						pDText->setField(L"TEXT", pField, newFieldId);
+					}
+					else
+					{
+						pDText->setTextString(content);
+					}
+					pField->close();
+				}
+			}
+			else
+			{
+				pDText->setTextString(content);
+			}
+
+			pDText->recordGraphicsModified();
+			return;
 		}
 	}
 
