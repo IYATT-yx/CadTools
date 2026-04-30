@@ -110,11 +110,14 @@ BOOL MainBarChildDlg::OnInitDialog()
 	CAcModuleResourceOverride resOverride;
 
 	this->commandListControl.SetExtendedStyle(this->commandListControl.GetExtendedStyle() | LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
-	std::vector<CString> columnNames = {Common::loadString(IDS_LBL_CommandDescription), Common::loadString(IDS_LBL_CommandName), Common::loadString(IDS_LBL_ShortCommandName)};
-	for (auto columnName : columnNames)
-	{
-        this->commandListControl.InsertColumn(0, columnName, LVCFMT_LEFT, 100);
-	}
+	//std::vector<CString> columnNames = {Common::loadString(IDS_LBL_CommandDescription), Common::loadString(IDS_LBL_CommandName), Common::loadString(IDS_LBL_ShortCommandName)};
+	//for (auto columnName : columnNames)
+	//{
+ //       this->commandListControl.InsertColumn(0, columnName, LVCFMT_LEFT, 100);
+	//}
+	this->commandListControl.InsertColumn(0, Common::loadString(IDS_LBL_CommandDescription), LVCFMT_LEFT, 100);
+	this->commandListControl.InsertColumn(0, Common::loadString(IDS_LBL_CommandName), LVCFMT_LEFT, 100);
+	this->commandListControl.InsertColumn(0, Common::loadString(IDS_LBL_ShortCommandName), LVCFMT_LEFT, 80);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 异常: OCX 属性页应返回 FALSE
