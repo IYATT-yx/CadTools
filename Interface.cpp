@@ -34,6 +34,7 @@ import AcadVarUtil;
 import Translator;
 import EncodingConverter;
 import DocCloseInterceptor;
+import ActivityInsightsManager;
 
 void Interface::init()
 {
@@ -92,7 +93,7 @@ void Interface::init()
         {L"yxSpatialTableExplorer", _(L"将多行/单行文本按空间位置表格化导出到 CSV 文件"), Commands::CommandFlags::PickRedraw, Interface::cmdSpatialTableExplorer},
         {L"yxPasteClipImage", _(L"将剪贴板中的截图/图像数据保存到文件并插入图纸中"), Commands::CommandFlags::PickRedraw, Interface::cmdPasteClipImage},
         {L"yxForceRemoveImage", _(L"删除光栅图像及图片文件（无法撤销恢复）"), Commands::CommandFlags::PickRedraw, cmdForceRemoveImage},
-        {L"yxLocateDrawing", _(L"打开当前图纸文件"), Commands::CommandFlags::Base, Interface::cmdLocateDrawing},
+        {L"yxLocateDrawing", _(L"打开图纸路径"), Commands::CommandFlags::Base, Interface::cmdLocateDrawing},
         {L"yxCreateIntersectionPoints", _(L"创建两条线(及延长线)的交点。可使用PTYPE设置点样式。"), Commands::CommandFlags::Base, Interface::cmdCreateIntersectionPoints},
         {L"yxImeAutoSwitch", _(L"设置输入法自动切换"), Commands::CommandFlags::Base, Interface::cmdImeAutoSwitch},
         {L"yxDialogMiddleClickToOk", _(L"设置对话框中鼠标中键映射到确定按钮"), Commands::CommandFlags::Base, Interface::cmdDialogMiddleClickToOk},
@@ -104,8 +105,8 @@ void Interface::init()
         {L"yxUnload", _(L"关闭本插件"), Commands::CommandFlags::Base, Interface::cmdUnloadApp},
         {L"yxRestart", _(L"重启本插件"), Commands::CommandFlags::Base, Interface::cmdRestartApp},
         {L"yxPrintClassHierarchy", _(L"打印类层次结构"), Commands::CommandFlags::Base, Interface::cmdPrintClassHierarchy},
-        {L"yxLocateSelf", _(L"打开本工具文件"), Commands::CommandFlags::Base, Interface::cmdLocateSelf},
-        {L"yxPrintConfigFilename", _(L"打开配置文件"), Commands::CommandFlags::Base, cmdPrintConfigFilename}
+        {L"yxLocateSelf", _(L"打开本工具路径"), Commands::CommandFlags::Base, Interface::cmdLocateSelf},
+        {L"yxPrintConfigFilename", _(L"打开配置路径"), Commands::CommandFlags::Base, cmdPrintConfigFilename}
     };
 
     Interface::info();
@@ -135,6 +136,48 @@ void Interface::init()
 // 测试使用
 void Interface::test()
 {
+    ActivityInsightsManager manager;
+    std::vector<CadHistory::ActivityItem> vecRawHistory = manager.fetchHistory(CadHistory::OpFilter::OpAll);
+
+    if (vecRawHistory.empty())
+    {
+        acutPrintf(L"\n[IYATT-yx] 未检测到任何有效的文件活动日志。\n");
+        return;
+    }
+
+    // 同路径去重处理
+    std::vector<CadHistory::ActivityItem> vecUniqueHistory;
+    std::set<std::wstring> setProcessedPaths;
+
+    for (const auto& item : vecRawHistory)
+    {
+        std::wstring wstrUpperPath = item.wstrDstPath;
+        std::transform(wstrUpperPath.begin(), wstrUpperPath.end(), wstrUpperPath.begin(), ::towupper);
+
+        if (setProcessedPaths.find(wstrUpperPath) == setProcessedPaths.end())
+        {
+            vecUniqueHistory.push_back(item);
+            setProcessedPaths.insert(wstrUpperPath);
+        }
+    }
+
+    acutPrintf(L"\n[IYATT-yx] ===== 开始打印图纸活动日志 =====");
+
+    for (const auto& item : vecUniqueHistory)
+    {
+        // 直接调用结构体封装的方法获取时间字符串！干净纯粹！
+        std::wstring wstrDisplayTime = item.toTimeString();
+
+        acutPrintf(
+            L"\n[%s] 动作: %-12s | 产品: %-25s \n  路径: %s",
+            wstrDisplayTime.c_str(),
+            item.wstrOp.c_str(),
+            item.wstrProduct.c_str(),
+            item.wstrDstPath.c_str()
+        );
+    }
+
+    acutPrintf(L"\n[IYATT-yx] ===== 图纸日志打印结束 (共 %d 项) =====\n", vecUniqueHistory.size());
 }
 
 void Interface::unload()
